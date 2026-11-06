@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GiftAll2Us | Premium Reseller</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0b1120;
+            color: #f8fafc;
+            min-height: 100vh;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        /* ----- HEADER ----- */
+        header {
+            background-color: #1e293b;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { color: #3b82f6; }
+
+        .balance-badge {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        /* ----- MAIN VIEWS ----- */
+        .view { display: none; padding: 1.5rem 5%; animation: fadeIn 0.3s ease; }
+        .view.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* ----- DASHBOARD ----- */
+        .welcome-card {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+        .welcome-card h2 { font-size: 1.4rem; margin-bottom: 5px; }
+        .welcome-card p { color: #bfdbfe; font-size: 0.9rem; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-box {
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+        .stat-box i { font-size: 1.5rem; color: #3b82f6; margin-bottom: 10px; }
+        .stat-box h3 { font-size: 1.2rem; margin-bottom: 3px; }
+        .stat-box p { font-size: 0.8rem; color: #94a3b8; }
+
+        /* ----- EXPLORE (CARDS) ----- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gift-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 1.2rem;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .gift-card:active { transform: scale(0.97); border-color: #3b82f6; }
+
+        .card-icon {
+            font-size: 2rem;
+            color: #e2e8f0;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-price { font-size: 1.1rem; font-weight: 800; color: #3b82f6; margin-bottom: 0.8rem; }
+
+        .buy-btn {
+            width: 100%;
+            padding: 8px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ----- ORDERS ----- */
+        .order-item {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-info h4 { font-size: 1rem; margin-bottom: 4px; }
+        .order-info p { font-size: 0.8rem; color: #94a3b8; word-break: break-all; }
+        .status-badge {
+            background: #f59e0b;
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .status-badge.completed { background: #10b981; color: #fff; }
+
+        /* ----- PROFILE ----- */
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 2rem; }
+        .avatar { width: 60px; height: 60px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .profile-header h2 { font-size: 1.2rem; }
+        .profile-header p { color: #94a3b8; font-size: 0.9rem; }
+        .menu-list { background: #1e293b; border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
+        .menu-item { padding: 1rem; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 15px; font-weight: 500; cursor: pointer; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item i { color: #3b82f6; width: 20px; }
+
+        /* ----- ADMIN DASHBOARD ----- */
+        #adminSection { display: none; }
+        .admin-card { background: #1e293b; border: 1px solid #ef4444; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; }
+        .admin-card h4 { color: #f8fafc; margin-bottom: 5px; }
+        .admin-card p { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 3px; word-break: break-all;}
+        .admin-btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .admin-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .approve-btn { background: #10b981; color: white; }
+        .reject-btn { background: #ef4444; color: white; }
+
+        /* ----- BOTTOM NAVIGATION ----- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 15px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            gap: 5px;
+            width: 20%;
+        }
+
+        .nav-item i { font-size: 1.2rem; }
+        .nav-item.active { color: #3b82f6; }
+        
+        .nav-item.chat-btn { position: relative; top: -15px; }
+        .nav-item.chat-btn .icon-wrapper {
+            background: #3b82f6;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+        }
+        .nav-item.chat-btn span { margin-top: 2px; }
+
+        /* ----- CHECKOUT MODAL ----- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: flex-end; 
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px 20px 0 0;
+            padding: 2rem 1.5rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-content { animation: slideUp 0.3s ease; }
+
+        .close-btn { position: absolute; top: 15px; right: 15px; background: #334155; border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.9rem; color: #94a3b8; margin-bottom: 5px; }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .form-control:focus { border-color: #3b82f6; }
+
+        /* Crypto Tabs */
+        .crypto-tabs { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+        .crypto-tab {
+            flex: 1; padding: 10px 5px; background: #0f172a; border: 1px solid #334155;
+            border-radius: 8px; color: #94a3b8; cursor: pointer; font-weight: 600; font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .crypto-tab.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+
+        .wallet-address {
+            background: #0f172a; padding: 1rem; border-radius: 8px; border: 1px dashed #475569;
+            text-align: center; margin-bottom: 1rem; word-break: break-all; font-family: monospace; color: #10b981; font-size: 0.85rem; cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%; padding: 15px; background: #10b981; color: white; border: none;
+            border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class="fas fa-gift"></i> GiftAll2Us</div>
+        <div class="balance-badge">Verified Reseller</div>
+    </header>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard" class="view active">
+        <div class="welcome-card">
+            <h2>Welcome Back!</h2>
+            <p>Get instant delivery on all premium gift cards. Pay securely with Crypto.</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <i class="fas fa-bolt"></i>
+                <h3>Instant</h3>
+                <p>Delivery</p>
+            </div>
+            <div class="stat-box">
+                <i class="fas fa-shield-alt"></i>
+                <h3>100%</h3>
+                <p>Secure</p>
+            </div>
+        </div>
+        <h3 class="section-title"><i class="fas fa-fire" style="color:#f59e0b"></i> Trending Now</h3>
+        <div class="card-grid" id="trendingGrid"></div>
+    </div>
+
+    <!-- EXPLORE VIEW -->
+    <div id="view-explore" class="view">
+        <h3 class="section-title">All Gift Cards</h3>
+        <div class="card-grid" id="allGrid"></div>
+    </div>
+
+    <!-- ORDERS VIEW -->
+    <div id="view-orders" class="view">
+        <h3 class="section-title">My Orders</h3>
+        <div id="ordersList">
+            <p style="color: #94a3b8; text-align: center; margin-top: 2rem;">No orders yet. Go buy something!</p>
+        </div>
+    </div>
+
+    <!-- PROFILE VIEW (Includes Admin Login) -->
+    <div id="view-profile" class="view">
+        <div class="profile-header">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <div>
+                <h2>Guest User</h2>
+                <p>ID: #84920</p>
+            </div>
+        </div>
+        
+        <!-- Standard User Menu -->
+        <div class="menu-list" id="userMenu">
+            <div class="menu-item"><i class="fas fa-wallet"></i> My Wallet</div>
+            <div class="menu-item"><i class="fas fa-history"></i> Transaction History</div>
+            <div class="menu-item"><i class="fas fa-headset"></i> Contact Support</div>
+            <div class="menu-item" onclick="toggleAdmin()"><i class="fas fa-lock" style="color:#ef4444"></i> <span style="color:#ef4444">Admin Portal</span></div>
+        </div>
+
+        <!-- Admin Menu (Hidden by default) -->
+        <div id="adminSection">
+            <h3 class="section-title" style="color: #ef4444;"><i class="fas fa-shield-alt"></i> Admin Dashboard</h3>
+            <div id="adminOrdersList"></div>
+            <button class="submit-btn" style="background:#334155; margin-top: 20px;" onclick="toggleAdmin()">Exit Admin Mode</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchView('dashboard', this)">
+            <i class="fas fa-home"></i><span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="switchView('explore', this)">
+            <i class="fas fa-search"></i><span>Explore</span>
+        </div>
+        
+        <div class="nav-item chat-btn" onclick="openLiveChat()">
+            <div class="icon-wrapper"><i class="fas fa-comment-dots"></i></div>
+            <span style="color:#fff;">Live Chat</span>
+        </div>
+
+        <div class="nav-item" onclick="switchView('orders', this)">
+            <i class="fas fa-receipt"></i><span>Orders</span>
+        </div>
+        <div class="nav-item" onclick="switchView('profile', this)">
+            <i class="fas fa-user"></i><span>Profile</span>
+        </div>
+    </nav>
+
+    <!-- CHECKOUT MODAL -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h2 class="modal-title" id="modalProductName" style="margin-bottom: 5px; font-size:1.3rem;">Product</h2>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Select Amount (USD)</label>
+                <select class="form-control" id="amountSelect" onchange="updatePrice()">
+                    <option value="50">$50</option>
+                    <option value="100">$100</option>
+                    <option value="200">$200</option>
+                    <option value="400">$400</option>
+                    <option value="500">$500</option>
+                    <option value="1000">$1,000</option>
+                    <option value="2000">$2,000</option>
+                    <option value="5000">$5,000</option>
+                    <option value="custom">Other Amount...</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="customAmountGroup" style="display: none;">
+                <label>Enter Custom Amount ($)</label>
+                <input type="number" class="form-control" id="customAmountInput" placeholder="Max $5000" oninput="updatePrice()">
+            </div>
+
+            <div style="text-align: center; margin-bottom: 15px;">
+                <span style="font-size: 0.9rem; color: #94a3b8;">Total to Pay:</span>
+                <h3 style="color: #10b981; font-size: 1.5rem;" id="modalTotalPrice">$50.00</h3>
+            </div>
+
+            <hr style="border-color: #334155; margin-bottom: 15px;">
+
+            <label style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 5px; display: block;">Pay with Crypto</label>
+            
+            <!-- CRYPTO TABS WITH LOGOS -->
+            <div class="crypto-tabs">
+                <button class="crypto-tab active" onclick="switchCrypto('USDT', this)"><i class="fas fa-tether"></i> USDT</button>
+                <button class="crypto-tab" onclick="switchCrypto('BTC', this)"><i class="fab fa-bitcoin"></i> BTC</button>
+                <button class="crypto-tab" onclick="switchCrypto('LTC', this)"><i class="fas fa-litecoin-sign"></i> LTC</button>
+                <button class="crypto-tab" onclick="switchCrypto('APT', this)"><i class="fas fa-a"></i> APT</button>
+                <button class="crypto-tab" onclick="switchCrypto('TSLAX', this)"><i class="fas fa-chart-line"></i> TSLAx</button>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 5px;">Send exact amount to:</p>
+            <div class="wallet-address" id="walletAddress" onclick="copyAddress()">
+                Click to Copy Address
+            </div>
+
+            <!-- PROOF OF PAYMENT -->
+            <div class="form-group">
+                <label>Transaction Hash (TXID)</label>
+                <input type="text" class="form-control" id="txidInput" placeholder="Paste your transaction hash here...">
+            </div>
+            <div class="form-group">
+                <label>Payment Screenshot</label>
+                <input type="file" class="form-control" id="screenshotInput" accept="image/*" style="padding: 8px;">
+            </div>
+
+            <button class="submit-btn" onclick="submitOrder()">
+                <i class="fas fa-paper-plane"></i> Submit Order
+            </button>
+        </div>
+    </div>
+
+    <!-- TAWK.TO LIVE SUPPORT SCRIPT -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    // REPLACE THE URL BELOW WITH YOUR TAWK.TO URL
+    s1.src='https://embed.tawk.to/YOUR_TAWK_ID/YOUR_WIDGET_ID';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+
+    <script>
+        // --- DATA ---
+        const products = [
+            { name: "Amazon", icon: "fab fa-amazon" },
+            { name: "Google Play", icon: "fab fa-google-play" },
+            { name: "Apple", icon: "fab fa-apple" },
+            { name: "Steam", icon: "fab fa-steam" },
+            { name: "PlayStation (PSN)", icon: "fab fa-playstation" },
+            { name: "Xbox", icon: "fab fa-xbox" },
+            { name: "Netflix", icon: "fas fa-tv" },
+            { name: "Spotify", icon: "fab fa-spotify" },
+            { name: "Roblox", icon: "fas fa-cube" },
+            { name: "Razer Gold", icon: "fas fa-gamepad" },
+            { name: "Binance", icon: "fab fa-bitcoin" },
+            { name: "eBay", icon: "fab fa-ebay" },
+            { name: "Walmart", icon: "fas fa-shopping-cart" },
+            { name: "Visa", icon: "fab fa-cc-visa" },
+            { name: "Mastercard", icon: "fab fa-cc-mastercard" },
+            { name: "Sephora", icon: "fas fa-spa" },
+            { name: "Nike", icon: "fas fa-shoe-prints" },
+            { name: "Uber", icon: "fab fa-uber" },
+            { name: "Airbnb", icon: "fab fa-airbnb" },
+            { name: "Nintendo eShop", icon: "fas fa-gamepad" }
+        ];
+
+        // --- YOUR REAL WALLET ADDRESSES ---
+        const wallets = {
+            USDT: "0xf61acfcb64e7170f5da17c3edd34846f1de78df4", // BEP20
+            BTC: "33sV3nL1nvukCLpNqTAS5QRthUCRgRnbLa",
+            LTC: "MWPMxuWHxYQEHVCFeb1iSEY3j6rTAHtQ5U",
+            APT: "0xb6cbec5550fc06ef5f39bb933a5c85aa689d10781b40c0b9b06b363be320c281",
+            TSLAX: "EuYXueGXgYGRpKNfhEXGYj1HNSebYTmfgP9biuQNCHA7"
+        };
+
+        let currentCrypto = "USDT";
+        let currentProductName = "";
+        let currentPrice = 50;
+
+        // --- RENDER CARDS ---
+        function renderCards() {
+            const allGrid = document.getElementById('allGrid');
+            const trendingGrid = document.getElementById('trendingGrid');
+            
+            allGrid.innerHTML = "";
+            products.forEach(product => { allGrid.innerHTML += createCardHTML(product); });
+
+            trendingGrid.innerHTML = "";
+            products.slice(0, 4).forEach(product => { trendingGrid.innerHTML += createCardHTML(product); });
+        }
+
+        function createCardHTML(product) {
+            return `
+                <div class="gift-card">
+                    <div class="card-icon"><i class="${product.icon}"></i></div>
+                    <div class="card-title">${product.name}</div>
+                    <div class="card-price">From $50</div>
+                    <button class="buy-btn" onclick="openCheckout('${product.name}')">Buy Now</button>
+                </div>
+            `;
+        }
+
+        // --- NAVIGATION ---
+        function switchView(viewId, element) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            // If switching away from profile, turn off admin mode
+            if(viewId !== 'profile') {
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('adminSection').style.display = 'none';
+            }
+        }
+
+        // --- ADMIN DASHBOARD LOGIC ---
+        function toggleAdmin() {
+            const userMenu = document.getElementById('userMenu');
+            const adminSection = document.getElementById('adminSection');
+            
+            if (adminSection.style.display === 'block') {
+                adminSection.style.display = 'none';
+                userMenu.style.display = 'block';
+            } else {
+                // Prompt for password (simple client-side protection)
+                const pwd = prompt("Enter Admin Password:");
+                if (pwd === "admin123") { // You can change this password
+                    userMenu.style.display = 'none';
+                    adminSection.style.display = 'block';
+                    renderAdminOrders();
+                } else if (pwd !== null) {
+                    alert("Incorrect Password!");
+                }
+            }
+        }
+
+        function renderAdminOrders() {
+            const list = document.getElementById('adminOrdersList');
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+            if(orders.length === 0) {
+                list.innerHTML = `<p style="color: #94a3b8;">No orders in system yet.</p>`;
+                return;
+            }
+
+            list.innerHTML = "";
+            orders.forEach((order, index) => {
+                list.innerHTML += `
+                    <div class="admin-card">
+                        <h4>${order.product} - $${order.amount}</h4>
+                        <p><strong>Order ID:</strong> ${order.id}</p>
+                        <p><strong>TXID:</strong> ${order.txid || 'No TXID provided'}</p>
+                        <p><strong>Method:</strong> ${order.crypto}</p>
+                        <div class="admin-btn-group">
+                            <button class="admin-btn approve-btn" onclick="updateOrderStatus(${index}, 'Completed')">Approve</button>
+                            <button class="admin-btn reject-btn" onclick="updateOrderStatus(${index}, 'Rejected')">Reject</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateOrderStatus(index, status) {
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders[index].status = status;
+            localStorage.setItem('orders', JSON.stringify(orders));
+            renderAdminOrders(); // Refresh admin view
+            renderOrders(); // Refresh user view
+            alert(`Order marked as ${status}`);
+        }
+
+        // --- CHECKOUT LOGIC ---
+        const modal = document.getElementById('checkoutModal');
+
+        function openCheckout(productName) {
+            currentProductName = productName;
+            document.getElementById('modalProductName').innerText = productName + " Gift Card";
+            document.getElementById('amountSelect').value = "50";
+            document.getElementById('customAmountGroup').style.display = 'none';
+            document.getElementById('txidInput').value = "";
+            document.getElementById('screenshotInput').value = "";
+            
+            updatePrice();
+            switchCrypto('USDT', document.querySelector('.crypto-tab'));
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { modal.style.display = 'none'; }
+
+        function updatePrice() {
+            const select = document.getElementById('amountSelect');
+            const customGroup = document.getElementById('customAmountGroup');
+            const customInput = document.getElementById('customAmountInput');
+            
+            if (select.value === 'custom') {
+                customGroup.style.display = 'block';
+                currentPrice = parseFloat(customInput.value) || 0;
+            } else {
+                customGroup.style.display = 'none';
+                currentPrice = parseFloat(select.value);
+            }
+
+            if(currentPrice > 5000) {
+                currentPrice = 5000;
+                if(select.value === 'custom') customInput.value = 5000;
+                alert("Maximum custom amount is $5000");
+            }
+
+            document.getElementById('modalTotalPrice').innerText = `$${currentPrice.toFixed(2)}`;
+        }
+
+        function switchCrypto(crypto, btn) {
+            currentCrypto = crypto;
+            document.querySelectorAll('.crypto-tab').forEach(tab => tab.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('walletAddress').innerText = wallets[crypto];
+        }
+
+        function copyAddress() {
+            const address = wallets[currentCrypto];
+            navigator.clipboard.writeText(address).then(() => {
+                const el = document.getElementById('walletAddress');
+                const originalText = el.innerText;
+                el.innerText = "Copied!";
+                el.style.color = "#fff";
+                el.style.background = "#10b981";
+                setTimeout(() => {
+                    el.innerText = originalText;
+                    el.style.color = "#10b981";
+                    el.style.background = "#0f172a";
+                }, 1500);
+            });
+        }
+
+        function submitOrder() {
+            const txid = document.getElementById('txidInput').value;
+            const file = document.getElementById('screenshotInput').files[0];
+
+            if(!txid && !file) {
+                alert("Please provide a Transaction Hash OR a Screenshot to verify your payment.");
+                return;
+            }
+
+            const order = {
+                id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
+                product: currentProductName,
+                amount: currentPrice,
+                crypto: currentCrypto,
+                txid: txid,
+                status: "Pending",
+                date: new Date().toLocaleDateString()
+            };
+
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.unshift(order); 
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            renderOrders();
+            closeModal();
+            
+            alert("Order Submitted Successfully! Please wait for admin approval. You can track it in the Orders tab.");
+            document.querySelectorAll('.nav-item')[3].click(); 
+        }
+
+        // --- ORDERS RENDER ---
+        function renderOrders() {
+            const list = document.getElementById('ordersList');
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+            if(orders.length === 0) {
+                list.innerHTML = `<p style="color: #94a3b8; text-align: center; margin-top: 2rem;">No orders yet. Go buy something!</p>`;
+                return;
+            }
+
+            list.innerHTML = "";
+            orders.forEach(order => {
+                let badgeClass = order.status === 'Completed' ? 'status-badge completed' : 'status-badge';
+                list.innerHTML += `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>${order.product} ($${order.amount})</h4>
+                            <p>ID: ${order.id} • ${order.date}</p>
+                            <p>Paid via ${order.crypto}</p>
+                        </div>
+                        <div class="${badgeClass}">${order.status}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- LIVE CHAT TRIGGER ---
+        function openLiveChat() {
+            if(window.Tawk_API && window.Tawk_API.maximize) {
+                Tawk_API.maximize(); 
+            } else {
+                alert("Live Chat is loading... Please wait a moment or check your Tawk.to integration.");
+            }
+        }
+
+        // --- INIT ---
+        renderCards();
+        renderOrders();
+
+    </script>
+</body>
+</html>
