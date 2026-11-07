@@ -48,6 +48,17 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .hero-banner { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
         
+        /* TOP TAB SWITCHER */
+        .market-tabs { display: flex; gap: 10px; margin-bottom: 1.5rem; background: #e5e7eb; padding: 5px; border-radius: 12px; }
+        .market-tab { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+        .market-tab.active { background: white; color: var(--text-main); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+        /* CATEGORY SELECTOR */
+        .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 1.5rem; scrollbar-width: none; }
+        .category-scroll::-webkit-scrollbar { display: none; }
+        .category-pill { padding: 8px 16px; border-radius: 20px; background: white; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; color: var(--text-muted); }
+        .category-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
         /* PRODUCT CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
         .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: 0.2s; position: relative; }
@@ -157,9 +168,7 @@
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
             <div class="nav-menu">
                 <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Official Store</div>
                 <div class="nav-link" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i> Marketplace</div>
-                
                 <div class="nav-link" onclick="switchView('cart', this)">
                     <span><i class="fas fa-shopping-cart"></i> My Cart</span> 
                     <span class="cart-badge" id="cartBadgeDesktop">0</span>
@@ -167,7 +176,7 @@
                 <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
                 <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile</div>
             </div>
-            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[5])">
+            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[4])">
                 <img id="userAvatar" class="user-avatar" src="" style="display:none;">
                 <div id="userAvatarLetter" class="user-avatar">U</div>
                 <div class="user-info"><h4 id="userName">Loading...</h4><p>Verified User</p></div>
@@ -181,95 +190,58 @@
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;"><i class="fas fa-fire" style="color: var(--warning);"></i> Trending Now</h3>
                 <div class="grid" id="trendingGrid"></div>
             </div>
-            
-            <!-- EXPLORE -->
-            <div id="view-explore" class="view">
-                <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">All Gift Cards</h3>
-                <div class="grid" id="allGrid"></div>
-            </div>
 
-            <!-- MARKETPLACE (USER ADS) -->
+            <!-- MARKETPLACE (WITH TABS & CATEGORIES) -->
             <div id="view-marketplace" class="view">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.2rem;">Community Marketplace</h3>
-                </div>
-                <div id="marketGrid">
-                    <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading community ads...</p>
-                </div>
-            </div>
-
-            <!-- POST AD (THE + PAGE - LOCKED LOGIC APPLIED) -->
-            <div id="view-postad" class="view">
-                <!-- Lock Screen -->
-                <div id="p2pLockScreen" class="lock-screen" style="display: none;">
-                    <i class="fas fa-lock"></i>
-                    <h2>Posting Locked</h2>
-                    <p>You need a trading volume of <strong>$100</strong> to post ads in the marketplace.<br>Your current volume is: <strong id="lockVolumeDisplay">$0.00</strong></p>
-                    <button class="btn-checkout" style="max-width: 300px; margin: 0 auto;" onclick="switchView('explore', document.querySelectorAll('.nav-link')[1])"><i class="fas fa-shopping-cart"></i> Buy Cards to Increase Volume</button>
+                <div class="market-tabs">
+                    <div class="market-tab active" onclick="switchMarketTab('official', this)"><i class="fas fa-check-circle"></i> Official Store</div>
+                    <div class="market-tab" onclick="switchMarketTab('p2p', this)"><i class="fas fa-users"></i> User Ads (P2P)</div>
                 </div>
 
-                <!-- Post Form -->
-                <div id="p2pPostForm" class="form-card">
-                    <h3><i class="fas fa-bullhorn"></i> Create Advertisement</h3>
-                    
-                    <div class="form-group">
-                        <label>Ad Type</label>
-                        <select id="adType" class="form-control">
-                            <option value="Sell">I want to SELL Gift Cards</option>
-                            <option value="Buy">I want to BUY Gift Cards</option>
-                        </select>
+                <!-- OFFICIAL STORE TAB -->
+                <div id="market-official" style="display: block;">
+                    <!-- CATEGORY FILTER -->
+                    <div class="category-scroll" id="categoryContainer">
+                        <!-- Categories generated by JS -->
                     </div>
-                    <div class="form-group">
-                        <label>Select Gift Card</label>
-                        <select id="adCardName" class="form-control">
-                            <option>Amazon</option><option>Apple</option><option>Google Play</option>
-                            <option>Steam</option><option>PlayStation</option><option>Xbox</option>
-                            <option>Netflix</option><option>Spotify</option>
-                        </select>
+                    <div class="grid" id="allGrid"></div>
+                </div>
+
+                <!-- P2P TAB -->
+                <div id="market-p2p" style="display: none;">
+                    <div id="p2pLockScreen" class="lock-screen" style="display: none;">
+                        <i class="fas fa-lock"></i>
+                        <h2>P2P Locked</h2>
+                        <p>You need a trading volume of <strong>$100</strong> to view user ads.<br>Your current volume is: <strong id="lockVolumeDisplay1">$0.00</strong></p>
+                        <button class="btn-checkout" style="max-width: 300px; margin: 0 auto;" onclick="switchMarketTab('official', document.querySelectorAll('.market-tab')[0])"><i class="fas fa-shopping-cart"></i> Buy Cards to Increase Volume</button>
                     </div>
-                    <div class="form-group">
-                        <label>Volume ($) & Quantity</label>
-                        <div style="display:flex; gap:10px;">
-                            <input type="number" id="adVolume" class="form-control" placeholder="Volume ($)">
-                            <input type="number" id="adQty" class="form-control" placeholder="Qty">
+                    <div id="p2pAdsList">
+                        <div id="marketGrid">
+                            <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading community ads...</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Price Rate (e.g. 0.95 for 5% below market)</label>
-                        <input type="number" id="adPrice" class="form-control" placeholder="Price per $1">
-                    </div>
-                    <div class="form-group">
-                        <label>Country</label>
-                        <select id="adCountry" class="form-control">
-                            <option>Global</option><option>United States</option><option>United Kingdom</option>
-                            <option>Canada</option><option>Australia</option><option>Nigeria</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Payment Methods</label>
-                        <select id="adPayment" class="form-control">
-                            <option>Bank Transfer</option><option>USDT (Crypto)</option><option>BTC (Crypto)</option>
-                            <option>PayPal</option><option>Wise</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Ad Duration</label>
-                        <select id="adDuration" class="form-control">
-                            <option value="15">15 Minutes</option>
-                            <option value="30">30 Minutes</option>
-                            <option value="60">1 Hour</option>
-                            <option value="180">3 Hours</option>
-                            <option value="1440">24 Hours</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group" style="display:flex; align-items:flex-start; gap:10px; margin-top:1rem;">
-                        <input type="checkbox" id="adTerms" style="margin-top:3px;">
-                        <label for="adTerms" style="font-weight:400; color:var(--text-muted); font-size:0.8rem; line-height:1.4;">
-                            I have read the <a href="#">Terms and Conditions</a> and Trading Rules. I confirm no third-party involvement.
-                        </label>
-                    </div>
+                </div>
+            </div>
 
+            <!-- POST AD (THE + PAGE) -->
+            <div id="view-postad" class="view">
+                <div id="p2pPostLockScreen" class="lock-screen" style="display: none;">
+                    <i class="fas fa-lock"></i>
+                    <h2>Posting Locked</h2>
+                    <p>You need a trading volume of <strong>$100</strong> to post ads in the marketplace.<br>Your current volume is: <strong id="lockVolumeDisplay2">$0.00</strong></p>
+                    <button class="btn-checkout" style="max-width: 300px; margin: 0 auto;" onclick="switchView('marketplace', document.querySelectorAll('.nav-link')[1])"><i class="fas fa-shopping-cart"></i> Buy Cards to Increase Volume</button>
+                </div>
+
+                <div id="p2pPostForm" class="form-card">
+                    <h3><i class="fas fa-bullhorn"></i> Create Advertisement</h3>
+                    <div class="form-group"><label>Ad Type</label><select id="adType" class="form-control"><option value="Sell">I want to SELL Gift Cards</option><option value="Buy">I want to BUY Gift Cards</option></select></div>
+                    <div class="form-group"><label>Select Gift Card</label><select id="adCardName" class="form-control"><option>Amazon</option><option>Apple</option><option>Google Play</option><option>Steam</option><option>PlayStation</option><option>Xbox</option><option>Netflix</option><option>Spotify</option></select></div>
+                    <div class="form-group"><label>Volume ($) & Quantity</label><div style="display:flex; gap:10px;"><input type="number" id="adVolume" class="form-control" placeholder="Volume ($)"><input type="number" id="adQty" class="form-control" placeholder="Qty"></div></div>
+                    <div class="form-group"><label>Price Rate (e.g. 0.95 for 5% below market)</label><input type="number" id="adPrice" class="form-control" placeholder="Price per $1"></div>
+                    <div class="form-group"><label>Country</label><select id="adCountry" class="form-control"><option>Global</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>Nigeria</option></select></div>
+                    <div class="form-group"><label>Payment Methods</label><select id="adPayment" class="form-control"><option>Bank Transfer</option><option>USDT (Crypto)</option><option>BTC (Crypto)</option><option>PayPal</option><option>Wise</option></select></div>
+                    <div class="form-group"><label>Ad Duration</label><select id="adDuration" class="form-control"><option value="15">15 Minutes</option><option value="30">30 Minutes</option><option value="60">1 Hour</option><option value="180">3 Hours</option><option value="1440">24 Hours</option></select></div>
+                    <div class="form-group" style="display:flex; align-items:flex-start; gap:10px; margin-top:1rem;"><input type="checkbox" id="adTerms" style="margin-top:3px;"><label for="adTerms" style="font-weight:400; color:var(--text-muted); font-size:0.8rem; line-height:1.4;">I have read the <a href="#">Terms and Conditions</a> and Trading Rules. I confirm no third-party involvement.</label></div>
                     <button class="btn-checkout" onclick="postAd()">Publish Advertisement</button>
                 </div>
             </div>
@@ -278,14 +250,9 @@
             <div id="view-cart" class="view">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Your Shopping Cart</h3>
                 <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); max-width: 600px;">
-                    <div id="cartItemsContainer">
-                        <p style="color: var(--text-muted); text-align: center;">Your cart is empty.</p>
-                    </div>
+                    <div id="cartItemsContainer"><p style="color: var(--text-muted); text-align: center;">Your cart is empty.</p></div>
                     <div id="cartTotalSection" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-                        <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;">
-                            <span>Total:</span>
-                            <span id="cartTotalPrice" style="color: var(--success);">$0.00</span>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;"><span>Total:</span><span id="cartTotalPrice" style="color: var(--success);">$0.00</span></div>
                         <button class="btn-checkout" onclick="processRealPayment()"><i class="fas fa-external-link-alt"></i> Pay with Crypto</button>
                     </div>
                 </div>
@@ -301,17 +268,12 @@
                 </div>
             </div>
 
-            <!-- PROFILE (TRADING VOLUME DISPLAYED) -->
+            <!-- PROFILE -->
             <div id="view-profile" class="view">
-                <!-- TRADING VOLUME CARD -->
                 <div class="volume-card">
-                    <div>
-                        <h3>Total Trading Volume</h3>
-                        <h2 id="tradingVolumeDisplay">$0.00</h2>
-                    </div>
+                    <div><h3>Total Trading Volume</h3><h2 id="tradingVolumeDisplay">$0.00</h2></div>
                     <i class="fas fa-chart-line" style="font-size: 2.5rem; opacity: 0.5;"></i>
                 </div>
-
                 <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 15px;"><div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div><div><h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3><p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p></div></div>
                     <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Logout</button>
@@ -319,19 +281,16 @@
             </div>
         </main>
 
-        <!-- MOBILE NAV (WITH + BUTTON) -->
+        <!-- MOBILE NAV -->
         <nav class="mobile-nav">
             <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
             <div class="mobile-nav-item" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i><span>Market</span></div>
-            
-            <!-- THE + BUTTON (CHECKS VOLUME) -->
             <div class="mobile-nav-item" onclick="tryPostAd()">
                 <div class="plus-btn-wrapper">
                     <div class="plus-btn"><i class="fas fa-plus"></i></div>
                     <span class="plus-btn-label">Post Ad</span>
                 </div>
             </div>
-
             <div class="mobile-nav-item" onclick="switchView('cart', this)">
                 <i class="fas fa-shopping-cart"></i><span>Cart</span>
                 <span class="cart-badge" id="cartBadgeMobile" style="position:absolute; top: 0; right: 5px;">0</span>
@@ -348,7 +307,6 @@
                 <div class="card-image-container" id="modalImageContainer" style="height: 100px; width: 100px; margin: 0 auto 10px auto;"></div>
                 <h2 id="modalProductName" style="font-size: 1.2rem;">Gift Card</h2>
             </div>
-            
             <div class="form-group">
                 <label>Select Value (USD)</label>
                 <select class="form-control" id="amountSelect" onchange="updatePrice()">
@@ -358,17 +316,14 @@
                     <option value="2500">$2500</option><option value="3000">$3000</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Quantity (How many cards?)</label>
                 <input type="number" id="quantityInput" class="form-control" value="1" min="1" max="10" oninput="updatePrice()">
             </div>
-
             <div style="text-align: center; margin-bottom: 1rem; background: var(--bg-main); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
                 <span style="font-size: 0.85rem; color: var(--text-muted);">Total Price</span>
                 <h3 style="color: var(--success); font-size: 1.8rem;" id="modalTotalPrice">$50.00</h3>
             </div>
-
             <button class="btn-checkout" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Add to Cart</button>
         </div>
     </div>
@@ -404,7 +359,6 @@
                 const name = user.displayName || user.email.split('@')[0]; const initial = name.charAt(0).toUpperCase();
                 currentUserEmail = user.email;
                 
-                // SIMULATED VOLUME (Give yourself 150 to test, others get 0)
                 if(user.email === "kingspielone@gmail.com") { userTradingVolume = 150.00; } 
                 else { userTradingVolume = 0.00; } 
                 
@@ -412,9 +366,9 @@
                 document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = user.email;
                 document.getElementById('userAvatarLetter').innerText = initial; document.getElementById('profileAvatarLetter').innerText = initial;
                 
-                // Display Volume on Profile
                 document.getElementById('tradingVolumeDisplay').innerText = "$" + userTradingVolume.toFixed(2);
-                document.getElementById('lockVolumeDisplay').innerText = "$" + userTradingVolume.toFixed(2);
+                document.getElementById('lockVolumeDisplay1').innerText = "$" + userTradingVolume.toFixed(2);
+                document.getElementById('lockVolumeDisplay2').innerText = "$" + userTradingVolume.toFixed(2);
 
                 if (user.photoURL) { const img = document.getElementById('userAvatar'); img.src = user.photoURL; img.style.display = 'block'; document.getElementById('userAvatarLetter').style.display = 'none'; }
                 loadMarketplace();
@@ -424,13 +378,13 @@
         });
         function showError(msg) { loginError.innerText = msg.replace("Firebase: ", ""); loginError.style.display = 'block'; setTimeout(() => { loginError.style.display = 'none'; }, 4000); }
 
-        // NAVIGATION & LOCK LOGIC
+        // NAVIGATION
         window.tryPostAd = () => {
             if(userTradingVolume < 100) {
-                document.getElementById('p2pLockScreen').style.display = 'block';
+                document.getElementById('p2pPostLockScreen').style.display = 'block';
                 document.getElementById('p2pPostForm').style.display = 'none';
             } else {
-                document.getElementById('p2pLockScreen').style.display = 'none';
+                document.getElementById('p2pPostLockScreen').style.display = 'none';
                 document.getElementById('p2pPostForm').style.display = 'block';
             }
             switchView('postad', document.querySelectorAll('.mobile-nav-item')[2]);
@@ -442,46 +396,124 @@
             document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(n => n.classList.remove('active')); 
             if(el) el.classList.add('active'); 
             
-            // If they click the Post Ad link on desktop, check volume
             if(viewId === 'postad') {
                 if(userTradingVolume < 100) {
-                    document.getElementById('p2pLockScreen').style.display = 'block';
+                    document.getElementById('p2pPostLockScreen').style.display = 'block';
                     document.getElementById('p2pPostForm').style.display = 'none';
                 } else {
-                    document.getElementById('p2pLockScreen').style.display = 'none';
+                    document.getElementById('p2pPostLockScreen').style.display = 'none';
                     document.getElementById('p2pPostForm').style.display = 'block';
                 }
             }
         };
 
-        // PRODUCTS
-        const products = [
-            { name: "Amazon", image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Apple", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Google Play", image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Steam", image: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=500&auto=format&fit=crop&q=60" },
-            { name: "PlayStation", image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Xbox", image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&auto=format&fit=crop&q=60" },
-            { name: "Netflix", image: "https://images.unsplash.com/photo-1574375927938-d5a98e8efe85?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Spotify", image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=500&auto=format&fit=crop&q=60" }
+        window.switchMarketTab = (tabName, el) => {
+            document.querySelectorAll('.market-tab').forEach(t => t.classList.remove('active'));
+            if(el) el.classList.add('active');
+            
+            if(tabName === 'official') {
+                document.getElementById('market-official').style.display = 'block';
+                document.getElementById('market-p2p').style.display = 'none';
+            } else {
+                document.getElementById('market-official').style.display = 'none';
+                document.getElementById('market-p2p').style.display = 'block';
+                
+                if(userTradingVolume < 100) {
+                    document.getElementById('p2pLockScreen').style.display = 'block';
+                    document.getElementById('p2pAdsList').style.display = 'none';
+                } else {
+                    document.getElementById('p2pLockScreen').style.display = 'none';
+                    document.getElementById('p2pAdsList').style.display = 'block';
+                    loadMarketplace(); 
+                }
+            }
+        };
+
+        // --- CATEGORIES ---
+        const categories = [
+            { name: "Shopping & Retail", items: ["Amazon", "eBay", "Walmart", "Target"] },
+            { name: "Gaming", items: ["Steam", "PlayStation", "Xbox", "Roblox"] },
+            { name: "Entertainment", items: ["Netflix", "Spotify", "Disney+", "Twitch"] },
+            { name: "Technology", items: ["Apple", "Google Play", "Microsoft", "Adobe"] },
+            { name: "Food & Restaurants", items: ["Starbucks", "McDonald's", "Domino's", "Uber Eats"] },
+            { name: "Travel & Accommodation", items: ["Airbnb", "Booking.com", "Expedia", "Hotels.com"] },
+            { name: "Fashion & Beauty", items: ["Nike", "Adidas", "Zara", "Sephora"] },
+            { name: "Financial & Prepaid", items: ["Visa", "Mastercard", "American Express", "Vanilla Visa"] },
+            { name: "Home & Furniture", items: ["IKEA", "Home Depot", "Lowe's", "Wayfair"] },
+            { name: "Electronics", items: ["Best Buy", "GameStop", "Currys", "MediaMarkt"] },
+            { name: "UK Regional", items: ["Argos", "John Lewis", "Tesco", "Sainsbury's"] },
+            { name: "Germany Regional", items: ["Zalando", "MediaMarkt", "Saturn", "Douglas"] },
+            { name: "France Regional", items: ["Fnac", "Carrefour", "Decathlon", "Sephora"] },
+            { name: "Australia Regional", items: ["JB Hi-Fi", "Myer", "Kmart", "David Jones"] },
+            { name: "Canada Regional", items: ["Canadian Tire", "Indigo", "Hudson's Bay", "Best Buy"] },
+            { name: "India Regional", items: ["Flipkart", "Myntra", "Amazon India", "Nykaa"] },
+            { name: "Digital Payments", items: ["Paysafecard", "Neosurf", "Flexepin", "Tremendous"] },
+            { name: "Music & Audio", items: ["Apple Music", "Deezer", "Audible", "Spotify"] },
+            { name: "Sports & Fitness", items: ["Lululemon", "Nike", "Adidas", "Under Armour"] },
+            { name: "Beauty & Personal Care", items: ["AC Cosmetics", "Ulta Beauty", "Bath & Body Works", "Victoria's Secret"] }
         ];
 
-        function renderCards() {
-            const cardHTML = (p) => `
-                <div class="product-card">
-                    <div class="card-image-container"><img src="${p.image}" alt="${p.name}"></div>
-                    <div class="product-title">${p.name}</div>
-                    <div class="stock-badge">Only 100 left today!</div>
-                    <div class="product-footer">
-                        <div class="price">From $50</div>
-                        <button class="btn-add-cart" onclick="openCheckout('${p.name}', '${p.image}')"><i class="fas fa-cart-plus"></i> Buy</button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('allGrid').innerHTML = products.map(p => cardHTML(p)).join('');
-            document.getElementById('trendingGrid').innerHTML = products.slice(0, 4).map(p => cardHTML(p)).join('');
+        let currentCategory = "Shopping & Retail";
+
+        function renderCategories() {
+            const container = document.getElementById('categoryContainer');
+            container.innerHTML = "";
+            categories.forEach(cat => {
+                let activeClass = cat.name === currentCategory ? "active" : "";
+                container.innerHTML += `<div class="category-pill ${activeClass}" onclick="filterCategory('${cat.name}', this)">${cat.name}</div>`;
+            });
+            renderCards();
         }
-        renderCards();
+
+        window.filterCategory = (catName, el) => {
+            currentCategory = catName;
+            document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+            if(el) el.classList.add('active');
+            renderCards();
+        };
+
+        function renderCards() {
+            const grid = document.getElementById('allGrid');
+            const trendingGrid = document.getElementById('trendingGrid');
+            grid.innerHTML = "";
+            
+            const categoryData = categories.find(c => c.name === currentCategory);
+            if(!categoryData) return;
+
+            categoryData.items.forEach(item => {
+                let imgUrl = `https://ui-avatars.com/api/?name=${item}&background=random&color=fff&size=200&font-size=0.33&bold=true`;
+                
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <div class="card-image-container"><img src="${imgUrl}" alt="${item}"></div>
+                        <div class="product-title">${item}</div>
+                        <div class="stock-badge">Only 100 left today!</div>
+                        <div class="product-footer">
+                            <div class="price">From $50</div>
+                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${imgUrl}')"><i class="fas fa-cart-plus"></i> Buy</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            trendingGrid.innerHTML = "";
+            categories[0].items.forEach(item => {
+                let imgUrl = `https://ui-avatars.com/api/?name=${item}&background=random&color=fff&size=200&font-size=0.33&bold=true`;
+                trendingGrid.innerHTML += `
+                    <div class="product-card">
+                        <div class="card-image-container"><img src="${imgUrl}" alt="${item}"></div>
+                        <div class="product-title">${item}</div>
+                        <div class="stock-badge">Only 100 left today!</div>
+                        <div class="product-footer">
+                            <div class="price">From $50</div>
+                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${imgUrl}')"><i class="fas fa-cart-plus"></i> Buy</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        renderCategories(); 
 
         // POST AD LOGIC
         window.postAd = async () => {
@@ -591,7 +623,7 @@
             if(existingItem) { existingItem.qty += currentItem.qty; } else { cart.push({...currentItem}); }
             closeModal();
             updateCartUI();
-            switchView('cart', document.querySelectorAll('.nav-link')[3]);
+            switchView('cart', document.querySelectorAll('.nav-link')[2]);
         };
 
         window.removeFromCart = (index) => { cart.splice(index, 1); updateCartUI(); };
