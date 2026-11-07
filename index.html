@@ -8,36 +8,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- GLOBAL STYLES --- */
         :root {
-            --bg-main: #0a0e17; --bg-panel: rgba(20, 27, 45, 0.7); --bg-card: #141b2d;
-            --border-color: rgba(255, 255, 255, 0.08); --text-main: #ffffff; --text-muted: #8b98b0;
-            --primary: #3b82f6; --primary-hover: #2563eb; --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
-            --google: #ea4335; --sidebar-width: 260px;
+            --bg-main: #f8f9fa; /* Light mode forced */
+            --bg-panel: rgba(255, 255, 255, 0.9);
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --google: #ea4335;
+            --sidebar-width: 260px;
+            --prezzee-red: #e63946;
         }
 
-        [data-theme="light"] {
-            --bg-main: #f1f5f9; --bg-panel: rgba(255, 255, 255, 0.9); --bg-card: #ffffff;
-            --border-color: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b;
-            --primary: #2563eb; --primary-hover: #1d4ed8;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body {
             background-color: var(--bg-main); color: var(--text-main); min-height: 100vh;
             display: flex; overflow-x: hidden; transition: 0.3s; font-size: 14px;
         }
 
-        /* LOADING & LOGIN */
+        /* --- LOADING & LOGIN --- */
         #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 3000; flex-direction: column; }
         .spinner { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         #loginPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .login-box { background: var(--bg-card); padding: 2rem 1.5rem; border-radius: 20px; width: 100%; max-width: 380px; border: 1px solid var(--border-color); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .login-box { background: var(--bg-card); padding: 2rem 1.5rem; border-radius: 20px; width: 100%; max-width: 380px; border: 1px solid var(--border-color); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .login-box .brand { justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; font-weight: 700;}
-        .login-btn { width: 100%; padding: 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); transition: 0.2s; }
-        .login-btn.google { background: white; color: #333; border: none; }
+        .login-btn { width: 100%; padding: 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); transition: 0.2s; }
+        .login-btn.google { background: white; color: #333; border: 1px solid #ddd; }
         .login-btn.primary { background: var(--primary); color: white; border: none; }
         .divider { display: flex; align-items: center; text-align: center; margin: 1.5rem 0; color: var(--text-muted); font-size: 0.8rem; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
@@ -47,14 +52,13 @@
         .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
         .input-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); }
 
-        /* DASHBOARD */
-        .sidebar { width: var(--sidebar-width); background: var(--bg-panel); backdrop-filter: blur(20px); border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
+        /* --- DASHBOARD & SIDEBAR --- */
+        .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
         .brand { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 2.5rem; color: var(--text-main); }
         .brand i { color: var(--primary); font-size: 1.5rem; }
         .nav-menu { display: flex; flex-direction: column; gap: 5px; flex: 1; }
         .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; color: var(--text-muted); font-weight: 500; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .nav-link:hover, .nav-link.active { background: var(--primary); color: #fff; }
-        .theme-toggle { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; margin-bottom: 10px; background: rgba(128,128,128,0.05); border-radius: 10px; cursor: pointer; color: var(--text-muted); font-size: 0.85rem; }
         
         .user-mini-profile { display: flex; align-items: center; gap: 10px; padding-top: 1rem; border-top: 1px solid var(--border-color); cursor: pointer; }
         .user-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
@@ -68,32 +72,65 @@
         .hero-banner { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
         .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; transition: 0.2s; }
-        .product-card:hover { transform: translateY(-3px); border-color: var(--primary); }
-        .product-icon { width: 40px; height: 40px; background: rgba(128, 128, 128, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text-main); margin-bottom: 1rem; }
+        .product-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .product-icon { width: 40px; height: 40px; background: rgba(128, 128, 128, 0.05); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text-main); margin-bottom: 1rem; }
         .btn-buy { background: rgba(59, 130, 246, 0.1); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.2); padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: 0.2s;}
         .btn-buy:hover { background: var(--primary); color: white; }
         
-        .order-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;}
-        .settings-group { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+        /* --- ORDERS TAB (MATCHING PREZZEE STYLE) --- */
+        .prezzee-tracker-card {
+            background: #ffffff; border-radius: 12px; padding: 40px 20px;
+            text-align: center; max-width: 500px; margin: 2rem auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .prezzee-tracker-card img { width: 80px; margin-bottom: 20px; }
+        .prezzee-tracker-card h2 { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 10px; line-height: 1.2; }
+        .prezzee-tracker-card p { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.5; }
+        
+        .tracker-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tracker-input { flex: 1; padding: 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; }
+        .tracker-btn { background: var(--prezzee-red); color: white; border: none; padding: 0 24px; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .tracker-btn:hover { background: #d32f2f; }
+        .tracker-tip { font-size: 12px; color: #666; }
+        .tracker-tip strong { color: #333; }
 
-        /* MODAL */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-        .modal-content { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; width: 100%; max-width: 400px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 15px; right: 15px; background: rgba(128,128,128,0.1); border: none; color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
+        /* PAYMENT SUMMARY (MATCHING GREEN CARD) */
+        .payment-summary-card {
+            background-color: #0b2114; /* Dark green */
+            color: #ffffff; border-radius: 0; padding: 30px 24px;
+            max-width: 500px; margin: 0 auto; border-radius: 12px;
+            font-family: monospace, sans-serif;
+        }
+        .payment-summary-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 25px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px; }
+        .summary-row.total { font-size: 32px; font-weight: 700; margin-top: 10px; margin-bottom: 30px; }
+        .summary-row.sub { font-size: 13px; color: #a3b8a8; margin-bottom: 10px; }
+        .summary-row.sub span:last-child { color: #ffffff; }
+        .summary-row.discount span:last-child { color: #a3b8a8; }
+        .summary-row.final { font-size: 14px; font-weight: 700; margin-top: 20px; border-top: 1px solid #1f3627; padding-top: 20px; }
+        .summary-row.final span:last-child { font-size: 16px; }
+        .summary-row.note { font-size: 12px; color: #a3b8a8; margin-top: -10px; margin-bottom: 30px; }
+        .order-review-btn { background: #ffffff; color: #0b2114; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; float: right; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        /* --- MODAL --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+        .modal-content { background: var(--bg-card); border-radius: 20px; width: 100%; max-width: 400px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: #f3f4f6; border: none; color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
         .form-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); }
-        .action-btn-group { display: flex; gap: 8px; margin-top: 1rem; }
-        .btn-next { flex: 1; padding: 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; gap: 6px;}
+        .btn-next { width: 100%; padding: 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; background: var(--success); color: #fff; display: flex; justify-content: center; align-items: center; gap: 6px;}
 
+        /* --- MOBILE --- */
         .mobile-nav { display: none; }
         @media (max-width: 900px) {
             body { display: block; padding-bottom: 60px; } .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; }
-            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-panel); backdrop-filter: blur(20px); border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; }
             .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; }
             .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } .mobile-nav-item.active { color: var(--primary); }
             .chat-btn { position: relative; top: -12px; }
             .chat-btn .icon-wrap { background: var(--primary); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; }
+            .tracker-input-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -141,10 +178,7 @@
                 <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
                 <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore</div>
                 <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
-                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile & Settings</div>
-            </div>
-            <div class="theme-toggle" onclick="toggleTheme()">
-                <span><i class="fas fa-moon"></i> Theme</span>
+                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile</div>
             </div>
             <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[3])">
                 <img id="userAvatar" class="user-avatar" src="" style="display:none;">
@@ -176,15 +210,60 @@
                 <div class="grid" id="allGrid"></div>
             </div>
 
-            <!-- ORDERS -->
+            <!-- ORDERS (NEW PREZZEE DESIGN) -->
             <div id="view-orders" class="view">
-                <h3 style="margin-bottom: 1rem; font-size: 1rem;">My Orders</h3>
-                <div class="order-card"><p style="color: var(--text-muted); font-size: 0.85rem;">No orders yet. (Connect Database to show real orders).</p></div>
+                <div class="prezzee-tracker-card">
+                    <div style="font-size: 50px; margin-bottom: 15px;">🎁</div>
+                    <h2>Welcome to the Prezzee<br>eGift Card tracker</h2>
+                    <p>Lost an eGift card or just want to check the delivery status? Track your gift here.</p>
+                    
+                    <div class="tracker-input-group">
+                        <input type="text" class="tracker-input" placeholder="Order number">
+                        <button class="tracker-btn" onclick="alert('Order tracking requires database setup.')">Track my order</button>
+                    </div>
+                    <p class="tracker-tip"><strong>Tip:</strong> You can find your order number in your order confirmation email</p>
+                </div>
+
+                <!-- PAYMENT SUMMARY CARD -->
+                <div class="payment-summary-card">
+                    <h3>Payment Summary</h3>
+                    <div class="summary-row sub">
+                        <span>Order Total</span>
+                        <span>$266.59</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$284.23</span>
+                    </div>
+                    <div class="summary-row discount">
+                        <span>Discounts<br><span style="font-size: 11px; color: #a3b8a8;">WelcomeHome20 applied!</span></span>
+                        <span>-$56.85</span>
+                    </div>
+
+                    <div class="summary-row" style="margin-top: 20px; border-top: 1px solid #1f3627; padding-top: 20px;">
+                        <span>Estimated Shipping<br><span style="font-size: 11px; color: #a3b8a8;">FedEx Ground</span></span>
+                        <span>$25.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Taxes</span>
+                        <span>$14.21</span>
+                    </div>
+
+                    <div class="summary-row final">
+                        <span>Order Total<br><span style="font-size: 11px; font-weight: 400; color: #a3b8a8;">Your purchase supports 3 impact areas 🌟</span></span>
+                        <span>$266.59</span>
+                    </div>
+                    
+                    <div style="overflow: hidden; margin-top: 10px;">
+                        <button class="order-review-btn">Order Review <i class="fas fa-chevron-right" style="font-size: 10px;"></i></button>
+                    </div>
+                </div>
             </div>
 
-            <!-- PROFILE & SETTINGS -->
+            <!-- PROFILE -->
             <div id="view-profile" class="view">
-                <div class="order-card">
+                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div>
                         <div>
@@ -192,20 +271,7 @@
                             <p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p>
                         </div>
                     </div>
-                    <button class="btn-buy" onclick="logoutUser()" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2);">Logout</button>
-                </div>
-
-                <div class="settings-group" style="margin-top: 1.5rem;">
-                    <h3 style="font-size: 1rem; margin-bottom: 1rem;"><i class="fas fa-cog"></i> Account Settings</h3>
-                    <div class="input-group">
-                        <label>Display Name</label>
-                        <input type="text" class="input-control" id="settingsName" placeholder="Your Name">
-                    </div>
-                    <div class="input-group">
-                        <label>Email Address (Locked)</label>
-                        <input type="email" class="input-control" id="settingsEmail" readonly style="opacity: 0.7;">
-                    </div>
-                    <button class="btn-buy" style="padding: 10px; background: var(--primary); color: white;" onclick="alert('Profile saved!')">Save Changes</button>
+                    <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca;">Logout</button>
                 </div>
             </div>
         </main>
@@ -227,7 +293,6 @@
             <div style="text-align: center; margin-bottom: 1.5rem;">
                 <div class="product-icon" style="margin: 0 auto 10px auto;" id="modalIcon"><i class="fas fa-gift"></i></div>
                 <h2 id="modalProductName" style="font-size: 1.2rem;">Gift Card</h2>
-                <p style="color: var(--text-muted); font-size: 0.8rem;">Select the value</p>
             </div>
             
             <div class="form-group">
@@ -249,10 +314,9 @@
                 <h3 style="color: var(--success); font-size: 1.4rem;" id="modalTotalPrice">$50.00</h3>
             </div>
 
-            <button class="btn-next" onclick="processRealPayment()" style="background: var(--success); padding: 15px;">
+            <button class="btn-next" onclick="processRealPayment()">
                 <i class="fas fa-external-link-alt"></i> Pay with Crypto
             </button>
-            <p style="text-align:center; font-size:0.7rem; color:var(--text-muted); margin-top:10px;">Powered by NOWPayments</p>
         </div>
     </div>
 
@@ -327,8 +391,6 @@
                 document.getElementById('dashName').innerText = name;
                 document.getElementById('profileName').innerText = name;
                 document.getElementById('profileEmail').innerText = user.email;
-                document.getElementById('settingsEmail').value = user.email;
-                document.getElementById('settingsName').value = name;
                 document.getElementById('userAvatarLetter').innerText = initial;
                 document.getElementById('profileAvatarLetter').innerText = initial;
 
@@ -398,57 +460,3 @@
             document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(n => n.classList.remove('active'));
             if(el) el.classList.add('active');
         };
-
-        window.toggleTheme = () => {
-            const body = document.body;
-            body.getAttribute('data-theme') === 'light' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'light');
-        };
-
-        window.openLiveChat = () => {
-            if(window.Tawk_API && window.Tawk_API.maximize) Tawk_API.maximize(); 
-            else alert("Live Chat is loading...");
-        };
-
-        // --- 3. CHECKOUT & NOWPAYMENTS LOGIC ---
-        let currentPrice = 50;
-        const modal = document.getElementById('checkoutModal');
-
-        window.openCheckout = (name, icon) => {
-            document.getElementById('modalProductName').innerText = name + " Gift Card";
-            document.getElementById('modalIcon').innerHTML = `<i class="${icon}"></i>`;
-            document.getElementById('amountSelect').value = "50";
-            updatePrice();
-            modal.style.display = 'flex';
-        };
-
-        window.closeModal = () => { modal.style.display = 'none'; };
-
-        window.updatePrice = () => {
-            currentPrice = parseFloat(document.getElementById('amountSelect').value);
-            document.getElementById('modalTotalPrice').innerText = `$${currentPrice.toFixed(2)}`;
-        };
-
-        window.processRealPayment = () => {
-            // --- ADD YOUR OTHER NOWPAYMENTS LINKS HERE LATER ---
-            const nowPaymentsLinks = {
-                "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link
-                "100": "https://nowpayments.io/payment/?iid=YOUR_100_LINK",
-                "200": "https://nowpayments.io/payment/?iid=YOUR_200_LINK",
-                "400": "https://nowpayments.io/payment/?iid=YOUR_400_LINK",
-                "500": "https://nowpayments.io/payment/?iid=YOUR_500_LINK",
-                "1000": "https://nowpayments.io/payment/?iid=YOUR_1000_LINK",
-                "2000": "https://nowpayments.io/payment/?iid=YOUR_2000_LINK",
-                "5000": "https://nowpayments.io/payment/?iid=YOUR_5000_LINK"
-            };
-
-            let link = nowPaymentsLinks[currentPrice.toString()];
-            if (link && !link.includes("YOUR_")) {
-                window.open(link, '_blank');
-            } else {
-                alert("Payment link for this amount is not set up yet. Opening $50 test link.");
-                window.open(nowPaymentsLinks["50"], '_blank');
-            }
-        };
-    </script>
-</body>
-</html>
