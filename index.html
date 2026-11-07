@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GiftAll2Us | Premium Crypto Reseller</title>
+    <title>GiftAll2Us | P2P Trading</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg-main: #f8f9fa; --bg-card: #ffffff; --border-color: #e5e7eb; --text-main: #111827; --text-muted: #6b7280; --primary: #3b82f6; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --google: #ea4335; --sidebar-width: 260px; --prezzee-red: #e63946; }
+        :root { --bg-main: #f8f9fa; --bg-card: #ffffff; --border-color: #e5e7eb; --text-main: #111827; --text-muted: #6b7280; --primary: #3b82f6; --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --google: #ea4335; --sidebar-width: 260px; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; overflow-x: hidden; transition: 0.3s; font-size: 14px; }
         
-        /* LOADING & LOGIN */
         #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 3000; flex-direction: column; }
         .spinner { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -29,71 +28,68 @@
         .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
         .input-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); }
 
-        /* DASHBOARD & SIDEBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
         .brand { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 2.5rem; color: var(--text-main); }
         .brand i { color: var(--primary); font-size: 1.5rem; }
         .nav-menu { display: flex; flex-direction: column; gap: 5px; flex: 1; }
         .nav-link { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; border-radius: 10px; color: var(--text-muted); font-weight: 500; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .nav-link:hover, .nav-link.active { background: var(--primary); color: #fff; }
-        .cart-badge { background: var(--danger); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
-        
         .user-mini-profile { display: flex; align-items: center; gap: 10px; padding-top: 1rem; border-top: 1px solid var(--border-color); cursor: pointer; }
         .user-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .user-info h4 { font-size: 0.85rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+        .user-info h4 { font-size: 0.85rem; color: var(--text-main); }
         .user-info p { font-size: 0.7rem; color: var(--text-muted); }
 
         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 1.5rem 2rem; max-width: 1400px; }
         .view { display: none; animation: fadeIn 0.3s; } .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .hero-banner { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
         
-        /* PRODUCT CARDS */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
-        .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: 0.2s; position: relative; }
-        .product-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        .card-image-container { width: 100%; height: 140px; background: #f3f4f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; }
-        .card-image-container img { width: 100%; height: 100%; object-fit: cover; }
-        .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
-        .product-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
-        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 1rem;}
-        .price { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
-        .btn-add-cart { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;}
-        .btn-add-cart:hover { background: #2563eb; }
-
-        /* MARKETPLACE */
-        .market-card { background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .market-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); }
-        .market-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 3px; }
-        .market-price { font-size: 1.4rem; font-weight: 800; color: var(--success); text-align: right; }
-        .market-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        .btn-sm { padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
-        .btn-chat { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border-color); }
-        .btn-order { background: var(--success); color: white; }
-
-        /* PREZZEE TRACKER */
-        .prezzee-tracker-card { background: #ffffff; border-radius: 12px; padding: 40px 20px; text-align: center; max-width: 500px; margin: 2rem auto; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .prezzee-tracker-card h2 { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 10px; line-height: 1.2; }
-        .prezzee-tracker-card p { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.5; }
-        .tracker-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tracker-input { flex: 1; padding: 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; }
-        .tracker-btn { background: var(--prezzee-red); color: white; border: none; padding: 0 24px; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        /* P2P MARKET TABS */
+        .p2p-tabs { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+        .p2p-tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; font-weight: 700; cursor: pointer; background: #e5e7eb; color: var(--text-muted); border: none; transition: 0.2s; }
+        .p2p-tab.active.buy { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .p2p-tab.active.sell { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
         
-        /* MODAL & CART */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-        .modal-content { background: var(--bg-card); border-radius: 20px; width: 100%; max-width: 450px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 15px; right: 15px; background: #f3f4f6; border: none; color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
+        /* AD CARDS */
+        .ad-card { background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .ad-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
+        .ad-info .tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+        .ad-info .tag.buy { background: #d1fae5; color: #065f46; }
+        .ad-info .tag.sell { background: #fee2e2; color: #991b1b; }
+        .ad-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 3px; }
+        .ad-price { font-size: 1.4rem; font-weight: 800; color: var(--text-main); text-align: right; }
+        .btn-chat { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 10px; width: 100%;}
+
+        /* POST AD FORM */
+        .form-card { background: white; padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border-color); max-width: 600px; margin: 0 auto; }
+        .form-card h3 { margin-bottom: 1.5rem; font-size: 1.2rem; }
         .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
-        .form-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 1rem; }
-        .btn-checkout { width: 100%; padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; border: none; background: var(--success); color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 1rem;}
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
-        .cart-item-info h4 { font-size: 0.9rem; }
-        .cart-item-info p { font-size: 0.8rem; color: var(--text-muted); }
-        .remove-item { color: var(--danger); cursor: pointer; background: none; border: none; font-size: 1.1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 12px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; outline: none;}
+        .form-control:focus { border-color: var(--primary); }
+        
+        .btn-post { width: 100%; padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; border: none; background: var(--success); color: white; margin-top: 1rem; }
+
+        /* CHAT BOX (INSIDE MODAL) */
+        .chat-box { display: flex; flex-direction: column; height: 400px; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; background: var(--bg-main); border-radius: 8px; margin-bottom: 10px; }
+        .message { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; max-width: 80%; font-size: 0.85rem; }
+        .msg-them { background: white; border: 1px solid var(--border-color); align-self: flex-start; }
+        .msg-me { background: var(--primary); color: white; align-self: flex-end; margin-left: auto; }
+        .chat-input-group { display: flex; gap: 8px; }
+        .chat-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); outline: none; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+        .modal-content { background: var(--bg-card); border-radius: 20px; width: 100%; max-width: 450px; padding: 1.5rem; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: #f3f4f6; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
 
         .mobile-nav { display: none; }
-        @media (max-width: 900px) { body { display: block; padding-bottom: 60px; } .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; } .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; } .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } .mobile-nav-item.active { color: var(--primary); } .tracker-input-group { flex-direction: column; } .market-card { flex-direction: column; align-items: flex-start; } .market-price { text-align: left; margin-top: 10px;} }
+        @media (max-width: 900px) { 
+            body { display: block; padding-bottom: 60px; } .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; } 
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; } 
+            .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} 
+            .mobile-nav-item i { font-size: 1.2rem; margin-bottom: 3px; } .mobile-nav-item.active { color: var(--primary); } 
+            .ad-card { flex-direction: column; align-items: flex-start; } .ad-price { text-align: left; margin-top: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -117,170 +113,164 @@
         <aside class="sidebar">
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
             <div class="nav-menu">
-                <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore (Admin)</div>
-                <div class="nav-link" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i> Marketplace</div>
-                <div class="nav-link" onclick="switchView('cart', this)">
-                    <span><i class="fas fa-shopping-cart"></i> My Cart</span> 
-                    <span class="cart-badge" id="cartBadgeDesktop">0</span>
-                </div>
-                <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
-                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile & Post Ad</div>
+                <div class="nav-link active" onclick="switchView('marketplace', this)"><i class="fas fa-exchange-alt"></i> P2P Market</div>
+                <div class="nav-link" onclick="switchView('postad', this)"><i class="fas fa-plus-circle" style="color:var(--success);"></i> Post Ad</div>
+                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile</div>
             </div>
-            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[5])">
-                <img id="userAvatar" class="user-avatar" src="" style="display:none;">
+            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[2])">
                 <div id="userAvatarLetter" class="user-avatar">U</div>
-                <div class="user-info"><h4 id="userName">Loading...</h4><p>Verified User</p></div>
+                <div class="user-info"><h4 id="userName">Loading...</h4><p id="userTierDisplay">Trading...</p></div>
             </div>
         </aside>
         
         <main class="main-content">
-            <!-- DASHBOARD -->
-            <div id="view-dashboard" class="view active">
-                <div class="hero-banner"><div><h2 style="font-size: 1.4rem; margin-bottom: 5px;">Welcome, <span id="dashName">User</span>!</h2><p style="color: var(--text-muted); font-size: 0.85rem;">Premium digital gift cards. Secure crypto payments.</p></div><i class="fas fa-shield-halved" style="font-size: 3rem; color: var(--primary); opacity: 0.8;"></i></div>
-                <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;"><i class="fas fa-fire" style="color: var(--warning);"></i> Trending Now</h3>
-                <div class="grid" id="trendingGrid"></div>
-            </div>
-            
-            <!-- EXPLORE (ADMIN) -->
-            <div id="view-explore" class="view">
-                <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">All Gift Cards</h3>
-                <div class="grid" id="allGrid"></div>
-            </div>
-
-            <!-- MARKETPLACE (USER ADS) -->
-            <div id="view-marketplace" class="view">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.2rem;">Community Marketplace</h3>
-                    <button class="btn-buy" onclick="switchView('profile', document.querySelectorAll('.nav-link')[5])" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fas fa-plus"></i> Post an Ad</button>
+            <!-- P2P MARKETPLACE -->
+            <div id="view-marketplace" class="view active">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 1.4rem;">P2P Trading Market</h2>
+                    <button class="btn-chat" style="width:auto; margin:0;" onclick="switchView('postad', document.querySelectorAll('.nav-link')[1])">+ Post Ad</button>
                 </div>
-                <div id="marketGrid">
-                    <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading community ads...</p>
+                
+                <div class="p2p-tabs">
+                    <button class="p2p-tab active buy" onclick="switchAdTab('Buy')"><i class="fas fa-shopping-cart"></i> Buy Ads</button>
+                    <button class="p2p-tab sell" onclick="switchAdTab('Sell')"><i class="fas fa-tags"></i> Sell Ads</button>
+                </div>
+
+                <div id="adsContainer">
+                    <p style="text-align:center; color:var(--text-muted); padding:2rem;">Loading active ads...</p>
                 </div>
             </div>
 
-            <!-- CART -->
-            <div id="view-cart" class="view">
-                <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Your Shopping Cart</h3>
-                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); max-width: 600px;">
-                    <div id="cartItemsContainer">
-                        <p style="color: var(--text-muted); text-align: center;">Your cart is empty.</p>
+            <!-- POST AD -->
+            <div id="view-postad" class="view">
+                <div class="form-card">
+                    <h3><i class="fas fa-bullhorn"></i> Create P2P Advertisement</h3>
+                    
+                    <div class="form-group">
+                        <label>Ad Type</label>
+                        <select id="adType" class="form-control">
+                            <option value="Sell">I want to SELL Gift Cards</option>
+                            <option value="Buy">I want to BUY Gift Cards</option>
+                        </select>
                     </div>
-                    <div id="cartTotalSection" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-                        <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;">
-                            <span>Total:</span>
-                            <span id="cartTotalPrice" style="color: var(--success);">$0.00</span>
+                    <div class="form-group">
+                        <label>Select Gift Card</label>
+                        <select id="adCardName" class="form-control">
+                            <option>Amazon</option><option>Apple</option><option>Google Play</option>
+                            <option>Steam</option><option>PlayStation</option><option>Xbox</option>
+                            <option>Netflix</option><option>Spotify</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Volume ($) & Quantity</label>
+                        <div style="display:flex; gap:10px;">
+                            <input type="number" id="adVolume" class="form-control" placeholder="Volume ($)">
+                            <input type="number" id="adQty" class="form-control" placeholder="Qty">
                         </div>
-                        <button class="btn-checkout" onclick="processRealPayment()"><i class="fas fa-external-link-alt"></i> Pay with Crypto</button>
                     </div>
+                    <div class="form-group">
+                        <label>Price Rate (e.g. 0.95 for 5% below market)</label>
+                        <input type="number" id="adPrice" class="form-control" placeholder="Price per $1">
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select id="adCountry" class="form-control">
+                            <option>Global</option><option>United States</option><option>United Kingdom</option>
+                            <option>Canada</option><option>Australia</option><option>Nigeria</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Methods</label>
+                        <select id="adPayment" class="form-control">
+                            <option>Bank Transfer</option><option>USDT (Crypto)</option><option>BTC (Crypto)</option>
+                            <option>PayPal</option><option>Wise</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ad Duration</label>
+                        <select id="adDuration" class="form-control">
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="60">1 Hour</option>
+                            <option value="180">3 Hours</option>
+                            <option value="1440">24 Hours</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="display:flex; align-items:flex-start; gap:10px; margin-top:1rem;">
+                        <input type="checkbox" id="adTerms" style="margin-top:3px;">
+                        <label for="adTerms" style="font-weight:400; color:var(--text-muted); font-size:0.8rem; line-height:1.4;">
+                            I have read the <a href="#">Terms and Conditions</a> and Trading Rules. I confirm no third-party involvement.
+                        </label>
+                    </div>
+
+                    <button class="btn-post" onclick="postAd()">Publish Advertisement</button>
                 </div>
             </div>
 
-            <!-- ORDERS -->
-            <div id="view-orders" class="view">
-                <div class="prezzee-tracker-card">
-                    <div style="font-size: 50px; margin-bottom: 15px;">🎁</div>
-                    <h2>Welcome to the Prezzee<br>eGift Card tracker</h2>
-                    <p>Lost an eGift card or just want to check the delivery status? Track your gift here.</p>
-                    <div class="tracker-input-group"><input type="text" class="tracker-input" placeholder="Order number"><button class="tracker-btn" onclick="alert('Order tracking requires database setup.')">Track my order</button></div>
-                </div>
-            </div>
-
-            <!-- PROFILE & POST AD -->
+            <!-- PROFILE -->
             <div id="view-profile" class="view">
-                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <div style="display: flex; align-items: center; gap: 15px;"><div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div><div><h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3><p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p></div></div>
+                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div>
+                        <div>
+                            <h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3>
+                            <p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p>
+                            <p style="font-size: 0.75rem; color: var(--success); font-weight:bold; margin-top:5px;">User ID: <span id="userIdDisplay"></span></p>
+                        </div>
+                    </div>
                     <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca;">Logout</button>
-                </div>
-
-                <!-- POST AD FORM -->
-                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color);">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-bullhorn"></i> Create a Listing</h3>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">Post your card to the marketplace for others to buy.</p>
-                    
-                    <div class="input-group"><label>Card Name (e.g., Amazon)</label><input type="text" id="adName" class="input-control" placeholder="Card name"></div>
-                    <div class="input-group"><label>Price ($)</label><input type="number" id="adPrice" class="input-control" placeholder="e.g., 50"></div>
-                    <div class="input-group"><label>Target Countries</label><input type="text" id="adCountry" class="input-control" placeholder="e.g., US, UK, Global"></div>
-                    <div class="input-group"><label>Listing Duration (Days)</label><input type="number" id="adDays" class="input-control" placeholder="e.g., 7"></div>
-                    
-                    <button class="btn-next" onclick="postAd()" style="margin-top: 1rem;"><i class="fas fa-paper-plane"></i> Post Ad</button>
                 </div>
             </div>
         </main>
 
         <!-- MOBILE NAV -->
         <nav class="mobile-nav">
-            <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="mobile-nav-item" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i><span>Market</span></div>
-            <div class="mobile-nav-item" onclick="switchView('cart', this)">
-                <i class="fas fa-shopping-cart"></i><span>Cart</span>
-                <span class="cart-badge" id="cartBadgeMobile" style="position:absolute; top: 0; right: 5px;">0</span>
+            <div class="mobile-nav-item active" onclick="switchView('marketplace', this)"><i class="fas fa-exchange-alt"></i><span>Market</span></div>
+            <div class="mobile-nav-item" onclick="switchView('postad', this)" style="position:relative; top:-10px;">
+                <div style="background:var(--success); color:white; width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(16,185,129,0.4);"><i class="fas fa-plus" style="font-size:1.3rem; margin:0;"></i></div>
+                <span style="margin-top:5px;">Post</span>
             </div>
-            <div class="mobile-nav-item" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i><span>Orders</span></div>
             <div class="mobile-nav-item" onclick="switchView('profile', this)"><i class="fas fa-user"></i><span>Profile</span></div>
         </nav>
     </div>
 
-    <!-- ADD TO CART MODAL -->
-    <div class="modal-overlay" id="checkoutModal">
+    <!-- CHAT MODAL -->
+    <div class="modal-overlay" id="chatModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <div class="card-image-container" id="modalImageContainer" style="height: 100px; width: 100px; margin: 0 auto 10px auto;"></div>
-                <h2 id="modalProductName" style="font-size: 1.2rem;">Gift Card</h2>
-            </div>
+            <button class="close-btn" onclick="document.getElementById('chatModal').style.display='none'"><i class="fas fa-times"></i></button>
+            <h3 style="margin-bottom: 5px; font-size:1.1rem;">Chat with Trader</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;" id="chatWithName">Seller Name</p>
             
-            <div class="form-group">
-                <label>Select Value (USD)</label>
-                <select class="form-control" id="amountSelect" onchange="updatePrice()">
-                    <option value="50">$50</option>
-                    <option value="100">$100</option>
-                    <option value="150">$150</option>
-                    <option value="200">$200</option>
-                    <option value="300">$300</option>
-                    <option value="400">$400</option>
-                    <option value="500">$500</option>
-                    <option value="600">$600</option>
-                    <option value="1000">$1000</option>
-                    <option value="2500">$2500</option>
-                    <option value="3000">$3000</option>
-                </select>
+            <div class="chat-box">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message msg-them">Hello! Are you interested in this trade?</div>
+                </div>
+                <div class="chat-input-group">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button class="btn-chat" style="width:auto; margin:0; padding: 10px 15px;" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label>Quantity (How many cards?)</label>
-                <input type="number" id="quantityInput" class="form-control" value="1" min="1" max="10" oninput="updatePrice()">
-            </div>
-
-            <div style="text-align: center; margin-bottom: 1rem; background: var(--bg-main); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
-                <span style="font-size: 0.85rem; color: var(--text-muted);">Total Price</span>
-                <h3 style="color: var(--success); font-size: 1.8rem;" id="modalTotalPrice">$50.00</h3>
-            </div>
-
-            <button class="btn-checkout" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Add to Cart</button>
         </div>
     </div>
-
-    <!-- TAWK.TO SCRIPT -->
-    <script>
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();(function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];s1.async=true;s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();
-    </script>
-
-    <!-- FIREBASE & FIRESTORE LOGIC -->
-    <script type="module">
+        <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyBKDMydDpA_WM6R61MkhPmhpAKNW6fJ8FE", authDomain: "giftall2us.firebaseapp.com", projectId: "giftall2us", storageBucket: "giftall2us.firebasestorage.app", messagingSenderId: "126908024649", appId: "1:126908024649:web:937fde6111527e382efc98" };
         const app = initializeApp(firebaseConfig); 
         const auth = getAuth(app); 
-        const db = getFirestore(app); // Initialize Database
+        const db = getFirestore(app); 
         const googleProvider = new GoogleAuthProvider();
         
         const loginPage = document.getElementById('loginPage'); const appContent = document.getElementById('appContent'); const loadingOverlay = document.getElementById('loadingOverlay'); const loginError = document.getElementById('loginError');
+        
         let currentUserEmail = "";
+        let currentUserName = "";
+        let currentAdTab = 'Buy'; // Default tab
 
+        // Auth Logic
         window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); } catch (error) { showError(error.message); } };
         window.signInWithEmail = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value); } catch (error) { showError(error.message); } };
         window.signUpWithEmail = async () => { try { await createUserWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value); } catch (error) { showError(error.message); } };
@@ -290,51 +280,27 @@
             loadingOverlay.style.display = 'none';
             if (user) {
                 loginPage.style.display = 'none'; appContent.style.display = 'flex';
-                const name = user.displayName || user.email.split('@')[0]; const initial = name.charAt(0).toUpperCase();
+                currentUserName = user.displayName || user.email.split('@')[0]; 
                 currentUserEmail = user.email;
+                const initial = currentUserName.charAt(0).toUpperCase();
                 
-                document.getElementById('userName').innerText = name; document.getElementById('dashName').innerText = name;
-                document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = user.email;
-                document.getElementById('userAvatarLetter').innerText = initial; document.getElementById('profileAvatarLetter').innerText = initial;
+                document.getElementById('userName').innerText = currentUserName;
+                document.getElementById('profileName').innerText = currentUserName;
+                document.getElementById('profileEmail').innerText = user.email;
+                document.getElementById('userAvatarLetter').innerText = initial;
+                document.getElementById('profileAvatarLetter').innerText = initial;
                 
-                if (user.photoURL) { const img = document.getElementById('userAvatar'); img.src = user.photoURL; img.style.display = 'block'; document.getElementById('userAvatarLetter').style.display = 'none'; }
-                loadMarketplace(); // Load ads when logged in
+                // Auto-generate User ID (using Firebase UID part)
+                document.getElementById('userIdDisplay').innerText = "#" + user.uid.substring(0, 8).toUpperCase();
+
+                loadAds(); // Load marketplace ads
             } else {
                 loginPage.style.display = 'flex'; appContent.style.display = 'none'; document.getElementById('emailInput').value = ''; document.getElementById('passwordInput').value = '';
             }
         });
         function showError(msg) { loginError.innerText = msg.replace("Firebase: ", ""); loginError.style.display = 'block'; setTimeout(() => { loginError.style.display = 'none'; }, 4000); }
 
-        // --- PRODUCT DATA ---
-        const products = [
-            { name: "Amazon", image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Apple", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Google Play", image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Steam", image: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=500&auto=format&fit=crop&q=60" },
-            { name: "PlayStation", image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Xbox", image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&auto=format&fit=crop&q=60" },
-            { name: "Netflix", image: "https://images.unsplash.com/photo-1574375927938-d5a98e8efe85?w=500&auto=format&fit=crop&q=60" }, 
-            { name: "Spotify", image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=500&auto=format&fit=crop&q=60" }
-        ];
-
-        function renderCards() {
-            const cardHTML = (p) => `
-                <div class="product-card">
-                    <div class="card-image-container"><img src="${p.image}" alt="${p.name}"></div>
-                    <div class="product-title">${p.name}</div>
-                    <div class="product-subtitle">Digital eGift Card</div>
-                    <div class="product-footer">
-                        <div class="price">From $50</div>
-                        <button class="btn-add-cart" onclick="openCheckout('${p.name}', '${p.image}')"><i class="fas fa-cart-plus"></i> Buy</button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('allGrid').innerHTML = products.map(p => cardHTML(p)).join('');
-            document.getElementById('trendingGrid').innerHTML = products.slice(0, 4).map(p => cardHTML(p)).join('');
-        }
-        renderCards();
-
-        // --- NAVIGATION ---
+        // Navigation
         window.switchView = (viewId, el) => { 
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
             document.getElementById('view-' + viewId).classList.add('active'); 
@@ -342,169 +308,126 @@
             if(el) el.classList.add('active'); 
         };
 
-        // --- MARKETPLACE LOGIC ---
+        // P2P Tab Switch
+        window.switchAdTab = (type) => {
+            currentAdTab = type;
+            document.querySelectorAll('.p2p-tab').forEach(t => {
+                t.classList.remove('active', 'buy', 'sell');
+                if(t.innerText.includes(type)) {
+                    t.classList.add('active', type.toLowerCase());
+                }
+            });
+            loadAds();
+        };
+
+        // Post Ad
         window.postAd = async () => {
-            const name = document.getElementById('adName').value;
+            const type = document.getElementById('adType').value;
+            const card = document.getElementById('adCardName').value;
+            const volume = document.getElementById('adVolume').value;
+            const qty = document.getElementById('adQty').value;
             const price = document.getElementById('adPrice').value;
             const country = document.getElementById('adCountry').value;
-            const days = document.getElementById('adDays').value;
+            const payment = document.getElementById('adPayment').value;
+            const duration = document.getElementById('adDuration').value;
+            const terms = document.getElementById('adTerms').checked;
 
-            if(!name || !price || !country || !days) { alert("Please fill all fields."); return; }
+            if(!volume || !qty || !price) return alert("Please fill all fields.");
+            if(!terms) return alert("You must accept the Terms and Conditions.");
 
             try {
-                await addDoc(collection(db, "marketplace"), {
+                // Calculate expiry timestamp
+                const now = new Date();
+                const expiry = new Date(now.getTime() + duration * 60000); 
+
+                await addDoc(collection(db, "p2p_ads"), {
                     sellerEmail: currentUserEmail,
-                    cardName: name,
+                    sellerName: currentUserName,
+                    type: type,
+                    cardName: card,
+                    volume: parseFloat(volume),
+                    quantity: parseInt(qty),
                     price: parseFloat(price),
                     country: country,
-                    days: parseInt(days),
-                    createdAt: new Date()
+                    payment: payment,
+                    expiryTime: expiry.getTime(),
+                    createdAt: new Date().getTime()
                 });
                 alert("Ad posted successfully!");
-                document.getElementById('adName').value = ''; document.getElementById('adPrice').value = ''; document.getElementById('adCountry').value = ''; document.getElementById('adDays').value = '';
-                loadMarketplace();
+                document.getElementById('adVolume').value = ''; document.getElementById('adQty').value = ''; document.getElementById('adPrice').value = ''; document.getElementById('adTerms').checked = false;
+                switchView('marketplace', document.querySelectorAll('.nav-link')[0]);
+                loadAds();
             } catch (e) {
-                alert("Error posting ad: Please make sure Firestore is enabled in Firebase. " + e.message);
+                alert("Error: " + e.message);
             }
         };
 
-        async function loadMarketplace() {
-            const grid = document.getElementById('marketGrid');
-            grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading...</p>';
+        // Load Ads
+        async function loadAds() {
+            const container = document.getElementById('adsContainer');
+            container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:2rem;">Loading ads...</p>';
             
             try {
-                const querySnapshot = await getDocs(collection(db, "marketplace"));
-                if(querySnapshot.empty) { grid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No ads posted yet. Be the first!</p>'; return; }
+                const q = query(collection(db, "p2p_ads"), where("type", "==", currentAdTab));
+                const querySnapshot = await getDocs(q);
+                const now = new Date().getTime();
+                
+                if(querySnapshot.empty) { 
+                    container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:2rem;">No active ads found.</p>'; 
+                    return; 
+                }
                 
                 let html = "";
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    // Check if ad is expired
+                    if(data.expiryTime < now) return; 
+                    
+                    const tagClass = data.type === 'Buy' ? 'buy' : 'sell';
                     html += `
-                    <div class="market-card">
-                        <div class="market-info">
-                            <h3>${data.cardName} Gift Card</h3>
-                            <p><i class="fas fa-user"></i> ${data.sellerEmail}</p>
-                            <p><i class="fas fa-globe"></i> ${data.country} • ${data.days} days</p>
+                    <div class="ad-card">
+                        <div class="ad-info">
+                            <h3><span class="tag ${tagClass}">${data.type}</span> ${data.cardName}</h3>
+                            <p><i class="fas fa-globe"></i> ${data.country} • <i class="fas fa-credit-card"></i> ${data.payment}</p>
+                            <p><i class="fas fa-user"></i> ${data.sellerName}</p>
+                            <p style="font-size:0.75rem; color:#f59e0b; margin-top:5px;"><i class="fas fa-clock"></i> Expires: ${new Date(data.expiryTime).toLocaleTimeString()}</p>
                         </div>
                         <div>
-                            <div class="market-price">$${data.price.toFixed(2)}</div>
-                            <div class="market-actions">
-                                <button class="btn-sm btn-chat" onclick="openLiveChat()"><i class="fas fa-comment"></i> Contact Seller</button>
-                            </div>
+                            <div class="ad-price">$${data.price.toFixed(2)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">/ $1</span></div>
+                            <p style="text-align:right; font-size:0.8rem; margin-top:3px;">Vol: $${data.volume} | Qty: ${data.quantity}</p>
+                            <button class="btn-chat" onclick="openChat('${data.sellerName}', '${data.sellerEmail}')">Chat with Trader</button>
                         </div>
                     </div>
                     `;
                 });
-                grid.innerHTML = html;
+                container.innerHTML = html;
             } catch (e) {
-                grid.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading ads. Make sure Firestore is enabled.</p>';
+                container.innerHTML = '<p style="text-align:center; color:var(--danger);">Error loading ads.</p>';
             }
         }
 
-        window.openLiveChat = () => { if(window.Tawk_API && window.Tawk_API.maximize) Tawk_API.maximize(); else alert("Live Chat is loading..."); };
-
-        // --- CART LOGIC ---
-        let cart = [];
-        let currentItem = { name: "", image: "", price: 50, qty: 1 };
-        const modal = document.getElementById('checkoutModal');
-
-        window.openCheckout = (name, image) => {
-            currentItem.name = name; currentItem.image = image;
-            document.getElementById('modalProductName').innerText = name + " Gift Card";
-            document.getElementById('modalImageContainer').innerHTML = `<img src="${image}" style="width:100%; height:100%; object-fit:cover;">`;
-            document.getElementById('amountSelect').value = "50";
-            document.getElementById('quantityInput').value = "1";
-            updatePrice();
-            modal.style.display = 'flex';
+        // Chat Logic (Simple Demo)
+        window.openChat = (name, email) => {
+            if(email === currentUserEmail) return alert("You cannot chat with yourself.");
+            document.getElementById('chatWithName').innerText = "Chatting with " + name;
+            document.getElementById('chatModal').style.display = 'flex';
+            document.getElementById('chatMessages').innerHTML = `<div class="message msg-them">Hello! I am interested in this trade. Let's discuss.</div>`;
         };
 
-        window.closeModal = () => { modal.style.display = 'none'; };
-
-        window.updatePrice = () => {
-            let basePrice = parseFloat(document.getElementById('amountSelect').value);
-            let qty = parseInt(document.getElementById('quantityInput').value) || 1;
-            if(qty < 1) qty = 1;
-            currentItem.price = basePrice; currentItem.qty = qty;
-            let total = basePrice * qty;
-            document.getElementById('modalTotalPrice').innerText = `$${total.toFixed(2)}`;
-        };
-
-        window.addToCart = () => {
-            let existingItem = cart.find(item => item.name === currentItem.name && item.price === currentItem.price);
-            if(existingItem) { existingItem.qty += currentItem.qty; } else { cart.push({...currentItem}); }
-            closeModal();
-            updateCartUI();
-            switchView('cart', document.querySelectorAll('.nav-link')[3]);
-        };
-
-        window.removeFromCart = (index) => { cart.splice(index, 1); updateCartUI(); };
-
-        function updateCartUI() {
-            const container = document.getElementById('cartItemsContainer');
-            const totalSection = document.getElementById('cartTotalSection');
-            const badgeDesktop = document.getElementById('cartBadgeDesktop');
-            const badgeMobile = document.getElementById('cartBadgeMobile');
+        window.sendMessage = () => {
+            const input = document.getElementById('chatInput');
+            if(!input.value.trim()) return;
             
-            let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-            badgeDesktop.innerText = totalItems; badgeMobile.innerText = totalItems;
-
-            if(cart.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); text-align: center;">Your cart is empty.</p>`;
-                totalSection.style.display = 'none';
-                return;
-            }
-
-            let totalPrice = 0; let html = "";
-            cart.forEach((item, index) => {
-                let itemTotal = item.price * item.qty;
-                totalPrice += itemTotal;
-                html += `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <h4>${item.qty}x ${item.name} Gift Card</h4>
-                            <p>$${item.price.toFixed(2)} each</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px;">
-                            <strong>$${itemTotal.toFixed(2)}</strong>
-                            <button class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
+            const chatBox = document.getElementById('chatMessages');
+            chatBox.innerHTML += `<div class="message msg-me">${input.value}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
             
-            container.innerHTML = html;
-            document.getElementById('cartTotalPrice').innerText = `$${totalPrice.toFixed(2)}`;
-            totalSection.style.display = 'block';
-        }
-
-        // --- YOUR REAL NOWPAYMENTS LINKS ---
-        window.processRealPayment = () => {
-            if(cart.length === 0) return alert("Cart is empty!");
-            
-            let totalCartValue = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            
-            const links = { 
-                "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link from before
-                "100": "https://nowpayments.io/payment/?iid=4912162793",
-                "150": "https://nowpayments.io/payment/?iid=5271487412",
-                "200": "https://nowpayments.io/payment/?iid=6088608599",
-                "300": "https://nowpayments.io/payment/?iid=6128501527",
-                "400": "https://nowpayments.io/payment/?iid=5861277497",
-                "500": "https://nowpayments.io/payment/?iid=5173184208",
-                "600": "https://nowpayments.io/payment/?iid=4498694817",
-                "1000": "https://nowpayments.io/payment/?iid=5035063632",
-                "2500": "https://nowpayments.io/payment/?iid=4382116607",
-                "3000": "https://nowpayments.io/payment/?iid=4861305997"
-            };
-            
-            let link = links[totalCartValue.toString()]; 
-            
-            if (link) { 
-                window.open(link, '_blank'); 
-            } else { 
-                alert("Payment link for the total cart amount ($" + totalCartValue + ") is not set up yet. Please use exact amounts. Opening $50 link for testing.");
-                window.open(links["50"], '_blank'); 
-            }
+            // Simulate reply
+            setTimeout(() => {
+                chatBox.innerHTML += `<div class="message msg-them">Understood. Please send your payment proof via Live Chat for Escrow release.</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1500);
         };
     </script>
 </body>
