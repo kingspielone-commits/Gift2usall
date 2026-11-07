@@ -70,6 +70,17 @@
         .btn-sm { padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
         .btn-chat { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border-color); }
 
+        /* TRADING VOLUME CARD */
+        .volume-card { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(16,185,129,0.3); }
+        .volume-card h3 { font-size: 0.9rem; font-weight: 500; opacity: 0.9; margin-bottom: 5px; }
+        .volume-card h2 { font-size: 2rem; font-weight: 800; }
+
+        /* LOCKED P2P SCREEN */
+        .lock-screen { background: white; border-radius: 16px; padding: 4rem 2rem; text-align: center; border: 1px dashed #cbd5e1; max-width: 600px; margin: 2rem auto; }
+        .lock-screen i { font-size: 4rem; color: var(--warning); margin-bottom: 1rem; }
+        .lock-screen h2 { font-size: 1.5rem; margin-bottom: 10px; }
+        .lock-screen p { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.5; }
+
         /* PREZZEE TRACKER */
         .prezzee-tracker-card { background: #ffffff; border-radius: 12px; padding: 40px 20px; text-align: center; max-width: 500px; margin: 2rem auto; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         .prezzee-tracker-card h2 { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 10px; line-height: 1.2; }
@@ -77,21 +88,30 @@
         .tracker-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
         .tracker-input { flex: 1; padding: 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; }
         .tracker-btn { background: var(--prezzee-red); color: white; border: none; padding: 0 24px; border-radius: 6px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+
+        /* POST AD FORM */
+        .form-card { background: white; padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border-color); max-width: 600px; margin: 0 auto; }
+        .form-card h3 { margin-bottom: 1.5rem; font-size: 1.2rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 12px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; outline: none;}
+        .form-control:focus { border-color: var(--primary); }
         
         /* MODAL & CART */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
         .modal-content { background: var(--bg-card); border-radius: 20px; width: 100%; max-width: 450px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-btn { position: absolute; top: 15px; right: 15px; background: #f3f4f6; border: none; color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
-        .form-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 1rem; }
         .btn-checkout { width: 100%; padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; border: none; background: var(--success); color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 1rem;}
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
         .cart-item-info h4 { font-size: 0.9rem; }
         .cart-item-info p { font-size: 0.8rem; color: var(--text-muted); }
         .remove-item { color: var(--danger); cursor: pointer; background: none; border: none; font-size: 1.1rem; }
 
-        /* MOBILE NAV WITH + BUTTON */
+        /* FLOATING CHAT BUTTON */
+        .floating-chat { position: fixed; bottom: 85px; right: 20px; background: var(--success); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 4px 15px rgba(16,185,129,0.4); cursor: pointer; z-index: 999; transition: 0.2s; }
+        .floating-chat:hover { transform: scale(1.05); background: #059669; }
+
+        /* MOBILE NAV */
         .mobile-nav { display: none; }
         @media (max-width: 900px) { 
             body { display: block; padding-bottom: 60px; } 
@@ -101,12 +121,9 @@
             .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} 
             .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } 
             .mobile-nav-item.active { color: var(--primary); } 
-            
-            /* The Green + Button */
             .plus-btn-wrapper { position: relative; top: -15px; }
             .plus-btn { background: var(--success); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16,185,129,0.4); font-size: 1.5rem; }
             .plus-btn-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--text-muted); font-size: 0.65rem; white-space: nowrap; }
-
             .tracker-input-group { flex-direction: column; } 
             .market-card { flex-direction: column; align-items: flex-start; } 
             .market-price { text-align: left; margin-top: 10px;} 
@@ -116,6 +133,11 @@
 <body>
     <div id="loadingOverlay"><div class="spinner"></div><h3>Connecting securely...</h3></div>
     
+    <!-- FLOATING CHAT BUTTON -->
+    <div class="floating-chat" onclick="openLiveChat()">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
     <div id="loginPage">
         <div class="login-box">
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
@@ -135,16 +157,15 @@
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
             <div class="nav-menu">
                 <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore (Admin)</div>
+                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Official Store</div>
                 <div class="nav-link" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i> Marketplace</div>
-                <!-- THIS IS THE + POST AD BUTTON -->
-                <div class="nav-link" onclick="switchView('profile', this)" style="color: var(--success); font-weight: bold;"><i class="fas fa-plus-circle"></i> Post an Ad</div>
                 
                 <div class="nav-link" onclick="switchView('cart', this)">
                     <span><i class="fas fa-shopping-cart"></i> My Cart</span> 
                     <span class="cart-badge" id="cartBadgeDesktop">0</span>
                 </div>
                 <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
+                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile</div>
             </div>
             <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[5])">
                 <img id="userAvatar" class="user-avatar" src="" style="display:none;">
@@ -161,7 +182,7 @@
                 <div class="grid" id="trendingGrid"></div>
             </div>
             
-            <!-- EXPLORE (ADMIN) -->
+            <!-- EXPLORE -->
             <div id="view-explore" class="view">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">All Gift Cards</h3>
                 <div class="grid" id="allGrid"></div>
@@ -174,6 +195,82 @@
                 </div>
                 <div id="marketGrid">
                     <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading community ads...</p>
+                </div>
+            </div>
+
+            <!-- POST AD (THE + PAGE - LOCKED LOGIC APPLIED) -->
+            <div id="view-postad" class="view">
+                <!-- Lock Screen -->
+                <div id="p2pLockScreen" class="lock-screen" style="display: none;">
+                    <i class="fas fa-lock"></i>
+                    <h2>Posting Locked</h2>
+                    <p>You need a trading volume of <strong>$100</strong> to post ads in the marketplace.<br>Your current volume is: <strong id="lockVolumeDisplay">$0.00</strong></p>
+                    <button class="btn-checkout" style="max-width: 300px; margin: 0 auto;" onclick="switchView('explore', document.querySelectorAll('.nav-link')[1])"><i class="fas fa-shopping-cart"></i> Buy Cards to Increase Volume</button>
+                </div>
+
+                <!-- Post Form -->
+                <div id="p2pPostForm" class="form-card">
+                    <h3><i class="fas fa-bullhorn"></i> Create Advertisement</h3>
+                    
+                    <div class="form-group">
+                        <label>Ad Type</label>
+                        <select id="adType" class="form-control">
+                            <option value="Sell">I want to SELL Gift Cards</option>
+                            <option value="Buy">I want to BUY Gift Cards</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Gift Card</label>
+                        <select id="adCardName" class="form-control">
+                            <option>Amazon</option><option>Apple</option><option>Google Play</option>
+                            <option>Steam</option><option>PlayStation</option><option>Xbox</option>
+                            <option>Netflix</option><option>Spotify</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Volume ($) & Quantity</label>
+                        <div style="display:flex; gap:10px;">
+                            <input type="number" id="adVolume" class="form-control" placeholder="Volume ($)">
+                            <input type="number" id="adQty" class="form-control" placeholder="Qty">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Rate (e.g. 0.95 for 5% below market)</label>
+                        <input type="number" id="adPrice" class="form-control" placeholder="Price per $1">
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select id="adCountry" class="form-control">
+                            <option>Global</option><option>United States</option><option>United Kingdom</option>
+                            <option>Canada</option><option>Australia</option><option>Nigeria</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Methods</label>
+                        <select id="adPayment" class="form-control">
+                            <option>Bank Transfer</option><option>USDT (Crypto)</option><option>BTC (Crypto)</option>
+                            <option>PayPal</option><option>Wise</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ad Duration</label>
+                        <select id="adDuration" class="form-control">
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="60">1 Hour</option>
+                            <option value="180">3 Hours</option>
+                            <option value="1440">24 Hours</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="display:flex; align-items:flex-start; gap:10px; margin-top:1rem;">
+                        <input type="checkbox" id="adTerms" style="margin-top:3px;">
+                        <label for="adTerms" style="font-weight:400; color:var(--text-muted); font-size:0.8rem; line-height:1.4;">
+                            I have read the <a href="#">Terms and Conditions</a> and Trading Rules. I confirm no third-party involvement.
+                        </label>
+                    </div>
+
+                    <button class="btn-checkout" onclick="postAd()">Publish Advertisement</button>
                 </div>
             </div>
 
@@ -204,24 +301,20 @@
                 </div>
             </div>
 
-            <!-- PROFILE & POST AD -->
+            <!-- PROFILE (TRADING VOLUME DISPLAYED) -->
             <div id="view-profile" class="view">
-                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <div style="display: flex; align-items: center; gap: 15px;"><div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div><div><h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3><p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p></div></div>
-                    <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca;">Logout</button>
+                <!-- TRADING VOLUME CARD -->
+                <div class="volume-card">
+                    <div>
+                        <h3>Total Trading Volume</h3>
+                        <h2 id="tradingVolumeDisplay">$0.00</h2>
+                    </div>
+                    <i class="fas fa-chart-line" style="font-size: 2.5rem; opacity: 0.5;"></i>
                 </div>
 
-                <!-- POST AD FORM -->
-                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color);">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-bullhorn"></i> Create a Listing</h3>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">Post your card to the marketplace for others to buy.</p>
-                    
-                    <div class="input-group"><label>Card Name (e.g., Amazon)</label><input type="text" id="adName" class="input-control" placeholder="Card name"></div>
-                    <div class="input-group"><label>Price ($)</label><input type="number" id="adPrice" class="input-control" placeholder="e.g., 50"></div>
-                    <div class="input-group"><label>Target Countries</label><input type="text" id="adCountry" class="input-control" placeholder="e.g., US, UK, Global"></div>
-                    <div class="input-group"><label>Listing Duration (Days)</label><input type="number" id="adDays" class="input-control" placeholder="e.g., 7"></div>
-                    
-                    <button class="btn-checkout" onclick="postAd()" style="margin-top: 1rem;"><i class="fas fa-paper-plane"></i> Post Ad</button>
+                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px;"><div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div><div><h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3><p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p></div></div>
+                    <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Logout</button>
                 </div>
             </div>
         </main>
@@ -231,11 +324,11 @@
             <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
             <div class="mobile-nav-item" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i><span>Market</span></div>
             
-            <!-- THE NEW + BUTTON -->
-            <div class="mobile-nav-item" onclick="switchView('profile', this)">
+            <!-- THE + BUTTON (CHECKS VOLUME) -->
+            <div class="mobile-nav-item" onclick="tryPostAd()">
                 <div class="plus-btn-wrapper">
                     <div class="plus-btn"><i class="fas fa-plus"></i></div>
-                    <span class="plus-btn-label">Sell</span>
+                    <span class="plus-btn-label">Post Ad</span>
                 </div>
             </div>
 
@@ -259,17 +352,10 @@
             <div class="form-group">
                 <label>Select Value (USD)</label>
                 <select class="form-control" id="amountSelect" onchange="updatePrice()">
-                    <option value="50">$50</option>
-                    <option value="100">$100</option>
-                    <option value="150">$150</option>
-                    <option value="200">$200</option>
-                    <option value="300">$300</option>
-                    <option value="400">$400</option>
-                    <option value="500">$500</option>
-                    <option value="600">$600</option>
-                    <option value="1000">$1000</option>
-                    <option value="2500">$2500</option>
-                    <option value="3000">$3000</option>
+                    <option value="50">$50</option><option value="100">$100</option><option value="150">$150</option>
+                    <option value="200">$200</option><option value="300">$300</option><option value="400">$400</option>
+                    <option value="500">$500</option><option value="600">$600</option><option value="1000">$1000</option>
+                    <option value="2500">$2500</option><option value="3000">$3000</option>
                 </select>
             </div>
 
@@ -302,7 +388,9 @@
         const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app); const googleProvider = new GoogleAuthProvider();
         
         const loginPage = document.getElementById('loginPage'); const appContent = document.getElementById('appContent'); const loadingOverlay = document.getElementById('loadingOverlay'); const loginError = document.getElementById('loginError');
+        
         let currentUserEmail = "";
+        let userTradingVolume = 0; 
 
         window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); } catch (error) { showError(error.message); } };
         window.signInWithEmail = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value); } catch (error) { showError(error.message); } };
@@ -316,10 +404,18 @@
                 const name = user.displayName || user.email.split('@')[0]; const initial = name.charAt(0).toUpperCase();
                 currentUserEmail = user.email;
                 
+                // SIMULATED VOLUME (Give yourself 150 to test, others get 0)
+                if(user.email === "kingspielone@gmail.com") { userTradingVolume = 150.00; } 
+                else { userTradingVolume = 0.00; } 
+                
                 document.getElementById('userName').innerText = name; document.getElementById('dashName').innerText = name;
                 document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = user.email;
                 document.getElementById('userAvatarLetter').innerText = initial; document.getElementById('profileAvatarLetter').innerText = initial;
                 
+                // Display Volume on Profile
+                document.getElementById('tradingVolumeDisplay').innerText = "$" + userTradingVolume.toFixed(2);
+                document.getElementById('lockVolumeDisplay').innerText = "$" + userTradingVolume.toFixed(2);
+
                 if (user.photoURL) { const img = document.getElementById('userAvatar'); img.src = user.photoURL; img.style.display = 'block'; document.getElementById('userAvatarLetter').style.display = 'none'; }
                 loadMarketplace();
             } else {
@@ -327,6 +423,36 @@
             }
         });
         function showError(msg) { loginError.innerText = msg.replace("Firebase: ", ""); loginError.style.display = 'block'; setTimeout(() => { loginError.style.display = 'none'; }, 4000); }
+
+        // NAVIGATION & LOCK LOGIC
+        window.tryPostAd = () => {
+            if(userTradingVolume < 100) {
+                document.getElementById('p2pLockScreen').style.display = 'block';
+                document.getElementById('p2pPostForm').style.display = 'none';
+            } else {
+                document.getElementById('p2pLockScreen').style.display = 'none';
+                document.getElementById('p2pPostForm').style.display = 'block';
+            }
+            switchView('postad', document.querySelectorAll('.mobile-nav-item')[2]);
+        };
+
+        window.switchView = (viewId, el) => { 
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
+            document.getElementById('view-' + viewId).classList.add('active'); 
+            document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(n => n.classList.remove('active')); 
+            if(el) el.classList.add('active'); 
+            
+            // If they click the Post Ad link on desktop, check volume
+            if(viewId === 'postad') {
+                if(userTradingVolume < 100) {
+                    document.getElementById('p2pLockScreen').style.display = 'block';
+                    document.getElementById('p2pPostForm').style.display = 'none';
+                } else {
+                    document.getElementById('p2pLockScreen').style.display = 'none';
+                    document.getElementById('p2pPostForm').style.display = 'block';
+                }
+            }
+        };
 
         // PRODUCTS
         const products = [
@@ -357,36 +483,41 @@
         }
         renderCards();
 
-        window.switchView = (viewId, el) => { 
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
-            document.getElementById('view-' + viewId).classList.add('active'); 
-            document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(n => n.classList.remove('active')); 
-            if(el) el.classList.add('active'); 
-        };
-
         // POST AD LOGIC
         window.postAd = async () => {
-            const name = document.getElementById('adName').value;
+            if(userTradingVolume < 100) return alert("You need $100 volume to post.");
+            
+            const type = document.getElementById('adType').value;
+            const name = document.getElementById('adCardName').value;
+            const volume = document.getElementById('adVolume').value;
+            const qty = document.getElementById('adQty').value;
             const price = document.getElementById('adPrice').value;
             const country = document.getElementById('adCountry').value;
-            const days = document.getElementById('adDays').value;
+            const payment = document.getElementById('adPayment').value;
+            const duration = document.getElementById('adDuration').value;
+            const terms = document.getElementById('adTerms').checked;
 
-            if(!name || !price || !country || !days) { alert("Please fill all fields."); return; }
+            if(!volume || !qty || !price) return alert("Please fill all fields.");
+            if(!terms) return alert("You must accept the Terms and Conditions.");
 
             try {
                 await addDoc(collection(db, "marketplace"), {
                     sellerEmail: currentUserEmail,
+                    type: type,
                     cardName: name,
+                    volume: parseFloat(volume),
+                    quantity: parseInt(qty),
                     price: parseFloat(price),
                     country: country,
-                    days: parseInt(days),
+                    payment: payment,
+                    duration: duration,
                     createdAt: new Date()
                 });
                 alert("Ad posted successfully!");
-                document.getElementById('adName').value = ''; document.getElementById('adPrice').value = ''; document.getElementById('adCountry').value = ''; document.getElementById('adDays').value = '';
+                document.getElementById('adVolume').value = ''; document.getElementById('adQty').value = ''; document.getElementById('adPrice').value = ''; document.getElementById('adTerms').checked = false;
                 loadMarketplace();
             } catch (e) {
-                alert("Error posting ad: Please make sure Firestore is enabled in Firebase. " + e.message);
+                alert("Error posting ad: " + e.message);
             }
         };
 
@@ -396,20 +527,24 @@
             
             try {
                 const querySnapshot = await getDocs(collection(db, "marketplace"));
-                if(querySnapshot.empty) { grid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No ads posted yet. Be the first!</p>'; return; }
+                if(querySnapshot.empty) { grid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No ads posted yet.</p>'; return; }
                 
                 let html = "";
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    let tagColor = data.type === 'Buy' ? '#d1fae5' : '#fee2e2';
+                    let tagText = data.type === 'Buy' ? '#065f46' : '#991b1b';
                     html += `
                     <div class="market-card">
                         <div class="market-info">
-                            <h3>${data.cardName} Gift Card</h3>
+                            <h3><span style="font-size:0.7rem;background:${tagColor};color:${tagText};padding:2px 8px;border-radius:4px;margin-right:5px;">${data.type}</span> ${data.cardName}</h3>
                             <p><i class="fas fa-user"></i> ${data.sellerEmail}</p>
-                            <p><i class="fas fa-globe"></i> ${data.country} • ${data.days} days</p>
+                            <p><i class="fas fa-globe"></i> ${data.country} • ${data.duration} mins</p>
+                            <p><i class="fas fa-credit-card"></i> ${data.payment}</p>
                         </div>
                         <div>
-                            <div class="market-price">$${data.price.toFixed(2)}</div>
+                            <div class="market-price">$${data.price.toFixed(2)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">/ $1</span></div>
+                            <p style="text-align:right; font-size:0.8rem; margin-top:3px;">Vol: $${data.volume} | Qty: ${data.quantity}</p>
                             <div class="market-actions">
                                 <button class="btn-sm btn-chat" onclick="openLiveChat()"><i class="fas fa-comment"></i> Contact Seller</button>
                             </div>
@@ -419,7 +554,7 @@
                 });
                 grid.innerHTML = html;
             } catch (e) {
-                grid.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading ads. Make sure Firestore is enabled.</p>';
+                grid.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading ads.</p>';
             }
         }
 
@@ -456,7 +591,7 @@
             if(existingItem) { existingItem.qty += currentItem.qty; } else { cart.push({...currentItem}); }
             closeModal();
             updateCartUI();
-            switchView('cart', document.querySelectorAll('.nav-link')[4]);
+            switchView('cart', document.querySelectorAll('.nav-link')[3]);
         };
 
         window.removeFromCart = (index) => { cart.splice(index, 1); updateCartUI(); };
