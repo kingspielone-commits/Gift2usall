@@ -68,7 +68,7 @@
         .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: 0.2s; position: relative; }
         .product-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         
-        /* Image styling */
+        /* REAL PICTURES */
         .card-image-container { width: 100%; height: 140px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; padding: 10px;}
         .card-image-container img { width: 100%; height: 100%; object-fit: contain; }
 
@@ -411,126 +411,67 @@
             }
         };
 
-        // --- DATA WITH REAL CLEARBIT LOGOS (NO BROKEN IMAGES) ---
+        // --- REAL GIFT CARD PICTURES ---
         const categories = [
             { name: "Shopping & Retail", items: [
-                {name: "Amazon", logo: "https://logo.clearbit.com/amazon.com"}, 
-                {name: "eBay", logo: "https://logo.clearbit.com/ebay.com"}, 
-                {name: "Walmart", logo: "https://logo.clearbit.com/walmart.com"}, 
-                {name: "Target", logo: "https://logo.clearbit.com/target.com"},
-                {name: "Nike", logo: "https://logo.clearbit.com/nike.com"},
-                {name: "Adidas", logo: "https://logo.clearbit.com/adidas.com"},
-                {name: "Zara", logo: "https://logo.clearbit.com/zara.com"},
-                {name: "H&M", logo: "https://logo.clearbit.com/hm.com"},
-                {name: "Sephora", logo: "https://logo.clearbit.com/sephora.com"}
+                {name: "Amazon", logo: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "eBay", logo: "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Walmart", logo: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Target", logo: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Gaming", items: [
-                {name: "Steam", logo: "https://logo.clearbit.com/steampowered.com"}, 
-                {name: "PlayStation", logo: "https://logo.clearbit.com/playstation.com"}, 
-                {name: "Xbox", logo: "https://logo.clearbit.com/xbox.com"}, 
-                {name: "Roblox", logo: "https://logo.clearbit.com/roblox.com"}
+                {name: "Steam", logo: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "PlayStation", logo: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Xbox", logo: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Roblox", logo: "https://images.unsplash.com/photo-1636487658473-8b6dcc1456b3?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Entertainment", items: [
-                {name: "Netflix", logo: "https://logo.clearbit.com/netflix.com"}, 
-                {name: "Spotify", logo: "https://logo.clearbit.com/spotify.com"}, 
-                {name: "Disney+", logo: "https://logo.clearbit.com/disneyplus.com"}, 
-                {name: "Twitch", logo: "https://logo.clearbit.com/twitch.tv"}
+                {name: "Netflix", logo: "https://images.unsplash.com/photo-1574375927938-d5a98e8efe85?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Spotify", logo: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Disney+", logo: "https://images.unsplash.com/photo-1601132359864-c974e79890ac?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Twitch", logo: "https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Technology", items: [
-                {name: "Apple", logo: "https://logo.clearbit.com/apple.com"}, 
-                {name: "Google Play", logo: "https://logo.clearbit.com/play.google.com"}, 
-                {name: "Microsoft", logo: "https://logo.clearbit.com/microsoft.com"}, 
-                {name: "Adobe", logo: "https://logo.clearbit.com/adobe.com"}
+                {name: "Apple", logo: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Google Play", logo: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Microsoft", logo: "https://images.unsplash.com/photo-1625014618427-a01b1d1e2ab5?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Adobe", logo: "https://images.unsplash.com/photo-1626785779625-4b1eb5c8ce58?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Food & Restaurants", items: [
-                {name: "Starbucks", logo: "https://logo.clearbit.com/starbucks.com"}, 
-                {name: "McDonald's", logo: "https://logo.clearbit.com/mcdonalds.com"}, 
-                {name: "Domino's", logo: "https://logo.clearbit.com/dominos.com"}, 
-                {name: "Uber Eats", logo: "https://logo.clearbit.com/ubereats.com"}
+                {name: "Starbucks", logo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "McDonald's", logo: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Domino's", logo: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Uber Eats", logo: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Travel & Accommodation", items: [
-                {name: "Airbnb", logo: "https://logo.clearbit.com/airbnb.com"}, 
-                {name: "Booking.com", logo: "https://logo.clearbit.com/booking.com"}, 
-                {name: "Expedia", logo: "https://logo.clearbit.com/expedia.com"}, 
-                {name: "Hotels.com", logo: "https://logo.clearbit.com/hotels.com"}
+                {name: "Airbnb", logo: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Booking.com", logo: "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Expedia", logo: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Hotels.com", logo: "https://images.unsplash.com/photo-1542314831-c6a4d14b83df?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Financial & Prepaid", items: [
-                {name: "Visa", logo: "https://logo.clearbit.com/visa.com"}, 
-                {name: "Mastercard", logo: "https://logo.clearbit.com/mastercard.com"}, 
-                {name: "American Express", logo: "https://logo.clearbit.com/americanexpress.com"}, 
-                {name: "Vanilla Visa", logo: "https://ui-avatars.com/api/?name=Vanilla+Visa&background=random&color=fff&size=200&bold=true"}
+                {name: "Visa", logo: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Mastercard", logo: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "American Express", logo: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Vanilla Visa", logo: "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Home & Furniture", items: [
-                {name: "IKEA", logo: "https://logo.clearbit.com/ikea.com"}, 
-                {name: "Home Depot", logo: "https://logo.clearbit.com/homedepot.com"}, 
-                {name: "Lowe's", logo: "https://logo.clearbit.com/lowes.com"}, 
-                {name: "Wayfair", logo: "https://logo.clearbit.com/wayfair.com"}
+                {name: "IKEA", logo: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Home Depot", logo: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Lowe's", logo: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Wayfair", logo: "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "Electronics", items: [
-                {name: "Best Buy", logo: "https://logo.clearbit.com/bestbuy.com"}, 
-                {name: "GameStop", logo: "https://logo.clearbit.com/gamestop.com"}, 
-                {name: "Currys", logo: "https://logo.clearbit.com/currys.co.uk"}, 
-                {name: "MediaMarkt", logo: "https://logo.clearbit.com/mediamarkt.com"}
+                {name: "Best Buy", logo: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "GameStop", logo: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Currys", logo: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "MediaMarkt", logo: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=60"}
             ]},
             { name: "UK Regional", items: [
-                {name: "Argos", logo: "https://logo.clearbit.com/argos.co.uk"}, 
-                {name: "John Lewis", logo: "https://logo.clearbit.com/johnlewis.com"}, 
-                {name: "Tesco", logo: "https://logo.clearbit.com/tesco.com"}, 
-                {name: "Sainsbury's", logo: "https://logo.clearbit.com/sainsburys.co.uk"}
-            ]},
-            { name: "Germany Regional", items: [
-                {name: "Zalando", logo: "https://logo.clearbit.com/zalando.com"}, 
-                {name: "MediaMarkt", logo: "https://logo.clearbit.com/mediamarkt.com"}, 
-                {name: "Saturn", logo: "https://logo.clearbit.com/saturn.de"}, 
-                {name: "Douglas", logo: "https://logo.clearbit.com/douglas.de"}
-            ]},
-            { name: "France Regional", items: [
-                {name: "Fnac", logo: "https://logo.clearbit.com/fnac.com"}, 
-                {name: "Carrefour", logo: "https://logo.clearbit.com/carrefour.fr"}, 
-                {name: "Decathlon", logo: "https://logo.clearbit.com/decathlon.com"}, 
-                {name: "Sephora", logo: "https://logo.clearbit.com/sephora.com"}
-            ]},
-            { name: "Australia Regional", items: [
-                {name: "JB Hi-Fi", logo: "https://logo.clearbit.com/jbhifi.com.au"}, 
-                {name: "Myer", logo: "https://logo.clearbit.com/myer.com.au"}, 
-                {name: "Kmart", logo: "https://logo.clearbit.com/kmart.com.au"}, 
-                {name: "David Jones", logo: "https://logo.clearbit.com/davidjones.com"}
-            ]},
-            { name: "Canada Regional", items: [
-                {name: "Canadian Tire", logo: "https://logo.clearbit.com/canadiantire.ca"}, 
-                {name: "Indigo", logo: "https://logo.clearbit.com/indigo.ca"}, 
-                {name: "Hudson's Bay", logo: "https://logo.clearbit.com/thebay.com"}, 
-                {name: "Best Buy", logo: "https://logo.clearbit.com/bestbuy.ca"}
-            ]},
-            { name: "India Regional", items: [
-                {name: "Flipkart", logo: "https://logo.clearbit.com/flipkart.com"}, 
-                {name: "Myntra", logo: "https://logo.clearbit.com/myntra.com"}, 
-                {name: "Amazon India", logo: "https://logo.clearbit.com/amazon.in"}, 
-                {name: "Nykaa", logo: "https://logo.clearbit.com/nykaa.com"}
-            ]},
-            { name: "Digital Payments", items: [
-                {name: "Paysafecard", logo: "https://logo.clearbit.com/paysafecard.com"}, 
-                {name: "Neosurf", logo: "https://logo.clearbit.com/neosurf.com"}, 
-                {name: "Flexepin", logo: "https://logo.clearbit.com/flexepin.com"}, 
-                {name: "Tremendous", logo: "https://logo.clearbit.com/tremendous.com"}
-            ]},
-            { name: "Music & Audio", items: [
-                {name: "Apple Music", logo: "https://logo.clearbit.com/music.apple.com"}, 
-                {name: "Deezer", logo: "https://logo.clearbit.com/deezer.com"}, 
-                {name: "Audible", logo: "https://logo.clearbit.com/audible.com"}, 
-                {name: "Spotify", logo: "https://logo.clearbit.com/spotify.com"}
-            ]},
-            { name: "Sports & Fitness", items: [
-                {name: "Lululemon", logo: "https://logo.clearbit.com/lululemon.com"}, 
-                {name: "Nike", logo: "https://logo.clearbit.com/nike.com"}, 
-                {name: "Adidas", logo: "https://logo.clearbit.com/adidas.com"}, 
-                {name: "Under Armour", logo: "https://logo.clearbit.com/underarmour.com"}
-            ]},
-            { name: "Beauty & Personal Care", items: [
-                {name: "AC Cosmetics", logo: "https://ui-avatars.com/api/?name=AC+Cosmetics&background=random&color=fff&size=200&bold=true"}, 
-                {name: "Ulta Beauty", logo: "https://logo.clearbit.com/ulta.com"}, 
-                {name: "Bath & Body Works", logo: "https://logo.clearbit.com/bathandbodyworks.com"}, 
-                {name: "Victoria's Secret", logo: "https://logo.clearbit.com/victoriassecret.com"}
+                {name: "Argos", logo: "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "John Lewis", logo: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Tesco", logo: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop&q=60"}, 
+                {name: "Sainsbury's", logo: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=500&auto=format&fit=crop&q=60"}
             ]}
         ];
 
