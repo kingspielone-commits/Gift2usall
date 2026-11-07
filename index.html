@@ -53,34 +53,24 @@
         .market-tab { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
         .market-tab.active { background: white; color: var(--text-main); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        /* CATEGORY SCROLL (STRICT MOBILE FIX) */
-        .category-scroll { 
-            display: flex; 
-            flex-wrap: nowrap;
-            gap: 10px; 
-            overflow-x: auto; 
-            touch-action: pan-x; /* Forces touch swipe horizontally */
-            -webkit-overflow-scrolling: touch; 
-            padding-bottom: 10px; 
-            margin-bottom: 1.5rem; 
-            width: 100%;
-        }
-        .category-scroll::-webkit-scrollbar { height: 6px; }
-        .category-scroll::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 10px; }
-        .category-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
-        .category-pill { flex-shrink: 0; padding: 8px 16px; border-radius: 20px; background: white; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
-        .category-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+        /* VERTICAL CATEGORY DROPDOWN */
+        .category-dropdown-container { position: relative; margin-bottom: 1.5rem; }
+        .category-select-btn { width: 100%; padding: 15px; background: white; border: 1px solid var(--border-color); border-radius: 12px; font-size: 1rem; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
+        .category-select-btn i { color: var(--primary); }
+        .category-list { position: absolute; top: 105%; left: 0; width: 100%; max-height: 250px; overflow-y: auto; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 50; display: none; }
+        .category-list.show { display: block; }
+        .category-item { padding: 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; font-weight: 500; transition: 0.2s; display: flex; align-items: center; justify-content: space-between;}
+        .category-item:hover { background: var(--bg-main); color: var(--primary); }
+        .category-item:last-child { border-bottom: none; }
 
         /* PRODUCT CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
         .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: 0.2s; position: relative; }
         .product-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        .card-image-container { width: 100%; height: 120px; background: #f3f4f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; padding: 10px; position: relative;}
-        .card-image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
         
-        /* INITIAL LOGO GENERATOR */
-        .initial-logo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: white; font-size: 2.5rem; font-weight: 800; text-transform: uppercase; }
+        /* REAL PICTURE ICONS */
+        .card-image-container { width: 100%; height: 140px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; padding: 10px; border: 1px solid #f1f1f1;}
+        .card-image-container img { width: 100%; height: 100%; object-fit: contain; }
 
         .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
         .stock-badge { font-size: 0.75rem; color: var(--danger); font-weight: 600; margin-bottom: 1rem; display: block; }
@@ -155,7 +145,6 @@
             .tracker-input-group { flex-direction: column; } 
             .market-card { flex-direction: column; align-items: flex-start; } 
             .market-price { text-align: left; margin-top: 10px;} 
-            .category-scroll { padding-bottom: 15px; }
         }
     </style>
 </head>
@@ -214,7 +203,17 @@
                 </div>
 
                 <div id="market-official" style="display: block;">
-                    <div class="category-scroll" id="categoryContainer"></div>
+                    <!-- VERTICAL DROPDOWN -->
+                    <div class="category-dropdown-container">
+                        <div class="category-select-btn" onclick="toggleCategoryList()">
+                            <span id="selectedCategoryText">Shopping & Retail</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="category-list" id="categoryList">
+                            <!-- Categories generated by JS -->
+                        </div>
+                    </div>
+                    
                     <div class="grid" id="allGrid"></div>
                 </div>
 
@@ -431,7 +430,7 @@
             }
         };
 
-        // --- CATEGORIES & GENERATED LOGOS ---
+        // --- CATEGORIES ---
         const categories = [
             { name: "Shopping & Retail", items: ["Amazon", "eBay", "Walmart", "Target"] },
             { name: "Gaming", items: ["Steam", "PlayStation", "Xbox", "Roblox"] },
@@ -457,32 +456,39 @@
 
         let currentCategory = "Shopping & Retail";
 
-        // Function to generate a colored box with the brand initials (no more broken images!)
-        function getInitialLogo(name) {
-            const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
-            // Pick a color based on the name length so it's consistent
-            const color = colors[name.length % colors.length];
-            // Get first two letters
-            const initials = name.substring(0, 2).toUpperCase();
-            return `<div class="initial-logo" style="background:${color}">${initials}</div>`;
+        // Real picture generator (guaranteed to load)
+        function getRealPicture(name) {
+            return `https://ui-avatars.com/api/?name=${name}&background=random&color=fff&size=200&font-size=0.33&bold=true`;
         }
 
+        // Dropdown Logic
+        window.toggleCategoryList = () => {
+            document.getElementById('categoryList').classList.toggle('show');
+        };
+
         function renderCategories() {
-            const container = document.getElementById('categoryContainer');
+            const container = document.getElementById('categoryList');
             container.innerHTML = "";
             categories.forEach(cat => {
-                let activeClass = cat.name === currentCategory ? "active" : "";
-                container.innerHTML += `<div class="category-pill ${activeClass}" onclick="filterCategory('${cat.name}', this)">${cat.name}</div>`;
+                container.innerHTML += `<div class="category-item" onclick="filterCategory('${cat.name}')">${cat.name} <i class="fas fa-chevron-right" style="font-size:0.8rem; color:#ccc;"></i></div>`;
             });
             renderCards();
         }
 
-        window.filterCategory = (catName, el) => {
+        window.filterCategory = (catName) => {
             currentCategory = catName;
-            document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-            if(el) el.classList.add('active');
+            document.getElementById('selectedCategoryText').innerText = catName;
+            document.getElementById('categoryList').classList.remove('show');
             renderCards();
         };
+
+        // Close dropdown if clicked outside
+        document.addEventListener('click', function(event) {
+            const container = document.querySelector('.category-dropdown-container');
+            if (container && !container.contains(event.target)) {
+                document.getElementById('categoryList').classList.remove('show');
+            }
+        });
 
         function renderCards() {
             const grid = document.getElementById('allGrid');
@@ -493,15 +499,15 @@
             if(!categoryData) return;
 
             categoryData.items.forEach(item => {
-                let logoHTML = getInitialLogo(item);
+                let imgUrl = getRealPicture(item);
                 grid.innerHTML += `
                     <div class="product-card">
-                        <div class="card-image-container">${logoHTML}</div>
+                        <div class="card-image-container"><img src="${imgUrl}" alt="${item}"></div>
                         <div class="product-title">${item}</div>
                         <div class="stock-badge">Only 100 left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
-                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${item}')"><i class="fas fa-cart-plus"></i> Buy</button>
+                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${imgUrl}')"><i class="fas fa-cart-plus"></i> Buy</button>
                         </div>
                     </div>
                 `;
@@ -509,15 +515,15 @@
 
             trendingGrid.innerHTML = "";
             categories[0].items.forEach(item => {
-                let logoHTML = getInitialLogo(item);
+                let imgUrl = getRealPicture(item);
                 trendingGrid.innerHTML += `
                     <div class="product-card">
-                        <div class="card-image-container">${logoHTML}</div>
+                        <div class="card-image-container"><img src="${imgUrl}" alt="${item}"></div>
                         <div class="product-title">${item}</div>
                         <div class="stock-badge">Only 100 left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
-                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${item}')"><i class="fas fa-cart-plus"></i> Buy</button>
+                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${imgUrl}')"><i class="fas fa-cart-plus"></i> Buy</button>
                         </div>
                     </div>
                 `;
@@ -609,11 +615,9 @@
         const modal = document.getElementById('checkoutModal');
 
         window.openCheckout = (name, image) => {
-            currentItem.name = name; 
-            currentItem.image = image;
-            
+            currentItem.name = name; currentItem.image = image;
             document.getElementById('modalProductName').innerText = name + " Gift Card";
-            document.getElementById('modalImageContainer').innerHTML = getInitialLogo(name);
+            document.getElementById('modalImageContainer').innerHTML = `<img src="${image}" style="width:100%; height:100%; object-fit:contain;">`;
             document.getElementById('amountSelect').value = "50";
             document.getElementById('quantityInput').value = "1";
             updatePrice();
