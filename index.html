@@ -43,6 +43,9 @@
         .user-info h4 { font-size: 0.85rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
         .user-info p { font-size: 0.7rem; color: var(--text-muted); }
 
+        /* TOP MOBILE HEADER (NEW PROFILE ICON) */
+        .mobile-header { display: none; }
+
         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 1.5rem 2rem; max-width: 1400px; }
         .view { display: none; animation: fadeIn 0.3s; } .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -120,13 +123,22 @@
         /* MOBILE NAV */
         .mobile-nav { display: none; }
         @media (max-width: 900px) { 
-            body { display: block; padding-bottom: 60px; } 
+            body { display: block; padding-bottom: 60px; padding-top: 60px; } 
             .sidebar { display: none; } 
+            
+            /* NEW MOBILE HEADER */
+            .mobile-header { display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; width: 100%; background: #fff; height: 60px; padding: 0 1rem; border-bottom: 1px solid var(--border-color); z-index: 1000; }
+            .mobile-header .brand { margin-bottom: 0; font-size: 1.2rem; }
+            .mobile-profile-btn { width: 35px; height: 35px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
+
             .main-content { margin-left: 0; padding: 1rem; } 
+            
+            /* REMOVED PROFILE FROM BOTTOM NAV */
             .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; align-items: center; } 
             .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} 
             .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } 
             .mobile-nav-item.active { color: var(--primary); } 
+            
             .plus-btn-wrapper { position: relative; top: -15px; }
             .plus-btn { background: var(--success); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16,185,129,0.4); font-size: 1.5rem; }
             .plus-btn-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--text-muted); font-size: 0.65rem; white-space: nowrap; }
@@ -135,10 +147,11 @@
             .market-price { text-align: left; margin-top: 10px;} 
         }
 
-        /* Move Tawk.to chat up so it doesn't block the mobile nav */
+        /* FORCE TAWK.TO CHAT TO SIT HIGHER ON MOBILE */
         @media (max-width: 900px) {
             .widget-visible {
                 bottom: 80px !important; 
+                right: 15px !important;
             }
         }
     </style>
@@ -161,6 +174,13 @@
     </div>
     
     <div id="appContent" style="display: none; width: 100%;">
+        
+        <!-- NEW MOBILE HEADER -->
+        <div class="mobile-header">
+            <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
+            <div class="mobile-profile-btn" id="mobileProfileBtn" onclick="switchView('profile', document.querySelectorAll('.nav-link')[4])">U</div>
+        </div>
+
         <aside class="sidebar">
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
             <div class="nav-menu">
@@ -274,6 +294,7 @@
             </div>
         </main>
 
+        <!-- BOTTOM NAV (NO PROFILE BUTTON) -->
         <nav class="mobile-nav">
             <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
             <div class="mobile-nav-item" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i><span>Market</span></div>
@@ -287,7 +308,6 @@
                 <i class="fas fa-shopping-cart"></i><span>Cart</span>
                 <span class="cart-badge" id="cartBadgeMobile" style="position:absolute; top: 0; right: 5px;">0</span>
             </div>
-            <div class="mobile-nav-item" onclick="switchView('profile', this)"><i class="fas fa-user"></i><span>Profile</span></div>
         </nav>
     </div>
 
@@ -319,8 +339,17 @@
         </div>
     </div>
 
-    <script>
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();(function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];s1.async=true;s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();
+    <!-- TAWK.TO SCRIPT (YOUR EXACT ID) -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
     </script>
 
     <script type="module">
@@ -355,11 +384,22 @@
                 document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = user.email;
                 document.getElementById('userAvatarLetter').innerText = initial; document.getElementById('profileAvatarLetter').innerText = initial;
                 
+                // Update Mobile Header Profile Icon
+                const mobileBtn = document.getElementById('mobileProfileBtn');
+                if(mobileBtn) { mobileBtn.innerText = initial; }
+
                 document.getElementById('tradingVolumeDisplay').innerText = "$" + userTradingVolume.toFixed(2);
                 document.getElementById('lockVolumeDisplay1').innerText = "$" + userTradingVolume.toFixed(2);
                 document.getElementById('lockVolumeDisplay2').innerText = "$" + userTradingVolume.toFixed(2);
 
-                if (user.photoURL) { const img = document.getElementById('userAvatar'); img.src = user.photoURL; img.style.display = 'block'; document.getElementById('userAvatarLetter').style.display = 'none'; }
+                if (user.photoURL) { 
+                    const img = document.getElementById('userAvatar'); img.src = user.photoURL; img.style.display = 'block'; 
+                    document.getElementById('userAvatarLetter').style.display = 'none'; 
+                    if(mobileBtn) {
+                        mobileBtn.style.background = `url('${user.photoURL}') center/cover`;
+                        mobileBtn.innerText = "";
+                    }
+                }
                 loadMarketplace();
             } else {
                 loginPage.style.display = 'flex'; appContent.style.display = 'none'; document.getElementById('emailInput').value = ''; document.getElementById('passwordInput').value = '';
