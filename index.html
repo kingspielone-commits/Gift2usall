@@ -53,17 +53,19 @@
         .market-tab { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
         .market-tab.active { background: white; color: var(--text-main); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        /* CATEGORY SCROLL (FIXED FOR MOBILE) */
+        /* CATEGORY SCROLL (STRICT MOBILE FIX) */
         .category-scroll { 
             display: flex; 
+            flex-wrap: nowrap;
             gap: 10px; 
-            overflow-x: scroll; /* Forces scroll */
-            -webkit-overflow-scrolling: touch; /* Smooth swipe on iOS */
+            overflow-x: auto; 
+            touch-action: pan-x; /* Forces touch swipe horizontally */
+            -webkit-overflow-scrolling: touch; 
             padding-bottom: 10px; 
             margin-bottom: 1.5rem; 
             width: 100%;
         }
-        .category-scroll::-webkit-scrollbar { height: 6px; display: block; }
+        .category-scroll::-webkit-scrollbar { height: 6px; }
         .category-scroll::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 10px; }
         .category-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
@@ -74,8 +76,12 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
         .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: 0.2s; position: relative; }
         .product-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        .card-image-container { width: 100%; height: 120px; background: #f3f4f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; padding: 10px;}
+        .card-image-container { width: 100%; height: 120px; background: #f3f4f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; padding: 10px; position: relative;}
         .card-image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        /* INITIAL LOGO GENERATOR */
+        .initial-logo { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: white; font-size: 2.5rem; font-weight: 800; text-transform: uppercase; }
+
         .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
         .stock-badge { font-size: 0.75rem; color: var(--danger); font-weight: 600; margin-bottom: 1rem; display: block; }
         .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 1rem;}
@@ -149,7 +155,7 @@
             .tracker-input-group { flex-direction: column; } 
             .market-card { flex-direction: column; align-items: flex-start; } 
             .market-price { text-align: left; margin-top: 10px;} 
-            .category-scroll { padding-bottom: 15px; } /* Extra padding so scrollbar doesn't block clicks */
+            .category-scroll { padding-bottom: 15px; }
         }
     </style>
 </head>
@@ -195,14 +201,12 @@
         </aside>
         
         <main class="main-content">
-            <!-- DASHBOARD -->
             <div id="view-dashboard" class="view active">
                 <div class="hero-banner"><div><h2 style="font-size: 1.4rem; margin-bottom: 5px;">Welcome, <span id="dashName">User</span>!</h2><p style="color: var(--text-muted); font-size: 0.85rem;">Premium digital gift cards. Secure crypto payments.</p></div><i class="fas fa-shield-halved" style="font-size: 3rem; color: var(--primary); opacity: 0.8;"></i></div>
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;"><i class="fas fa-fire" style="color: var(--warning);"></i> Trending Now</h3>
                 <div class="grid" id="trendingGrid"></div>
             </div>
 
-            <!-- MARKETPLACE -->
             <div id="view-marketplace" class="view">
                 <div class="market-tabs">
                     <div class="market-tab active" onclick="switchMarketTab('official', this)"><i class="fas fa-check-circle"></i> Official Store</div>
@@ -229,7 +233,6 @@
                 </div>
             </div>
 
-            <!-- POST AD -->
             <div id="view-postad" class="view">
                 <div id="p2pPostLockScreen" class="lock-screen" style="display: none;">
                     <i class="fas fa-lock"></i>
@@ -252,7 +255,6 @@
                 </div>
             </div>
 
-            <!-- CART -->
             <div id="view-cart" class="view">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Your Shopping Cart</h3>
                 <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); max-width: 600px;">
@@ -264,7 +266,6 @@
                 </div>
             </div>
 
-            <!-- ORDERS -->
             <div id="view-orders" class="view">
                 <div class="prezzee-tracker-card">
                     <div style="font-size: 50px; margin-bottom: 15px;">🎁</div>
@@ -274,7 +275,6 @@
                 </div>
             </div>
 
-            <!-- PROFILE -->
             <div id="view-profile" class="view">
                 <div class="volume-card">
                     <div><h3>Total Trading Volume</h3><h2 id="tradingVolumeDisplay">$0.00</h2></div>
@@ -431,131 +431,41 @@
             }
         };
 
-        // --- DATA WITH REAL LOGOS ---
+        // --- CATEGORIES & GENERATED LOGOS ---
         const categories = [
-            { name: "Shopping & Retail", items: [
-                {name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/1024px-Amazon_icon.svg.png"}, 
-                {name: "eBay", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/1200px-EBay_logo.svg.png"}, 
-                {name: "Walmart", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Walmart_logo.svg/1200px-Walmart_logo.svg.png"}, 
-                {name: "Target", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Target_logo.svg/1024px-Target_logo.svg.png"}
-            ]},
-            { name: "Gaming", items: [
-                {name: "Steam", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/2048px-Steam_icon_logo.svg.png"}, 
-                {name: "PlayStation", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/2560px-PlayStation_logo.svg.png"}, 
-                {name: "Xbox", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/1024px-Xbox_one_logo.svg.png"}, 
-                {name: "Roblox", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_logo.svg/1200px-Roblox_logo.svg.png"}
-            ]},
-            { name: "Entertainment", items: [
-                {name: "Netflix", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"}, 
-                {name: "Spotify", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"}, 
-                {name: "Disney+", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/2560px-Disney%2B_logo.svg.png"}, 
-                {name: "Twitch", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Twitch_Glitch_Logo_Purple.svg/1200px-Twitch_Glitch_Logo_Purple.svg.png"}
-            ]},
-            { name: "Technology", items: [
-                {name: "Apple", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png"}, 
-                {name: "Google Play", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1024px-Google_Play_Store_badge_EN.svg.png"}, 
-                {name: "Microsoft", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png"}, 
-                {name: "Adobe", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Adobe_Corporate_Logo.png/1200px-Adobe_Corporate_Logo.png"}
-            ]},
-            { name: "Food & Restaurants", items: [
-                {name: "Starbucks", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1200px-Starbucks_Corporation_Logo_2011.svg.png"}, 
-                {name: "McDonald's", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png"}, 
-                {name: "Domino's", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Domino%27s_pizza_logo.svg/1200px-Domino%27s_pizza_logo.svg.png"}, 
-                {name: "Uber Eats", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Uber_Eats_2020_logo.svg/2560px-Uber_Eats_2020_logo.svg.png"}
-            ]},
-            { name: "Travel & Accommodation", items: [
-                {name: "Airbnb", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"}, 
-                {name: "Booking.com", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/2560px-Booking.com_logo.svg.png"}, 
-                {name: "Expedia", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Expedia_2012_logo.svg/2560px-Expedia_2012_logo.svg.png"}, 
-                {name: "Hotels.com", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Hotels.com_logo.svg/1200px-Hotels.com_logo.svg.png"}
-            ]},
-            { name: "Fashion & Beauty", items: [
-                {name: "Nike", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2560px-Logo_NIKE.svg.png"}, 
-                {name: "Adidas", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png"}, 
-                {name: "Zara", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Zara_Logo.svg/2560px-Zara_Logo.svg.png"}, 
-                {name: "Sephora", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Sephora_logo.svg/1200px-Sephora_logo.svg.png"}
-            ]},
-            { name: "Financial & Prepaid", items: [
-                {name: "Visa", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"}, 
-                {name: "Mastercard", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"}, 
-                {name: "American Express", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1200px-American_Express_logo_%282018%29.svg.png"}, 
-                {name: "Vanilla Visa", logo: "https://ui-avatars.com/api/?name=Vanilla+Visa&background=random&color=fff&size=200&bold=true"}
-            ]},
-            { name: "Home & Furniture", items: [
-                {name: "IKEA", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/2560px-Ikea_logo.svg.png"}, 
-                {name: "Home Depot", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/TheHomeDepot.svg/2560px-TheHomeDepot.svg.png"}, 
-                {name: "Lowe's", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Lowe%27s_logo.svg/2560px-Lowe%27s_logo.svg.png"}, 
-                {name: "Wayfair", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Wayfair_logo.svg/2560px-Wayfair_logo.svg.png"}
-            ]},
-            { name: "Electronics", items: [
-                {name: "Best Buy", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Best_Buy_Logo.svg/2560px-Best_Buy_Logo.svg.png"}, 
-                {name: "GameStop", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/GameStop_logo.svg/2560px-GameStop_logo.svg.png"}, 
-                {name: "Currys", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Currys_logo.svg/2560px-Currys_logo.svg.png"}, 
-                {name: "MediaMarkt", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/MediaMarkt_logo.svg/2560px-MediaMarkt_logo.svg.png"}
-            ]},
-            { name: "UK Regional", items: [
-                {name: "Argos", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Argos_logo.svg/2560px-Argos_logo.svg.png"}, 
-                {name: "John Lewis", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/John_Lewis_logo.svg/2560px-John_Lewis_logo.svg.png"}, 
-                {name: "Tesco", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Tesco_Logo.svg/2560px-Tesco_Logo.svg.png"}, 
-                {name: "Sainsbury's", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/J_Sainsbury_logo.svg/2560px-J_Sainsbury_logo.svg.png"}
-            ]},
-            { name: "Germany Regional", items: [
-                {name: "Zalando", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Zalando_logo.svg/2560px-Zalando_logo.svg.png"}, 
-                {name: "MediaMarkt", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/MediaMarkt_logo.svg/2560px-MediaMarkt_logo.svg.png"}, 
-                {name: "Saturn", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Saturn_Logo_2017.svg/2560px-Saturn_Logo_2017.svg.png"}, 
-                {name: "Douglas", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Douglas_logo.svg/2560px-Douglas_logo.svg.png"}
-            ]},
-            { name: "France Regional", items: [
-                {name: "Fnac", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Fnac_logo.svg/2560px-Fnac_logo.svg.png"}, 
-                {name: "Carrefour", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Carrefour_logo.svg/2560px-Carrefour_logo.svg.png"}, 
-                {name: "Decathlon", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Decathlon_Logo.svg/2560px-Decathlon_Logo.svg.png"}, 
-                {name: "Sephora", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Sephora_logo.svg/1200px-Sephora_logo.svg.png"}
-            ]},
-            { name: "Australia Regional", items: [
-                {name: "JB Hi-Fi", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JB_Hi-Fi_logo.svg/2560px-JB_Hi-Fi_logo.svg.png"}, 
-                {name: "Myer", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Myer_logo.svg/2560px-Myer_logo.svg.png"}, 
-                {name: "Kmart", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Kmart_Australia_logo.svg/2560px-Kmart_Australia_logo.svg.png"}, 
-                {name: "David Jones", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/David_Jones_logo.svg/2560px-David_Jones_logo.svg.png"}
-            ]},
-            { name: "Canada Regional", items: [
-                {name: "Canadian Tire", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Canadian_Tire_logo.svg/2560px-Canadian_Tire_logo.svg.png"}, 
-                {name: "Indigo", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Indigo_Books_Music_logo.svg/2560px-Indigo_Books_Music_logo.svg.png"}, 
-                {name: "Hudson's Bay", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Hudson%27s_Bay_logo.svg/2560px-Hudson%27s_Bay_logo.svg.png"}, 
-                {name: "Best Buy", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Best_Buy_Logo.svg/2560px-Best_Buy_Logo.svg.png"}
-            ]},
-            { name: "India Regional", items: [
-                {name: "Flipkart", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flipkart_logo.svg/2560px-Flipkart_logo.svg.png"}, 
-                {name: "Myntra", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Myntra_logo.svg/2560px-Myntra_logo.svg.png"}, 
-                {name: "Amazon India", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/1024px-Amazon_icon.svg.png"}, 
-                {name: "Nykaa", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Nykaa_logo.svg/2560px-Nykaa_logo.svg.png"}
-            ]},
-            { name: "Digital Payments", items: [
-                {name: "Paysafecard", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Paysafecard_logo.svg/2560px-Paysafecard_logo.svg.png"}, 
-                {name: "Neosurf", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Neosurf_logo.svg/2560px-Neosurf_logo.svg.png"}, 
-                {name: "Flexepin", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flexepin_logo.svg/2560px-Flexepin_logo.svg.png"}, 
-                {name: "Tremendous", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Tremendous_logo.svg/2560px-Tremendous_logo.svg.png"}
-            ]},
-            { name: "Music & Audio", items: [
-                {name: "Apple Music", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Apple_Music_logo.svg/2560px-Apple_Music_logo.svg.png"}, 
-                {name: "Deezer", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Deezer_logo.svg/2560px-Deezer_logo.svg.png"}, 
-                {name: "Audible", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Audible_logo.svg/2560px-Audible_logo.svg.png"}, 
-                {name: "Spotify", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"}
-            ]},
-            { name: "Sports & Fitness", items: [
-                {name: "Lululemon", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Lululemon_logo.svg/2560px-Lululemon_logo.svg.png"}, 
-                {name: "Nike", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2560px-Logo_NIKE.svg.png"}, 
-                {name: "Adidas", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png"}, 
-                {name: "Under Armour", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Under_Armour_logo.svg/2560px-Under_Armour_logo.svg.png"}
-            ]},
-            { name: "Beauty & Personal Care", items: [
-                {name: "AC Cosmetics", logo: "https://ui-avatars.com/api/?name=AC+Cosmetics&background=random&color=fff&size=200&bold=true"}, 
-                {name: "Ulta Beauty", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Ulta_Beauty_logo.svg/2560px-Ulta_Beauty_logo.svg.png"}, 
-                {name: "Bath & Body Works", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Bath_%26_Body_Works_logo.svg/2560px-Bath_%26_Body_Works_logo.svg.png"}, 
-                {name: "Victoria's Secret", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Victoria%27s_Secret_logo.svg/2560px-Victoria%27s_Secret_logo.svg.png"}
-            ]}
+            { name: "Shopping & Retail", items: ["Amazon", "eBay", "Walmart", "Target"] },
+            { name: "Gaming", items: ["Steam", "PlayStation", "Xbox", "Roblox"] },
+            { name: "Entertainment", items: ["Netflix", "Spotify", "Disney+", "Twitch"] },
+            { name: "Technology", items: ["Apple", "Google Play", "Microsoft", "Adobe"] },
+            { name: "Food & Restaurants", items: ["Starbucks", "McDonald's", "Domino's", "Uber Eats"] },
+            { name: "Travel & Accommodation", items: ["Airbnb", "Booking.com", "Expedia", "Hotels.com"] },
+            { name: "Fashion & Beauty", items: ["Nike", "Adidas", "Zara", "Sephora"] },
+            { name: "Financial & Prepaid", items: ["Visa", "Mastercard", "American Express", "Vanilla Visa"] },
+            { name: "Home & Furniture", items: ["IKEA", "Home Depot", "Lowe's", "Wayfair"] },
+            { name: "Electronics", items: ["Best Buy", "GameStop", "Currys", "MediaMarkt"] },
+            { name: "UK Regional", items: ["Argos", "John Lewis", "Tesco", "Sainsbury's"] },
+            { name: "Germany Regional", items: ["Zalando", "MediaMarkt", "Saturn", "Douglas"] },
+            { name: "France Regional", items: ["Fnac", "Carrefour", "Decathlon", "Sephora"] },
+            { name: "Australia Regional", items: ["JB Hi-Fi", "Myer", "Kmart", "David Jones"] },
+            { name: "Canada Regional", items: ["Canadian Tire", "Indigo", "Hudson's Bay", "Best Buy"] },
+            { name: "India Regional", items: ["Flipkart", "Myntra", "Amazon India", "Nykaa"] },
+            { name: "Digital Payments", items: ["Paysafecard", "Neosurf", "Flexepin", "Tremendous"] },
+            { name: "Music & Audio", items: ["Apple Music", "Deezer", "Audible", "Spotify"] },
+            { name: "Sports & Fitness", items: ["Lululemon", "Nike", "Adidas", "Under Armour"] },
+            { name: "Beauty & Personal Care", items: ["AC Cosmetics", "Ulta Beauty", "Bath & Body Works", "Victoria's Secret"] }
         ];
 
         let currentCategory = "Shopping & Retail";
+
+        // Function to generate a colored box with the brand initials (no more broken images!)
+        function getInitialLogo(name) {
+            const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'];
+            // Pick a color based on the name length so it's consistent
+            const color = colors[name.length % colors.length];
+            // Get first two letters
+            const initials = name.substring(0, 2).toUpperCase();
+            return `<div class="initial-logo" style="background:${color}">${initials}</div>`;
+        }
 
         function renderCategories() {
             const container = document.getElementById('categoryContainer');
@@ -583,14 +493,15 @@
             if(!categoryData) return;
 
             categoryData.items.forEach(item => {
+                let logoHTML = getInitialLogo(item);
                 grid.innerHTML += `
                     <div class="product-card">
-                        <div class="card-image-container"><img src="${item.logo}" alt="${item.name}"></div>
-                        <div class="product-title">${item.name}</div>
+                        <div class="card-image-container">${logoHTML}</div>
+                        <div class="product-title">${item}</div>
                         <div class="stock-badge">Only 100 left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
-                            <button class="btn-add-cart" onclick="openCheckout('${item.name}', '${item.logo}')"><i class="fas fa-cart-plus"></i> Buy</button>
+                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${item}')"><i class="fas fa-cart-plus"></i> Buy</button>
                         </div>
                     </div>
                 `;
@@ -598,14 +509,15 @@
 
             trendingGrid.innerHTML = "";
             categories[0].items.forEach(item => {
+                let logoHTML = getInitialLogo(item);
                 trendingGrid.innerHTML += `
                     <div class="product-card">
-                        <div class="card-image-container"><img src="${item.logo}" alt="${item.name}"></div>
-                        <div class="product-title">${item.name}</div>
+                        <div class="card-image-container">${logoHTML}</div>
+                        <div class="product-title">${item}</div>
                         <div class="stock-badge">Only 100 left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
-                            <button class="btn-add-cart" onclick="openCheckout('${item.name}', '${item.logo}')"><i class="fas fa-cart-plus"></i> Buy</button>
+                            <button class="btn-add-cart" onclick="openCheckout('${item}', '${item}')"><i class="fas fa-cart-plus"></i> Buy</button>
                         </div>
                     </div>
                 `;
@@ -697,9 +609,11 @@
         const modal = document.getElementById('checkoutModal');
 
         window.openCheckout = (name, image) => {
-            currentItem.name = name; currentItem.image = image;
+            currentItem.name = name; 
+            currentItem.image = image;
+            
             document.getElementById('modalProductName').innerText = name + " Gift Card";
-            document.getElementById('modalImageContainer').innerHTML = `<img src="${image}" style="width:100%; height:100%; object-fit:contain;">`;
+            document.getElementById('modalImageContainer').innerHTML = getInitialLogo(name);
             document.getElementById('amountSelect').value = "50";
             document.getElementById('quantityInput').value = "1";
             updatePrice();
