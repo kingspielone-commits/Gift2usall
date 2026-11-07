@@ -48,15 +48,12 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .hero-banner { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
         
-        /* PRODUCT CARDS (With Images) */
+        /* PRODUCT CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
         .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: 0.2s; position: relative; }
         .product-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        
-        /* Image Styling */
         .card-image-container { width: 100%; height: 140px; background: #f3f4f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; overflow: hidden; }
-        .card-image-container img { max-height: 100%; max-width: 100%; object-fit: cover; }
-        
+        .card-image-container img { width: 100%; height: 100%; object-fit: cover; }
         .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
         .product-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
         .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 1rem;}
@@ -64,7 +61,17 @@
         .btn-add-cart { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;}
         .btn-add-cart:hover { background: #2563eb; }
 
-        /* PREZZEE TRACKER & SUMMARY */
+        /* MARKETPLACE */
+        .market-card { background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .market-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); }
+        .market-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 3px; }
+        .market-price { font-size: 1.4rem; font-weight: 800; color: var(--success); text-align: right; }
+        .market-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .btn-sm { padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
+        .btn-chat { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-order { background: var(--success); color: white; }
+
+        /* PREZZEE TRACKER */
         .prezzee-tracker-card { background: #ffffff; border-radius: 12px; padding: 40px 20px; text-align: center; max-width: 500px; margin: 2rem auto; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         .prezzee-tracker-card h2 { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 10px; line-height: 1.2; }
         .prezzee-tracker-card p { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.5; }
@@ -80,15 +87,13 @@
         .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
         .form-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 1rem; }
         .btn-checkout { width: 100%; padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; border: none; background: var(--success); color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 1rem;}
-
-        /* Cart Items */
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
         .cart-item-info h4 { font-size: 0.9rem; }
         .cart-item-info p { font-size: 0.8rem; color: var(--text-muted); }
         .remove-item { color: var(--danger); cursor: pointer; background: none; border: none; font-size: 1.1rem; }
 
         .mobile-nav { display: none; }
-        @media (max-width: 900px) { body { display: block; padding-bottom: 60px; } .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; } .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; } .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } .mobile-nav-item.active { color: var(--primary); } .chat-btn { position: relative; top: -12px; } .chat-btn .icon-wrap { background: var(--primary); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; } .tracker-input-group { flex-direction: column; } }
+        @media (max-width: 900px) { body { display: block; padding-bottom: 60px; } .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; } .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; } .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } .mobile-nav-item.active { color: var(--primary); } .tracker-input-group { flex-direction: column; } .market-card { flex-direction: column; align-items: flex-start; } .market-price { text-align: left; margin-top: 10px;} }
     </style>
 </head>
 <body>
@@ -113,16 +118,16 @@
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
             <div class="nav-menu">
                 <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore</div>
-                <!-- CART LINK -->
+                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore (Admin)</div>
+                <div class="nav-link" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i> Marketplace</div>
                 <div class="nav-link" onclick="switchView('cart', this)">
                     <span><i class="fas fa-shopping-cart"></i> My Cart</span> 
                     <span class="cart-badge" id="cartBadgeDesktop">0</span>
                 </div>
                 <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
-                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile</div>
+                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile & Post Ad</div>
             </div>
-            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[4])">
+            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[5])">
                 <img id="userAvatar" class="user-avatar" src="" style="display:none;">
                 <div id="userAvatarLetter" class="user-avatar">U</div>
                 <div class="user-info"><h4 id="userName">Loading...</h4><p>Verified User</p></div>
@@ -137,10 +142,21 @@
                 <div class="grid" id="trendingGrid"></div>
             </div>
             
-            <!-- EXPLORE -->
+            <!-- EXPLORE (ADMIN) -->
             <div id="view-explore" class="view">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">All Gift Cards</h3>
                 <div class="grid" id="allGrid"></div>
+            </div>
+
+            <!-- MARKETPLACE (USER ADS) -->
+            <div id="view-marketplace" class="view">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.2rem;">Community Marketplace</h3>
+                    <button class="btn-buy" onclick="switchView('profile', document.querySelectorAll('.nav-link')[5])" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fas fa-plus"></i> Post an Ad</button>
+                </div>
+                <div id="marketGrid">
+                    <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading community ads...</p>
+                </div>
             </div>
 
             <!-- CART -->
@@ -167,15 +183,27 @@
                     <h2>Welcome to the Prezzee<br>eGift Card tracker</h2>
                     <p>Lost an eGift card or just want to check the delivery status? Track your gift here.</p>
                     <div class="tracker-input-group"><input type="text" class="tracker-input" placeholder="Order number"><button class="tracker-btn" onclick="alert('Order tracking requires database setup.')">Track my order</button></div>
-                    <p class="tracker-tip"><strong>Tip:</strong> You can find your order number in your order confirmation email</p>
                 </div>
             </div>
 
-            <!-- PROFILE -->
+            <!-- PROFILE & POST AD -->
             <div id="view-profile" class="view">
-                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <div style="display: flex; align-items: center; gap: 15px;"><div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div><div><h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3><p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p></div></div>
                     <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca;">Logout</button>
+                </div>
+
+                <!-- POST AD FORM -->
+                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color);">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-bullhorn"></i> Create a Listing</h3>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">Post your card to the marketplace for others to buy.</p>
+                    
+                    <div class="input-group"><label>Card Name (e.g., Amazon)</label><input type="text" id="adName" class="input-control" placeholder="Card name"></div>
+                    <div class="input-group"><label>Price ($)</label><input type="number" id="adPrice" class="input-control" placeholder="e.g., 50"></div>
+                    <div class="input-group"><label>Target Countries</label><input type="text" id="adCountry" class="input-control" placeholder="e.g., US, UK, Global"></div>
+                    <div class="input-group"><label>Listing Duration (Days)</label><input type="number" id="adDays" class="input-control" placeholder="e.g., 7"></div>
+                    
+                    <button class="btn-next" onclick="postAd()" style="margin-top: 1rem;"><i class="fas fa-paper-plane"></i> Post Ad</button>
                 </div>
             </div>
         </main>
@@ -183,7 +211,7 @@
         <!-- MOBILE NAV -->
         <nav class="mobile-nav">
             <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="mobile-nav-item" onclick="switchView('explore', this)"><i class="fas fa-compass"></i><span>Explore</span></div>
+            <div class="mobile-nav-item" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i><span>Market</span></div>
             <div class="mobile-nav-item" onclick="switchView('cart', this)">
                 <i class="fas fa-shopping-cart"></i><span>Cart</span>
                 <span class="cart-badge" id="cartBadgeMobile" style="position:absolute; top: 0; right: 5px;">0</span>
@@ -207,10 +235,15 @@
                 <select class="form-control" id="amountSelect" onchange="updatePrice()">
                     <option value="50">$50</option>
                     <option value="100">$100</option>
+                    <option value="150">$150</option>
                     <option value="200">$200</option>
+                    <option value="300">$300</option>
                     <option value="400">$400</option>
                     <option value="500">$500</option>
-                    <option value="1000">$1,000</option>
+                    <option value="600">$600</option>
+                    <option value="1000">$1000</option>
+                    <option value="2500">$2500</option>
+                    <option value="3000">$3000</option>
                 </select>
             </div>
 
@@ -233,14 +266,21 @@
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();(function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];s1.async=true;s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();
     </script>
 
+    <!-- FIREBASE & FIRESTORE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
         const firebaseConfig = { apiKey: "AIzaSyBKDMydDpA_WM6R61MkhPmhpAKNW6fJ8FE", authDomain: "giftall2us.firebaseapp.com", projectId: "giftall2us", storageBucket: "giftall2us.firebasestorage.app", messagingSenderId: "126908024649", appId: "1:126908024649:web:937fde6111527e382efc98" };
-        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const googleProvider = new GoogleAuthProvider();
-        const loginPage = document.getElementById('loginPage'); const appContent = document.getElementById('appContent'); const loadingOverlay = document.getElementById('loadingOverlay'); const loginError = document.getElementById('loginError');
+        const app = initializeApp(firebaseConfig); 
+        const auth = getAuth(app); 
+        const db = getFirestore(app); // Initialize Database
+        const googleProvider = new GoogleAuthProvider();
         
+        const loginPage = document.getElementById('loginPage'); const appContent = document.getElementById('appContent'); const loadingOverlay = document.getElementById('loadingOverlay'); const loginError = document.getElementById('loginError');
+        let currentUserEmail = "";
+
         window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); } catch (error) { showError(error.message); } };
         window.signInWithEmail = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value); } catch (error) { showError(error.message); } };
         window.signUpWithEmail = async () => { try { await createUserWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value); } catch (error) { showError(error.message); } };
@@ -251,36 +291,36 @@
             if (user) {
                 loginPage.style.display = 'none'; appContent.style.display = 'flex';
                 const name = user.displayName || user.email.split('@')[0]; const initial = name.charAt(0).toUpperCase();
+                currentUserEmail = user.email;
                 
                 document.getElementById('userName').innerText = name; document.getElementById('dashName').innerText = name;
                 document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = user.email;
                 document.getElementById('userAvatarLetter').innerText = initial; document.getElementById('profileAvatarLetter').innerText = initial;
                 
                 if (user.photoURL) { const img = document.getElementById('userAvatar'); img.src = user.photoURL; img.style.display = 'block'; document.getElementById('userAvatarLetter').style.display = 'none'; }
+                loadMarketplace(); // Load ads when logged in
             } else {
                 loginPage.style.display = 'flex'; appContent.style.display = 'none'; document.getElementById('emailInput').value = ''; document.getElementById('passwordInput').value = '';
             }
         });
         function showError(msg) { loginError.innerText = msg.replace("Firebase: ", ""); loginError.style.display = 'block'; setTimeout(() => { loginError.style.display = 'none'; }, 4000); }
 
-        // --- DATA WITH IMAGES ---
+        // --- PRODUCT DATA ---
         const products = [
-            { name: "Amazon", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png" }, 
-            { name: "Apple", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" }, 
-            { name: "Google Play", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1024px-Google_Play_Store_badge_EN.svg.png" }, 
-            { name: "Steam", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/2048px-Steam_icon_logo.svg.png" },
-            { name: "PlayStation", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/PlayStation_logo.svg/2560px-PlayStation_logo.svg.png" }, 
-            { name: "Xbox", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/1024px-Xbox_one_logo.svg.png" },
-            { name: "Netflix", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" }, 
-            { name: "Spotify", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png" }
+            { name: "Amazon", image: "https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=500&auto=format&fit=crop&q=60" }, 
+            { name: "Apple", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&auto=format&fit=crop&q=60" }, 
+            { name: "Google Play", image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&auto=format&fit=crop&q=60" }, 
+            { name: "Steam", image: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=500&auto=format&fit=crop&q=60" },
+            { name: "PlayStation", image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop&q=60" }, 
+            { name: "Xbox", image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&auto=format&fit=crop&q=60" },
+            { name: "Netflix", image: "https://images.unsplash.com/photo-1574375927938-d5a98e8efe85?w=500&auto=format&fit=crop&q=60" }, 
+            { name: "Spotify", image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=500&auto=format&fit=crop&q=60" }
         ];
 
         function renderCards() {
             const cardHTML = (p) => `
                 <div class="product-card">
-                    <div class="card-image-container">
-                        <img src="${p.image}" alt="${p.name}">
-                    </div>
+                    <div class="card-image-container"><img src="${p.image}" alt="${p.name}"></div>
                     <div class="product-title">${p.name}</div>
                     <div class="product-subtitle">Digital eGift Card</div>
                     <div class="product-footer">
@@ -294,13 +334,73 @@
         }
         renderCards();
 
+        // --- NAVIGATION ---
         window.switchView = (viewId, el) => { 
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
             document.getElementById('view-' + viewId).classList.add('active'); 
             document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(n => n.classList.remove('active')); 
             if(el) el.classList.add('active'); 
         };
-        
+
+        // --- MARKETPLACE LOGIC ---
+        window.postAd = async () => {
+            const name = document.getElementById('adName').value;
+            const price = document.getElementById('adPrice').value;
+            const country = document.getElementById('adCountry').value;
+            const days = document.getElementById('adDays').value;
+
+            if(!name || !price || !country || !days) { alert("Please fill all fields."); return; }
+
+            try {
+                await addDoc(collection(db, "marketplace"), {
+                    sellerEmail: currentUserEmail,
+                    cardName: name,
+                    price: parseFloat(price),
+                    country: country,
+                    days: parseInt(days),
+                    createdAt: new Date()
+                });
+                alert("Ad posted successfully!");
+                document.getElementById('adName').value = ''; document.getElementById('adPrice').value = ''; document.getElementById('adCountry').value = ''; document.getElementById('adDays').value = '';
+                loadMarketplace();
+            } catch (e) {
+                alert("Error posting ad: Please make sure Firestore is enabled in Firebase. " + e.message);
+            }
+        };
+
+        async function loadMarketplace() {
+            const grid = document.getElementById('marketGrid');
+            grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading...</p>';
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, "marketplace"));
+                if(querySnapshot.empty) { grid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No ads posted yet. Be the first!</p>'; return; }
+                
+                let html = "";
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    html += `
+                    <div class="market-card">
+                        <div class="market-info">
+                            <h3>${data.cardName} Gift Card</h3>
+                            <p><i class="fas fa-user"></i> ${data.sellerEmail}</p>
+                            <p><i class="fas fa-globe"></i> ${data.country} • ${data.days} days</p>
+                        </div>
+                        <div>
+                            <div class="market-price">$${data.price.toFixed(2)}</div>
+                            <div class="market-actions">
+                                <button class="btn-sm btn-chat" onclick="openLiveChat()"><i class="fas fa-comment"></i> Contact Seller</button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                });
+                grid.innerHTML = html;
+            } catch (e) {
+                grid.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading ads. Make sure Firestore is enabled.</p>';
+            }
+        }
+
         window.openLiveChat = () => { if(window.Tawk_API && window.Tawk_API.maximize) Tawk_API.maximize(); else alert("Live Chat is loading..."); };
 
         // --- CART LOGIC ---
@@ -309,10 +409,9 @@
         const modal = document.getElementById('checkoutModal');
 
         window.openCheckout = (name, image) => {
-            currentItem.name = name;
-            currentItem.image = image;
+            currentItem.name = name; currentItem.image = image;
             document.getElementById('modalProductName').innerText = name + " Gift Card";
-            document.getElementById('modalImageContainer').innerHTML = `<img src="${image}">`;
+            document.getElementById('modalImageContainer').innerHTML = `<img src="${image}" style="width:100%; height:100%; object-fit:cover;">`;
             document.getElementById('amountSelect').value = "50";
             document.getElementById('quantityInput').value = "1";
             updatePrice();
@@ -325,32 +424,20 @@
             let basePrice = parseFloat(document.getElementById('amountSelect').value);
             let qty = parseInt(document.getElementById('quantityInput').value) || 1;
             if(qty < 1) qty = 1;
-            
-            currentItem.price = basePrice;
-            currentItem.qty = qty;
-            
+            currentItem.price = basePrice; currentItem.qty = qty;
             let total = basePrice * qty;
             document.getElementById('modalTotalPrice').innerText = `$${total.toFixed(2)}`;
         };
 
         window.addToCart = () => {
             let existingItem = cart.find(item => item.name === currentItem.name && item.price === currentItem.price);
-            
-            if(existingItem) {
-                existingItem.qty += currentItem.qty;
-            } else {
-                cart.push({...currentItem});
-            }
-            
+            if(existingItem) { existingItem.qty += currentItem.qty; } else { cart.push({...currentItem}); }
             closeModal();
             updateCartUI();
-            switchView('cart', document.querySelectorAll('.nav-link')[2]); // Switch to cart view
+            switchView('cart', document.querySelectorAll('.nav-link')[3]);
         };
 
-        window.removeFromCart = (index) => {
-            cart.splice(index, 1);
-            updateCartUI();
-        };
+        window.removeFromCart = (index) => { cart.splice(index, 1); updateCartUI(); };
 
         function updateCartUI() {
             const container = document.getElementById('cartItemsContainer');
@@ -359,8 +446,7 @@
             const badgeMobile = document.getElementById('cartBadgeMobile');
             
             let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-            badgeDesktop.innerText = totalItems;
-            badgeMobile.innerText = totalItems;
+            badgeDesktop.innerText = totalItems; badgeMobile.innerText = totalItems;
 
             if(cart.length === 0) {
                 container.innerHTML = `<p style="color: var(--text-muted); text-align: center;">Your cart is empty.</p>`;
@@ -368,9 +454,7 @@
                 return;
             }
 
-            let totalPrice = 0;
-            let html = "";
-            
+            let totalPrice = 0; let html = "";
             cart.forEach((item, index) => {
                 let itemTotal = item.price * item.qty;
                 totalPrice += itemTotal;
@@ -393,28 +477,32 @@
             totalSection.style.display = 'block';
         }
 
+        // --- YOUR REAL NOWPAYMENTS LINKS ---
         window.processRealPayment = () => {
             if(cart.length === 0) return alert("Cart is empty!");
             
-            // Calculate total cart value to determine which NOWPayments link to use.
             let totalCartValue = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             
             const links = { 
-                "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link
-                "100": "YOUR_100_LINK", 
-                "200": "YOUR_200_LINK", 
-                "400": "YOUR_400_LINK", 
-                "500": "YOUR_500_LINK", 
-                "1000": "YOUR_1000_LINK" 
+                "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link from before
+                "100": "https://nowpayments.io/payment/?iid=4912162793",
+                "150": "https://nowpayments.io/payment/?iid=5271487412",
+                "200": "https://nowpayments.io/payment/?iid=6088608599",
+                "300": "https://nowpayments.io/payment/?iid=6128501527",
+                "400": "https://nowpayments.io/payment/?iid=5861277497",
+                "500": "https://nowpayments.io/payment/?iid=5173184208",
+                "600": "https://nowpayments.io/payment/?iid=4498694817",
+                "1000": "https://nowpayments.io/payment/?iid=5035063632",
+                "2500": "https://nowpayments.io/payment/?iid=4382116607",
+                "3000": "https://nowpayments.io/payment/?iid=4861305997"
             };
             
-            // Try to find an exact match link, otherwise default to the $50 link for testing
             let link = links[totalCartValue.toString()]; 
             
-            if (link && !link.includes("YOUR_")) { 
+            if (link) { 
                 window.open(link, '_blank'); 
             } else { 
-                alert("Payment link for the total cart amount ($" + totalCartValue + ") is not set up yet. Opening $50 test link.");
+                alert("Payment link for the total cart amount ($" + totalCartValue + ") is not set up yet. Please use exact amounts. Opening $50 link for testing.");
                 window.open(links["50"], '_blank'); 
             }
         };
