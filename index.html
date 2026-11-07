@@ -134,6 +134,13 @@
             .market-card { flex-direction: column; align-items: flex-start; } 
             .market-price { text-align: left; margin-top: 10px;} 
         }
+
+        /* Move Tawk.to chat up so it doesn't block the mobile nav */
+        @media (max-width: 900px) {
+            .widget-visible {
+                bottom: 80px !important; 
+            }
+        }
     </style>
 </head>
 <body>
