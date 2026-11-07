@@ -9,300 +9,254 @@
     
     <style>
         :root {
-            --bg-main: #0a0e17;
-            --bg-panel: rgba(20, 27, 45, 0.7);
-            --bg-card: #141b2d;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-main: #ffffff;
-            --text-muted: #8b98b0;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --sidebar-width: 260px;
+            --bg-main: #0a0e17; --bg-panel: rgba(20, 27, 45, 0.7); --bg-card: #141b2d;
+            --border-color: rgba(255, 255, 255, 0.08); --text-main: #ffffff; --text-muted: #8b98b0;
+            --primary: #3b82f6; --primary-hover: #2563eb; --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --google: #ea4335; --sidebar-width: 260px;
         }
 
         [data-theme="light"] {
-            --bg-main: #f1f5f9;
-            --bg-panel: rgba(255, 255, 255, 0.9);
-            --bg-card: #ffffff;
-            --border-color: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
+            --bg-main: #f1f5f9; --bg-panel: rgba(255, 255, 255, 0.9); --bg-card: #ffffff;
+            --border-color: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b;
+            --primary: #2563eb; --primary-hover: #1d4ed8;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 14px;
+            background-color: var(--bg-main); color: var(--text-main); min-height: 100vh;
+            display: flex; overflow-x: hidden; transition: 0.3s; font-size: 14px;
         }
 
-        /* DESKTOP SIDEBAR */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-panel);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border-color);
-            padding: 1.5rem 1rem;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-        }
+        /* LOADING & LOGIN */
+        #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 3000; flex-direction: column; }
+        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        #loginPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .login-box { background: var(--bg-card); padding: 2rem 1.5rem; border-radius: 20px; width: 100%; max-width: 380px; border: 1px solid var(--border-color); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .login-box .brand { justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; font-weight: 700;}
+        .login-btn { width: 100%; padding: 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); transition: 0.2s; }
+        .login-btn.google { background: white; color: #333; border: none; }
+        .login-btn.primary { background: var(--primary); color: white; border: none; }
+        .divider { display: flex; align-items: center; text-align: center; margin: 1.5rem 0; color: var(--text-muted); font-size: 0.8rem; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
+        .divider::before { margin-right: 10px; } .divider::after { margin-left: 10px; }
+        
+        .input-group { margin-bottom: 1rem; text-align: left; }
+        .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+        .input-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); }
+
+        /* DASHBOARD */
+        .sidebar { width: var(--sidebar-width); background: var(--bg-panel); backdrop-filter: blur(20px); border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
         .brand { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 2.5rem; color: var(--text-main); }
         .brand i { color: var(--primary); font-size: 1.5rem; }
-
         .nav-menu { display: flex; flex-direction: column; gap: 5px; flex: 1; }
-        .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; color: var(--text-muted); font-weight: 500; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; }
-        .nav-link i { font-size: 1.1rem; width: 20px; text-align: center; }
-        .nav-link:hover { background: rgba(128, 128, 128, 0.1); color: var(--text-main); }
-        .nav-link.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-
-        .theme-toggle { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; margin-bottom: 10px; background: rgba(128,128,128,0.05); border-radius: 10px; cursor: pointer; color: var(--text-muted); font-size: 0.85rem; transition: 0.2s; }
-        .theme-toggle:hover { color: var(--text-main); background: rgba(128,128,128,0.1); }
-
-        .user-mini-profile { display: flex; align-items: center; gap: 10px; padding-top: 1rem; border-top: 1px solid var(--border-color); }
-        .user-avatar { width: 35px; height: 35px; background: rgba(59,130,246,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); font-size: 0.9rem; }
-        .user-info h4 { font-size: 0.85rem; color: var(--text-main); }
+        .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; color: var(--text-muted); font-weight: 500; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .nav-link:hover, .nav-link.active { background: var(--primary); color: #fff; }
+        .theme-toggle { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; margin-bottom: 10px; background: rgba(128,128,128,0.05); border-radius: 10px; cursor: pointer; color: var(--text-muted); font-size: 0.85rem; }
+        
+        .user-mini-profile { display: flex; align-items: center; gap: 10px; padding-top: 1rem; border-top: 1px solid var(--border-color); cursor: pointer; }
+        .user-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .user-info h4 { font-size: 0.85rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
         .user-info p { font-size: 0.7rem; color: var(--text-muted); }
 
-        /* MAIN CONTENT */
-        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 1.5rem 2rem; max-width: 1400px; margin-right: auto; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .top-bar h1 { font-size: 1.4rem; font-weight: 600; }
-        .status-badge { background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.2); }
-
-        .view { display: none; animation: fadeIn 0.3s ease; }
-        .view.active { display: block; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 1.5rem 2rem; max-width: 1400px; }
+        .view { display: none; animation: fadeIn 0.3s; } .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .hero-banner { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .hero-text h2 { font-size: 1.4rem; margin-bottom: 5px; }
-        .hero-text p { color: var(--text-muted); font-size: 0.85rem; max-width: 500px; }
-        .hero-icon { font-size: 3rem; color: var(--primary); opacity: 0.8; }
-
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .section-header h2 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
-
-        .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; transition: all 0.2s ease; display: flex; flex-direction: column; }
-        .product-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        
+        .hero-banner { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+        .product-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; transition: 0.2s; }
+        .product-card:hover { transform: translateY(-3px); border-color: var(--primary); }
         .product-icon { width: 40px; height: 40px; background: rgba(128, 128, 128, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text-main); margin-bottom: 1rem; }
-        .product-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
-        .product-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem; }
-        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .price { font-size: 1rem; font-weight: 700; color: var(--primary); }
-        .btn-buy { background: rgba(59, 130, 246, 0.1); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.2); padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
-        .btn-buy:hover { background: var(--primary); color: #fff; }
-
-        .order-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
-        .order-details h4 { font-size: 0.95rem; margin-bottom: 3px; }
-        .order-details p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; word-break: break-all; }
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
-        .badge.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .btn-buy { background: rgba(59, 130, 246, 0.1); color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.2); padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: 0.2s;}
+        .btn-buy:hover { background: var(--primary); color: white; }
+        
+        .order-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;}
+        .settings-group { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
 
         /* MODAL */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-        .modal-content { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; width: 100%; max-width: 420px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3); animation: popIn 0.3s ease; }
-        @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        .close-btn { position: absolute; top: 15px; right: 15px; background: rgba(128,128,128,0.1); border: none; color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; transition: 0.2s; z-index: 10; }
-        .close-btn:hover { background: rgba(128,128,128,0.2); color: var(--text-main); }
-
-        .stepper-header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; position: relative; }
-        .stepper-header::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: var(--border-color); z-index: 1; transform: translateY(-50%); }
-        .step-indicator { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-main); border: 2px solid var(--border-color); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; z-index: 2; position: relative; transition: 0.3s; }
-        .step-indicator.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
-
-        .step-content { display: none; animation: fadeIn 0.3s ease; }
-        .step-content.active { display: block; }
-
+        .modal-content { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; width: 100%; max-width: 400px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: rgba(128,128,128,0.1); border: none; color: var(--text-muted); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
         .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; }
-        .form-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-size: 0.9rem; outline: none; transition: 0.2s; }
-        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); }
         .action-btn-group { display: flex; gap: 8px; margin-top: 1rem; }
-        .btn-next { flex: 1; padding: 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 6px; border: none; background: var(--primary); color: #fff; }
-        .btn-next:hover { background: var(--primary-hover); }
+        .btn-next { flex: 1; padding: 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; background: var(--primary); color: #fff; display: flex; justify-content: center; align-items: center; gap: 6px;}
 
-        /* Mobile */
         .mobile-nav { display: none; }
         @media (max-width: 900px) {
-            body { display: block; padding-bottom: 60px; }
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 1rem; }
-            .top-bar h1 { font-size: 1.2rem; }
+            body { display: block; padding-bottom: 60px; } .sidebar { display: none; } .main-content { margin-left: 0; padding: 1rem; }
             .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-panel); backdrop-filter: blur(20px); border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; }
-            .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-muted); font-size: 0.65rem; font-weight: 500; cursor: pointer; }
-            .mobile-nav-item i { font-size: 1.1rem; }
-            .mobile-nav-item.active { color: var(--primary); }
+            .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; }
+            .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } .mobile-nav-item.active { color: var(--primary); }
             .chat-btn { position: relative; top: -12px; }
-            .chat-btn .icon-wrap { background: var(--primary); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4); }
-            .chat-btn span { color: var(--text-main); }
-            .order-card { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .badge { align-self: flex-start; }
+            .chat-btn .icon-wrap { background: var(--primary); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; }
         }
     </style>
 </head>
 <body>
 
-    <!-- DESKTOP SIDEBAR -->
-    <aside class="sidebar">
-        <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
-        <div class="nav-menu">
-            <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-            <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore</div>
-            <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
-            <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile</div>
-        </div>
-        <div class="theme-toggle" onclick="toggleTheme()">
-            <span><i class="fas fa-moon" id="themeIcon"></i> Theme</span>
-            <span id="themeText">Dark</span>
-        </div>
-        <div class="user-mini-profile">
-            <div class="user-avatar">G</div>
-            <div class="user-info"><h4>Guest User</h4><p>Verified</p></div>
-        </div>
-    </aside>
+    <!-- LOADING -->
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <h3>Connecting securely...</h3>
+    </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-        <div class="top-bar">
-            <h1 id="pageTitle">Dashboard</h1>
-            <div class="status-badge"><i class="fas fa-circle" style="font-size: 6px; margin-right: 4px;"></i> Online</div>
-        </div>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage">
+        <div class="login-box">
+            <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Sign in to access your dashboard.</p>
+            
+            <button class="login-btn google" onclick="signInWithGoogle()">
+                <i class="fab fa-google" style="color: var(--google);"></i> Continue with Google
+            </button>
+            
+            <div class="divider">or use email</div>
 
-        <!-- DASHBOARD VIEW -->
-        <div id="view-dashboard" class="view active">
-            <div class="hero-banner">
-                <div class="hero-text">
-                    <h2>Welcome to GiftAll2Us</h2>
-                    <p>Premium digital gift cards. Instant delivery. Secure crypto payments.</p>
-                </div>
-                <i class="fas fa-shield-halved hero-icon"></i>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="emailInput" class="input-control" placeholder="you@example.com">
             </div>
-            <div class="section-header"><h2><i class="fas fa-fire" style="color: var(--warning);"></i> Trending</h2></div>
-            <div class="grid" id="trendingGrid"></div>
-        </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="passwordInput" class="input-control" placeholder="••••••••">
+            </div>
 
-        <!-- EXPLORE VIEW -->
-        <div id="view-explore" class="view">
-            <div class="section-header"><h2>All Gift Cards</h2></div>
-            <div class="grid" id="allGrid"></div>
-        </div>
+            <button class="login-btn primary" onclick="signInWithEmail()">Sign In</button>
+            <button class="login-btn" style="border: none; background: transparent; color: var(--primary);" onclick="signUpWithEmail()">Create an Account</button>
 
-        <!-- ORDERS VIEW -->
-        <div id="view-orders" class="view">
-            <div class="section-header"><h2>Order History</h2></div>
-            <div id="ordersList"><p style="color: var(--text-muted); text-align: center; margin-top: 2rem; font-size: 0.85rem;">No orders found. Go to Explore to buy a gift card.</p></div>
+            <p id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none;"></p>
         </div>
+    </div>
 
-        <!-- PROFILE VIEW -->
-        <div id="view-profile" class="view">
-            <div class="order-card" style="background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">G</div>
-                    <div><h3 style="font-size: 1.1rem;">Guest User</h3><p style="color: var(--text-muted); font-size: 0.75rem;">ID: #84920</p></div>
+    <!-- APP CONTENT -->
+    <div id="appContent" style="display: none; width: 100%;">
+        <aside class="sidebar">
+            <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
+            <div class="nav-menu">
+                <div class="nav-link active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
+                <div class="nav-link" onclick="switchView('explore', this)"><i class="fas fa-compass"></i> Explore</div>
+                <div class="nav-link" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i> My Orders</div>
+                <div class="nav-link" onclick="switchView('profile', this)"><i class="fas fa-user"></i> Profile & Settings</div>
+            </div>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <span><i class="fas fa-moon"></i> Theme</span>
+            </div>
+            <div class="user-mini-profile" onclick="switchView('profile', document.querySelectorAll('.nav-link')[3])">
+                <img id="userAvatar" class="user-avatar" src="" style="display:none;">
+                <div id="userAvatarLetter" class="user-avatar">U</div>
+                <div class="user-info">
+                    <h4 id="userName">Loading...</h4>
+                    <p>Verified User</p>
                 </div>
             </div>
-            <div class="section-header" style="margin-top: 1.5rem;"><h2>Account Settings</h2></div>
-            <div id="standardProfileMenu">
-                <div class="order-card" style="cursor: pointer;"><div class="order-details"><h4><i class="fas fa-wallet" style="color: var(--primary); margin-right: 8px;"></i> My Wallet</h4></div><i class="fas fa-chevron-right" style="color: var(--text-muted); font-size: 0.8rem;"></i></div>
-                <div class="order-card" onclick="openLiveChat()" style="cursor: pointer;"><div class="order-details"><h4><i class="fas fa-headset" style="color: var(--primary); margin-right: 8px;"></i> Support / Live Chat</h4></div><i class="fas fa-chevron-right" style="color: var(--text-muted); font-size: 0.8rem;"></i></div>
-            </div>
-        </div>
-    </main>
+        </aside>
 
-    <!-- MOBILE BOTTOM NAVIGATION -->
-    <nav class="mobile-nav">
-        <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="mobile-nav-item" onclick="switchView('explore', this)"><i class="fas fa-compass"></i><span>Explore</span></div>
-        <div class="mobile-nav-item chat-btn" onclick="openLiveChat()"><div class="icon-wrap"><i class="fas fa-comment-dots"></i></div><span>Chat</span></div>
-        <div class="mobile-nav-item" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i><span>Orders</span></div>
-        <div class="mobile-nav-item" onclick="switchView('profile', this)"><i class="fas fa-user"></i><span>Profile</span></div>
-    </nav>
+        <main class="main-content">
+            <!-- DASHBOARD -->
+            <div id="view-dashboard" class="view active">
+                <div class="hero-banner">
+                    <div>
+                        <h2 style="font-size: 1.4rem; margin-bottom: 5px;">Welcome, <span id="dashName">User</span>!</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Premium digital gift cards. Secure crypto payments.</p>
+                    </div>
+                    <i class="fas fa-shield-halved" style="font-size: 3rem; color: var(--primary); opacity: 0.8;"></i>
+                </div>
+                <h3 style="margin-bottom: 1rem; font-size: 1rem;"><i class="fas fa-fire" style="color: var(--warning);"></i> Trending Now</h3>
+                <div class="grid" id="trendingGrid"></div>
+            </div>
+
+            <!-- EXPLORE -->
+            <div id="view-explore" class="view">
+                <h3 style="margin-bottom: 1rem; font-size: 1rem;">All Gift Cards</h3>
+                <div class="grid" id="allGrid"></div>
+            </div>
+
+            <!-- ORDERS -->
+            <div id="view-orders" class="view">
+                <h3 style="margin-bottom: 1rem; font-size: 1rem;">My Orders</h3>
+                <div class="order-card"><p style="color: var(--text-muted); font-size: 0.85rem;">No orders yet. (Connect Database to show real orders).</p></div>
+            </div>
+
+            <!-- PROFILE & SETTINGS -->
+            <div id="view-profile" class="view">
+                <div class="order-card">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div>
+                        <div>
+                            <h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3>
+                            <p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p>
+                        </div>
+                    </div>
+                    <button class="btn-buy" onclick="logoutUser()" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2);">Logout</button>
+                </div>
+
+                <div class="settings-group" style="margin-top: 1.5rem;">
+                    <h3 style="font-size: 1rem; margin-bottom: 1rem;"><i class="fas fa-cog"></i> Account Settings</h3>
+                    <div class="input-group">
+                        <label>Display Name</label>
+                        <input type="text" class="input-control" id="settingsName" placeholder="Your Name">
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address (Locked)</label>
+                        <input type="email" class="input-control" id="settingsEmail" readonly style="opacity: 0.7;">
+                    </div>
+                    <button class="btn-buy" style="padding: 10px; background: var(--primary); color: white;" onclick="alert('Profile saved! (Requires database to update permanently)')">Save Changes</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- MOBILE NAV -->
+        <nav class="mobile-nav">
+            <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="mobile-nav-item" onclick="switchView('explore', this)"><i class="fas fa-compass"></i><span>Explore</span></div>
+            <div class="mobile-nav-item chat-btn" onclick="openLiveChat()"><div class="icon-wrap"><i class="fas fa-comment-dots"></i></div><span>Chat</span></div>
+            <div class="mobile-nav-item" onclick="switchView('orders', this)"><i class="fas fa-receipt"></i><span>Orders</span></div>
+            <div class="mobile-nav-item" onclick="switchView('profile', this)"><i class="fas fa-user"></i><span>Profile</span></div>
+        </nav>
+    </div>
 
     <!-- CHECKOUT MODAL -->
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div class="product-icon" style="margin: 0 auto 10px auto;" id="modalIcon"><i class="fas fa-gift"></i></div>
+                <h2 id="modalProductName" style="font-size: 1.2rem;">Gift Card</h2>
+                <p style="color: var(--text-muted); font-size: 0.8rem;">Select the value</p>
+            </div>
             
-            <div class="stepper-header">
-                <div class="step-indicator active" id="stepInd1">1</div>
-                <div class="step-indicator" id="stepInd2">2</div>
+            <div class="form-group">
+                <label>Select Amount (USD)</label>
+                <select class="form-control" id="amountSelect" onchange="updatePrice()">
+                    <option value="50">$50</option>
+                    <option value="100">$100</option>
+                    <option value="200">$200</option>
+                    <option value="400">$400</option>
+                    <option value="500">$500</option>
+                    <option value="1000">$1,000</option>
+                    <option value="2000">$2,000</option>
+                    <option value="5000">$5,000</option>
+                </select>
             </div>
 
-            <!-- STEP 1: AMOUNT -->
-            <div class="step-content active" id="step1">
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <div class="product-icon" style="margin: 0 auto 10px auto;" id="modalIcon"><i class="fas fa-gift"></i></div>
-                    <h2 id="modalProductName" style="font-size: 1.2rem;">Gift Card</h2>
-                    <p style="color: var(--text-muted); font-size: 0.8rem;">Select the value of your gift card</p>
-                </div>
-                
-                <div class="form-group">
-                    <label>Select Amount (USD)</label>
-                    <select class="form-control" id="amountSelect" onchange="updatePrice()">
-                        <option value="50">$50</option>
-                        <option value="100">$100</option>
-                        <option value="200">$200</option>
-                        <option value="400">$400</option>
-                        <option value="500">$500</option>
-                        <option value="1000">$1,000</option>
-                        <option value="2000">$2,000</option>
-                        <option value="5000">$5,000</option>
-                        <option value="custom">Custom Amount...</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="customAmountGroup" style="display: none;">
-                    <label>Enter Custom Amount (Max $5000)</label>
-                    <input type="number" class="form-control" id="customAmountInput" placeholder="0.00" oninput="updatePrice()">
-                </div>
-
-                <div style="text-align: center; margin-bottom: 1rem; background: var(--bg-main); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
-                    <span style="font-size: 0.8rem; color: var(--text-muted);">Total to Pay</span>
-                    <h3 style="color: var(--success); font-size: 1.4rem;" id="modalTotalPrice">$50.00</h3>
-                </div>
-
-                <button class="btn-next" onclick="goToStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
+            <div style="text-align: center; margin-bottom: 1rem; background: var(--bg-main); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Total to Pay</span>
+                <h3 style="color: var(--success); font-size: 1.4rem;" id="modalTotalPrice">$50.00</h3>
             </div>
 
-            <!-- STEP 2: REAL PAYMENT -->
-            <div class="step-content" id="step2">
-                <h2 style="font-size: 1.1rem; margin-bottom: 2px; text-align: center;">Secure Checkout</h2>
-                <p style="color: var(--text-muted); font-size: 0.75rem; text-align: center; margin-bottom: 1.5rem;">
-                    You will be redirected to our secure gateway to pay <strong id="step2Price" style="color:var(--success)">$50.00</strong> via Crypto.
-                </p>
-
-                <div style="text-align: center; margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.85rem;">
-                    <i class="fas fa-lock" style="color: var(--success); font-size: 2rem; margin-bottom: 10px; display: block;"></i>
-                    Powered by NOWPayments. 100% Secure.
-                </div>
-
-                <div class="action-btn-group">
-                    <button class="btn-next" onclick="processRealPayment()" style="background: var(--success);">
-                        <i class="fas fa-external-link-alt"></i> Pay Now
-                    </button>
-                </div>
-            </div>
-
+            <button class="btn-next" onclick="processRealPayment()" style="background: var(--success); padding: 15px;">
+                <i class="fas fa-external-link-alt"></i> Pay with Crypto
+            </button>
+            <p style="text-align:center; font-size:0.7rem; color:var(--text-muted); margin-top:10px;">Powered by NOWPayments</p>
         </div>
     </div>
 
-    <!-- TAWK.TO LIVE SUPPORT SCRIPT -->
+    <!-- TAWK.TO SCRIPT -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -315,8 +269,89 @@
     })();
     </script>
 
-    <script>
-        // --- DATA ---
+    <!-- FIREBASE SDK & LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // --- 1. PASTE YOUR FIREBASE CONFIG HERE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKDMydDpA_WM6R61L...", // Replace with your full API Key
+            authDomain: "giftall2us.firebaseapp.com",
+            projectId: "giftall2us",
+            storageBucket: "giftall2us.firebasestorage.app",
+            messagingSenderId: "126908024649",
+            appId: "1:126908024649:web:937fde6111527e382efc98"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        const loginPage = document.getElementById('loginPage');
+        const appContent = document.getElementById('appContent');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loginError = document.getElementById('loginError');
+
+        window.signInWithGoogle = async () => {
+            try { await signInWithPopup(auth, googleProvider); } 
+            catch (error) { showError(error.message); }
+        };
+
+        window.signInWithEmail = async () => {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            try { await signInWithEmailAndPassword(auth, email, password); } 
+            catch (error) { showError(error.message); }
+        };
+
+        window.signUpWithEmail = async () => {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            try { await createUserWithEmailAndPassword(auth, email, password); } 
+            catch (error) { showError(error.message); }
+        };
+
+        window.logoutUser = async () => { await signOut(auth); };
+
+        onAuthStateChanged(auth, (user) => {
+            loadingOverlay.style.display = 'none';
+            if (user) {
+                loginPage.style.display = 'none';
+                appContent.style.display = 'flex';
+                
+                const name = user.displayName || user.email.split('@')[0];
+                const initial = name.charAt(0).toUpperCase();
+                
+                document.getElementById('userName').innerText = name;
+                document.getElementById('dashName').innerText = name;
+                document.getElementById('profileName').innerText = name;
+                document.getElementById('profileEmail').innerText = user.email;
+                document.getElementById('settingsEmail').value = user.email;
+                document.getElementById('settingsName').value = name;
+                document.getElementById('userAvatarLetter').innerText = initial;
+                document.getElementById('profileAvatarLetter').innerText = initial;
+
+                if (user.photoURL) {
+                    const img = document.getElementById('userAvatar');
+                    img.src = user.photoURL; img.style.display = 'block';
+                    document.getElementById('userAvatarLetter').style.display = 'none';
+                }
+            } else {
+                loginPage.style.display = 'flex';
+                appContent.style.display = 'none';
+                document.getElementById('emailInput').value = '';
+                document.getElementById('passwordInput').value = '';
+            }
+        });
+
+        function showError(msg) {
+            loginError.innerText = msg.replace("Firebase: ", "");
+            loginError.style.display = 'block';
+            setTimeout(() => { loginError.style.display = 'none'; }, 4000);
+        }
+
+        // --- 2. UI & PRODUCT LOGIC ---
         const products = [
             { name: "Amazon", icon: "fab fa-amazon" }, { name: "Google Play", icon: "fab fa-google-play" },
             { name: "Apple", icon: "fab fa-apple" }, { name: "Steam", icon: "fab fa-steam" },
@@ -330,176 +365,90 @@
             { name: "Airbnb", icon: "fab fa-airbnb" }, { name: "Nintendo", icon: "fas fa-gamepad" }
         ];
 
-        // --- YOUR REAL NOWPAYMENTS LINKS ---
-        // Create different links in NOWPayments for each amount and paste them here
-        const nowPaymentsLinks = {
-            "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link
-            "100": "https://nowpayments.io/payment/?iid=YOUR_100_LINK_HERE",
-            "200": "https://nowpayments.io/payment/?iid=YOUR_200_LINK_HERE",
-            "400": "https://nowpayments.io/payment/?iid=YOUR_400_LINK_HERE",
-            "500": "https://nowpayments.io/payment/?iid=YOUR_500_LINK_HERE",
-            "1000": "https://nowpayments.io/payment/?iid=YOUR_1000_LINK_HERE",
-            "2000": "https://nowpayments.io/payment/?iid=YOUR_2000_LINK_HERE",
-            "5000": "https://nowpayments.io/payment/?iid=YOUR_5000_LINK_HERE"
-        };
-
-        let currentProductName = "";
-        let currentPrice = 50;
-
-        // --- RENDER CARDS ---
         function renderCards() {
             const allGrid = document.getElementById('allGrid');
             const trendingGrid = document.getElementById('trendingGrid');
-            
-            allGrid.innerHTML = "";
-            products.forEach(product => { allGrid.innerHTML += createCardHTML(product); });
-
-            trendingGrid.innerHTML = "";
-            products.slice(0, 4).forEach(product => { trendingGrid.innerHTML += createCardHTML(product); });
-        }
-
-        function createCardHTML(product) {
-            return `
+            let html = products.map(p => `
                 <div class="product-card">
-                    <div class="product-icon"><i class="${product.icon}"></i></div>
-                    <div class="product-title">${product.name}</div>
-                    <div class="product-subtitle">Digital Gift Card</div>
-                    <div class="product-footer">
-                        <div class="price">$50+</div>
-                        <button class="btn-buy" onclick="openCheckout('${product.name}', '${product.icon}')">Buy</button>
+                    <div class="product-icon"><i class="${p.icon}"></i></div>
+                    <div style="font-size:0.9rem; font-weight:600; margin-bottom:5px;">${p.name}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                        <span style="font-weight:700; color:var(--primary);">$50+</span>
+                        <button class="btn-buy" onclick="openCheckout('${p.name}', '${p.icon}')">Buy</button>
                     </div>
                 </div>
-            `;
+            `).join('');
+            allGrid.innerHTML = html;
+            trendingGrid.innerHTML = products.slice(0, 4).map(p => `
+                <div class="product-card">
+                    <div class="product-icon"><i class="${p.icon}"></i></div>
+                    <div style="font-size:0.9rem; font-weight:600; margin-bottom:5px;">${p.name}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                        <span style="font-weight:700; color:var(--primary);">$50+</span>
+                        <button class="btn-buy" onclick="openCheckout('${p.name}', '${p.icon}')">Buy</button>
+                    </div>
+                </div>
+            `).join('');
         }
+        renderCards();
 
-        // --- NAVIGATION ---
-        function switchView(viewId, element) {
+        window.switchView = (viewId, el) => {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active');
-            
             document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(n => n.classList.remove('active'));
-            if(element) element.classList.add('active');
-            
-            const navLinks = document.querySelectorAll('.nav-link');
-            const mobileLinks = document.querySelectorAll('.mobile-nav-item');
-            
-            if (viewId === 'dashboard') {
-                navLinks[0]?.classList.add('active');
-                mobileLinks[0]?.classList.add('active');
-                document.getElementById('pageTitle').innerText = "Dashboard";
-            } else if (viewId === 'explore') {
-                navLinks[1]?.classList.add('active');
-                mobileLinks[1]?.classList.add('active');
-                document.getElementById('pageTitle').innerText = "Explore Cards";
-            } else if (viewId === 'orders') {
-                navLinks[2]?.classList.add('active');
-                mobileLinks[3]?.classList.add('active');
-                document.getElementById('pageTitle').innerText = "My Orders";
-            } else if (viewId === 'profile') {
-                navLinks[3]?.classList.add('active');
-                mobileLinks[4]?.classList.add('active');
-                document.getElementById('pageTitle').innerText = "Profile";
-            }
-        }
+            if(el) el.classList.add('active');
+        };
 
-        // --- CHECKOUT LOGIC ---
+        window.toggleTheme = () => {
+            const body = document.body;
+            body.getAttribute('data-theme') === 'light' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'light');
+        };
+
+        window.openLiveChat = () => {
+            if(window.Tawk_API && window.Tawk_API.maximize) Tawk_API.maximize(); 
+            else alert("Live Chat is loading...");
+        };
+
+        // --- 3. CHECKOUT & NOWPAYMENTS LOGIC ---
+        let currentPrice = 50;
         const modal = document.getElementById('checkoutModal');
 
-        function openCheckout(productName, iconClass) {
-            currentProductName = productName;
-            document.getElementById('modalProductName').innerText = productName + " Gift Card";
-            document.getElementById('modalIcon').innerHTML = `<i class="${iconClass}"></i>`;
+        window.openCheckout = (name, icon) => {
+            document.getElementById('modalProductName').innerText = name + " Gift Card";
+            document.getElementById('modalIcon').innerHTML = `<i class="${icon}"></i>`;
             document.getElementById('amountSelect').value = "50";
-            document.getElementById('customAmountGroup').style.display = 'none';
-            
             updatePrice();
-            goToStep(1);
             modal.style.display = 'flex';
-        }
+        };
 
-        function closeModal() { modal.style.display = 'none'; }
+        window.closeModal = () => { modal.style.display = 'none'; };
 
-        function goToStep(step) {
-            document.querySelectorAll('.step-content').forEach(c => c.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
-            
-            document.querySelectorAll('.step-indicator').forEach(i => i.classList.remove('active'));
-            for(let i=1; i<=step; i++) {
-                document.getElementById('stepInd' + i).classList.add('active');
-            }
-        }
-
-        function updatePrice() {
-            const select = document.getElementById('amountSelect');
-            const customGroup = document.getElementById('customAmountGroup');
-            const customInput = document.getElementById('customAmountInput');
-            
-            if (select.value === 'custom') {
-                customGroup.style.display = 'block';
-                currentPrice = parseFloat(customInput.value) || 0;
-            } else {
-                customGroup.style.display = 'none';
-                currentPrice = parseFloat(select.value);
-            }
-
-            if(currentPrice > 5000) {
-                currentPrice = 5000;
-                if(select.value === 'custom') customInput.value = 5000;
-            }
-
+        window.updatePrice = () => {
+            currentPrice = parseFloat(document.getElementById('amountSelect').value);
             document.getElementById('modalTotalPrice').innerText = `$${currentPrice.toFixed(2)}`;
-            document.getElementById('step2Price').innerText = `$${currentPrice.toFixed(2)}`;
-        }
+        };
 
-        // --- REAL PAYMENT GATEWAY LOGIC ---
-        function processRealPayment() {
-            // Check if we have a link for the selected amount
+        window.processRealPayment = () => {
+            // --- REPLACE THESE LINKS WITH YOUR NOWPAYMENTS LINKS ---
+            const nowPaymentsLinks = {
+                "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link
+                "100": "https://nowpayments.io/payment/?iid=YOUR_100_LINK",
+                "200": "https://nowpayments.io/payment/?iid=YOUR_200_LINK",
+                "400": "https://nowpayments.io/payment/?iid=YOUR_400_LINK",
+                "500": "https://nowpayments.io/payment/?iid=YOUR_500_LINK",
+                "1000": "https://nowpayments.io/payment/?iid=YOUR_1000_LINK",
+                "2000": "https://nowpayments.io/payment/?iid=YOUR_2000_LINK",
+                "5000": "https://nowpayments.io/payment/?iid=YOUR_5000_LINK"
+            };
+
             let link = nowPaymentsLinks[currentPrice.toString()];
-            
             if (link && !link.includes("YOUR_")) {
                 window.open(link, '_blank');
             } else {
-                alert("Payment link for this specific amount is not set up yet. Opening $50 test link.\n\nPlease create links for all amounts in your NOWPayments dashboard.");
+                alert("Payment link for this amount is not set up yet. Opening $50 test link.");
                 window.open(nowPaymentsLinks["50"], '_blank');
             }
-        }
-
-        // --- LIVE CHAT ---
-        function openLiveChat() {
-            if(window.Tawk_API && window.Tawk_API.maximize) {
-                Tawk_API.maximize(); 
-            } else {
-                alert("Live Chat is loading...");
-            }
-        }
-
-        // --- THEME ---
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('themeIcon');
-            const text = document.getElementById('themeText');
-            
-            if (body.getAttribute('data-theme') === 'light') {
-                body.removeAttribute('data-theme');
-                icon.className = 'fas fa-moon';
-                text.innerText = 'Dark';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-                icon.className = 'fas fa-sun';
-                text.innerText = 'Light';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        // --- INIT ---
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.setAttribute('data-theme', 'light');
-            document.getElementById('themeIcon').className = 'fas fa-sun';
-            document.getElementById('themeText').innerText = 'Light';
-        }
-
-        renderCards();
+        };
     </script>
 </body>
 </html>
