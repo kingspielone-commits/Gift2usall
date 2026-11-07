@@ -205,7 +205,7 @@
                         <label>Email Address (Locked)</label>
                         <input type="email" class="input-control" id="settingsEmail" readonly style="opacity: 0.7;">
                     </div>
-                    <button class="btn-buy" style="padding: 10px; background: var(--primary); color: white;" onclick="alert('Profile saved! (Requires database to update permanently)')">Save Changes</button>
+                    <button class="btn-buy" style="padding: 10px; background: var(--primary); color: white;" onclick="alert('Profile saved!')">Save Changes</button>
                 </div>
             </div>
         </main>
@@ -274,9 +274,9 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // --- 1. PASTE YOUR FIREBASE CONFIG HERE ---
+        // --- YOUR REAL FIREBASE CONFIG ---
         const firebaseConfig = {
-            apiKey: "AIzaSyBKDMydDpA_WM6R61L...", // Replace with your full API Key
+            apiKey: "AIzaSyBKDMydDpA_WM6R61MkhPmhpAKNW6fJ8FE",
             authDomain: "giftall2us.firebaseapp.com",
             projectId: "giftall2us",
             storageBucket: "giftall2us.firebasestorage.app",
@@ -429,7 +429,7 @@
         };
 
         window.processRealPayment = () => {
-            // --- REPLACE THESE LINKS WITH YOUR NOWPAYMENTS LINKS ---
+            // --- ADD YOUR OTHER NOWPAYMENTS LINKS HERE LATER ---
             const nowPaymentsLinks = {
                 "50": "https://nowpayments.io/payment/?iid=4312601801", // Your $50 link
                 "100": "https://nowpayments.io/payment/?iid=YOUR_100_LINK",
