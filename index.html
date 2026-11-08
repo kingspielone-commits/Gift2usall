@@ -43,7 +43,7 @@
         .user-info h4 { font-size: 0.85rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
         .user-info p { font-size: 0.7rem; color: var(--text-muted); }
 
-        /* TOP MOBILE HEADER (NEW PROFILE ICON) */
+        /* TOP MOBILE HEADER */
         .mobile-header { display: none; }
 
         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 1.5rem 2rem; max-width: 1400px; }
@@ -91,6 +91,17 @@
         .btn-sm { padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
         .btn-chat { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border-color); }
 
+        /* PROFILE STATS */
+        .profile-stats-container { background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 1.5rem; }
+        .stat-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 15px 0; border-bottom: 1px solid #f1f5f9; }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 5px;}
+        .stat-label i { font-size: 0.8rem; }
+        .stat-value { text-align: right; font-size: 1rem; font-weight: 700; color: var(--text-main); }
+        .stat-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
+        .stat-good { color: var(--success); }
+        .stat-bad { color: var(--danger); }
+
         /* TRADING VOLUME CARD */
         .volume-card { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(16,185,129,0.3); }
         .volume-card h3 { font-size: 0.9rem; font-weight: 500; opacity: 0.9; margin-bottom: 5px; }
@@ -126,14 +137,12 @@
             body { display: block; padding-bottom: 60px; padding-top: 60px; } 
             .sidebar { display: none; } 
             
-            /* NEW MOBILE HEADER */
             .mobile-header { display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; width: 100%; background: #fff; height: 60px; padding: 0 1rem; border-bottom: 1px solid var(--border-color); z-index: 1000; }
             .mobile-header .brand { margin-bottom: 0; font-size: 1.2rem; }
             .mobile-profile-btn { width: 35px; height: 35px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
 
             .main-content { margin-left: 0; padding: 1rem; } 
             
-            /* REMOVED PROFILE FROM BOTTOM NAV */
             .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; border-top: 1px solid var(--border-color); padding: 8px 0 12px 0; justify-content: space-around; z-index: 1000; align-items: center; } 
             .mobile-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; cursor: pointer; position:relative;} 
             .mobile-nav-item i { font-size: 1.1rem; margin-bottom: 3px; } 
@@ -147,12 +156,8 @@
             .market-price { text-align: left; margin-top: 10px;} 
         }
 
-        /* FORCE TAWK.TO CHAT TO SIT HIGHER ON MOBILE */
         @media (max-width: 900px) {
-            .widget-visible {
-                bottom: 80px !important; 
-                right: 15px !important;
-            }
+            .widget-visible { bottom: 80px !important; right: 15px !important; }
         }
     </style>
 </head>
@@ -175,7 +180,6 @@
     
     <div id="appContent" style="display: none; width: 100%;">
         
-        <!-- NEW MOBILE HEADER -->
         <div class="mobile-header">
             <div class="brand"><i class="fas fa-gift"></i> GiftAll2Us</div>
             <div class="mobile-profile-btn" id="mobileProfileBtn" onclick="switchView('profile', document.querySelectorAll('.nav-link')[4])">U</div>
@@ -282,19 +286,48 @@
                 </div>
             </div>
 
+            <!-- PROFILE STATS SECTION -->
             <div id="view-profile" class="view">
+                <!-- Trading Volume -->
                 <div class="volume-card">
                     <div><h3>Total Trading Volume</h3><h2 id="tradingVolumeDisplay">$0.00</h2></div>
                     <i class="fas fa-chart-line" style="font-size: 2.5rem; opacity: 0.5;"></i>
                 </div>
-                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 15px;"><div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div><div><h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3><p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p></div></div>
+
+                <!-- User Info -->
+                <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div id="profileAvatarLetter" class="user-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">U</div>
+                        <div>
+                            <h3 id="profileName" style="font-size: 1.1rem;">Loading...</h3>
+                            <p id="profileEmail" style="color: var(--text-muted); font-size: 0.75rem;">Loading...</p>
+                        </div>
+                    </div>
                     <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Logout</button>
+                </div>
+
+                <!-- TRADING STATISTICS (DYNAMIC) -->
+                <div class="profile-stats-container">
+                    <div class="stat-row">
+                        <div class="stat-label">Completed Order(s) in 30 Days</div>
+                        <div class="stat-value" id="stat30Days">0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">All Completed Orders</div>
+                        <div class="stat-value" id="statAllTime">0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Good Rating % <i class="fas fa-question-circle"></i></div>
+                        <div class="stat-value" id="statRating">0 %<div class="stat-sub">No ratings yet</div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">30-Day Order Completion Rate (%) <i class="fas fa-question-circle"></i></div>
+                        <div class="stat-value" id="statCompletion">0 %</div>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <!-- BOTTOM NAV (NO PROFILE BUTTON) -->
         <nav class="mobile-nav">
             <div class="mobile-nav-item active" onclick="switchView('dashboard', this)"><i class="fas fa-home"></i><span>Home</span></div>
             <div class="mobile-nav-item" onclick="switchView('marketplace', this)"><i class="fas fa-store"></i><span>Market</span></div>
@@ -339,17 +372,8 @@
         </div>
     </div>
 
-    <!-- TAWK.TO SCRIPT (YOUR EXACT ID) -->
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+    <script>
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();(function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];s1.async=true;s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();
     </script>
 
     <script type="module">
@@ -377,14 +401,26 @@
                 const name = user.displayName || user.email.split('@')[0]; const initial = name.charAt(0).toUpperCase();
                 currentUserEmail = user.email;
                 
-                if(user.email === "kingspielone@gmail.com") { userTradingVolume = 150.00; } 
-                else { userTradingVolume = 0.00; } 
+                // CHECK IF USER IS ADMIN TO SHOW REAL STATS
+                if(user.email === "kingspielone@gmail.com") { 
+                    userTradingVolume = 150.00; 
+                    document.getElementById('stat30Days').innerHTML = '0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div>';
+                    document.getElementById('statAllTime').innerHTML = '143 Order(s)<div class="stat-sub">Buy 14 | Sell 129</div>';
+                    document.getElementById('statRating').innerHTML = '100 %<div class="stat-sub"><span class="stat-good"><i class="fas fa-thumbs-up"></i> 3</span> | <span class="stat-bad"><i class="fas fa-thumbs-down"></i> 0</span></div>';
+                    document.getElementById('statCompletion').innerHTML = '0 %';
+                } else { 
+                    userTradingVolume = 0.00; 
+                    // Normal users see 0
+                    document.getElementById('stat30Days').innerHTML = '0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div>';
+                    document.getElementById('statAllTime').innerHTML = '0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div>';
+                    document.getElementById('statRating').innerHTML = '0 %<div class="stat-sub">No ratings yet</div>';
+                    document.getElementById('statCompletion').innerHTML = '0 %';
+                } 
                 
                 document.getElementById('userName').innerText = name; document.getElementById('dashName').innerText = name;
                 document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = user.email;
                 document.getElementById('userAvatarLetter').innerText = initial; document.getElementById('profileAvatarLetter').innerText = initial;
                 
-                // Update Mobile Header Profile Icon
                 const mobileBtn = document.getElementById('mobileProfileBtn');
                 if(mobileBtn) { mobileBtn.innerText = initial; }
 
