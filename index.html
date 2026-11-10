@@ -107,6 +107,23 @@
         .volume-card h3 { font-size: 0.9rem; font-weight: 500; opacity: 0.9; margin-bottom: 5px; }
         .volume-card h2 { font-size: 2rem; font-weight: 800; }
 
+        /* FAQ SECTION */
+        .faq-container { background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 1.5rem; }
+        .faq-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main); }
+        .faq-item { border-bottom: 1px solid var(--border-color); }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; cursor: pointer; font-weight: 600; color: var(--text-main); font-size: 0.95rem; transition: 0.2s; }
+        .faq-question:hover { color: var(--primary); }
+        .faq-question i { transition: transform 0.3s; color: var(--text-muted); font-size: 0.8rem;}
+        .faq-question.active i { transform: rotate(180deg); color: var(--primary); }
+        
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+        .faq-answer.show { max-height: 500px; padding-bottom: 15px; transition: max-height 0.3s ease-in; }
+        
+        .faq-answer ol, .faq-answer ul { margin-left: 20px; margin-top: 5px; margin-bottom: 5px;}
+        .faq-answer li { margin-bottom: 5px; }
+        .faq-answer strong { color: var(--text-main); }
+
         /* LOCKED P2P SCREEN */
         .lock-screen { background: white; border-radius: 16px; padding: 4rem 2rem; text-align: center; border: 1px dashed #cbd5e1; max-width: 600px; margin: 2rem auto; }
         .lock-screen i { font-size: 4rem; color: var(--warning); margin-bottom: 1rem; }
@@ -286,7 +303,7 @@
                 </div>
             </div>
 
-            <!-- PROFILE STATS SECTION -->
+            <!-- PROFILE STATS & FAQ SECTION -->
             <div id="view-profile" class="view">
                 <!-- Trading Volume -->
                 <div class="volume-card">
@@ -306,7 +323,7 @@
                     <button class="btn-buy" onclick="logoutUser()" style="background: #fef2f2; color: var(--danger); border-color: #fecaca; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Logout</button>
                 </div>
 
-                <!-- TRADING STATISTICS (DYNAMIC) -->
+                <!-- TRADING STATISTICS -->
                 <div class="profile-stats-container">
                     <div class="stat-row">
                         <div class="stat-label">Completed Order(s) in 30 Days</div>
@@ -325,6 +342,67 @@
                         <div class="stat-value" id="statCompletion">0 %</div>
                     </div>
                 </div>
+
+                <!-- FAQ SECTION -->
+                <div class="faq-container">
+                    <div class="faq-title"><i class="fas fa-question-circle" style="color:var(--primary);"></i> Frequently Asked Questions</div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How do I get my code and QR code after payment?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <ol>
+                                <li><strong>Step 1:</strong> Complete the payment via NOWPayments by sending the exact crypto amount.</li>
+                                <li><strong>Step 2:</strong> Copy the Transaction Hash (TXID) from your wallet app.</li>
+                                <li><strong>Step 3:</strong> Open the Live Chat and send us your Order ID, the TXID, and a screenshot.</li>
+                                <li><strong>Step 4:</strong> Once verified, we will send your 16-digit Gift Card Code and QR Code directly to you.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What payment methods do you accept?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            We accept major cryptocurrencies including USDT (BEP20 & TRC20), Bitcoin (BTC), Litecoin (LTC), and others via our secure NOWPayments gateway.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            How long does delivery take?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Delivery is usually instant (within 1-5 minutes) after the blockchain confirms your transaction. During high network traffic, it may take up to 30 minutes.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What is the P2P Marketplace?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            It is a peer-to-peer escrow market where verified users can buy and sell their own gift cards directly with each other. To post an ad, you must have a trading volume of at least $100 on the platform.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What should I do if my card code is invalid?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Do not use the card. Immediately take a screenshot of the error and contact our Live Chat Support with your Order ID and the screenshot. We will replace it or refund you.
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
 
@@ -372,8 +450,17 @@
         </div>
     </div>
 
-    <script>
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();(function(){var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];s1.async=true;s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';s1.charset='UTF-8';s1.setAttribute('crossorigin','*');s0.parentNode.insertBefore(s1,s0);})();
+    <!-- TAWK.TO SCRIPT -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6aee677c7e50363c2d6f232b/1k6pk8g4r';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
     </script>
 
     <script type="module">
@@ -401,7 +488,6 @@
                 const name = user.displayName || user.email.split('@')[0]; const initial = name.charAt(0).toUpperCase();
                 currentUserEmail = user.email;
                 
-                // CHECK IF USER IS ADMIN TO SHOW REAL STATS
                 if(user.email === "kingspielone@gmail.com") { 
                     userTradingVolume = 150.00; 
                     document.getElementById('stat30Days').innerHTML = '0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div>';
@@ -410,7 +496,6 @@
                     document.getElementById('statCompletion').innerHTML = '0 %';
                 } else { 
                     userTradingVolume = 0.00; 
-                    // Normal users see 0
                     document.getElementById('stat30Days').innerHTML = '0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div>';
                     document.getElementById('statAllTime').innerHTML = '0 Order(s)<div class="stat-sub">Buy 0 | Sell 0</div>';
                     document.getElementById('statRating').innerHTML = '0 %<div class="stat-sub">No ratings yet</div>';
@@ -491,6 +576,22 @@
                     document.getElementById('p2pAdsList').style.display = 'block';
                     loadMarketplace(); 
                 }
+            }
+        };
+
+        // --- FAQ TOGGLE LOGIC ---
+        window.toggleFaq = (element) => {
+            element.classList.toggle('active');
+            const answer = element.nextElementSibling;
+            if (answer.classList.contains('show')) {
+                answer.classList.remove('show');
+            } else {
+                // Close all other open FAQs first (optional)
+                document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('show'));
+                document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+                
+                answer.classList.add('show');
+                element.classList.add('active');
             }
         };
 
