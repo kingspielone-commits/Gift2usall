@@ -76,6 +76,10 @@
         .card-image-container img { width: 100%; height: 100%; object-fit: contain; }
 
         .product-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
+        
+        /* NEW OFFER BADGE */
+        .offer-badge { font-size: 0.7rem; background: #fef3c7; color: #d97706; font-weight: 800; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; border: 1px solid #fcd34d;}
+        
         .stock-badge { font-size: 0.75rem; color: var(--danger); font-weight: 600; margin-bottom: 1rem; display: block; }
         .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 1rem;}
         .price { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
@@ -428,6 +432,7 @@
             <div style="text-align: center; margin-bottom: 1.5rem;">
                 <div class="card-image-container" id="modalImageContainer" style="height: 120px; width: 100%; margin: 0 auto 10px auto; border-radius: 8px; background:#fff;"></div>
                 <h2 id="modalProductName" style="font-size: 1.2rem;">Gift Card</h2>
+                <p style="font-size: 0.8rem; color: var(--danger); font-weight: 700; margin-top: 5px;" id="modalDiscountText"></p>
             </div>
             <div class="form-group">
                 <label>Select Value (USD)</label>
@@ -445,6 +450,7 @@
             <div style="text-align: center; margin-bottom: 1rem; background: var(--bg-main); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
                 <span style="font-size: 0.85rem; color: var(--text-muted);">Total Price</span>
                 <h3 style="color: var(--success); font-size: 1.8rem;" id="modalTotalPrice">$50.00</h3>
+                <p style="font-size:0.75rem; color:var(--text-muted); text-decoration: line-through;" id="modalOldPrice"></p>
             </div>
             <button class="btn-checkout" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Add to Cart</button>
         </div>
@@ -475,6 +481,11 @@
         
         let currentUserEmail = "";
         let userTradingVolume = 0; 
+
+        // CHECK IF TODAY IS WEDNESDAY (3) OR FRIDAY (5)
+        const today = new Date().getDay();
+        const isDiscountDay = (today === 3 || today === 5);
+        const DISCOUNT_RATE = 0.75; // They pay 75% of original price (25% discount)
 
         window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); } catch (error) { showError(error.message); } };
         window.signInWithEmail = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value); } catch (error) { showError(error.message); } };
@@ -586,7 +597,6 @@
             if (answer.classList.contains('show')) {
                 answer.classList.remove('show');
             } else {
-                // Close all other open FAQs first (optional)
                 document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('show'));
                 document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
                 
@@ -698,11 +708,15 @@
             const categoryData = categories.find(c => c.name === currentCategory);
             if(!categoryData) return;
 
+            // Add Offer Badge if it is Wed or Fri
+            let offerHTML = isDiscountDay ? `<div class="offer-badge"><i class="fas fa-fire"></i> 75% OFF (Wed & Fri)</div>` : '';
+
             categoryData.items.forEach(item => {
                 grid.innerHTML += `
                     <div class="product-card">
                         <div class="card-image-container"><img src="${item.logo}" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}&background=random&color=fff&size=200&bold=true'"></div>
                         <div class="product-title">${item.name}</div>
+                        ${offerHTML}
                         <div class="stock-badge">Only 100 left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
@@ -718,6 +732,7 @@
                     <div class="product-card">
                         <div class="card-image-container"><img src="${item.logo}" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}&background=random&color=fff&size=200&bold=true'"></div>
                         <div class="product-title">${item.name}</div>
+                        ${offerHTML}
                         <div class="stock-badge">Only 100 left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
@@ -816,6 +831,14 @@
             currentItem.name = name; currentItem.image = image;
             document.getElementById('modalProductName').innerText = name + " Gift Card";
             document.getElementById('modalImageContainer').innerHTML = `<img src="${image}" onerror="this.src='https://ui-avatars.com/api/?name=${name}&background=random&color=fff&size=200&bold=true'" style="width:100%; height:100%; object-fit:contain;">`;
+            
+            // Show offer text in modal if it's Wed/Fri
+            if(isDiscountDay) {
+                document.getElementById('modalDiscountText').innerText = "🔥 75% OFF DEAL APPLIED TODAY!";
+            } else {
+                document.getElementById('modalDiscountText').innerText = "";
+            }
+
             document.getElementById('amountSelect').value = "50";
             document.getElementById('quantityInput').value = "1";
             updatePrice();
@@ -828,9 +851,26 @@
             let basePrice = parseFloat(document.getElementById('amountSelect').value);
             let qty = parseInt(document.getElementById('quantityInput').value) || 1;
             if(qty < 1) qty = 1;
-            currentItem.price = basePrice; currentItem.qty = qty;
-            let total = basePrice * qty;
-            document.getElementById('modalTotalPrice').innerText = `$${total.toFixed(2)}`;
+            
+            let finalPrice = basePrice;
+            let total = 0;
+
+            if (isDiscountDay) {
+                // 75% off logic (They pay 75% of price). 
+                // Math: $50 * 0.75 = $37.50 (We round to nearest whole number to match NOWPayments)
+                finalPrice = Math.round(basePrice * 0.75); 
+                total = finalPrice * qty;
+                
+                document.getElementById('modalTotalPrice').innerText = `$${total.toFixed(2)}`;
+                document.getElementById('modalOldPrice').innerText = `Original: $${(basePrice * qty).toFixed(2)}`;
+            } else {
+                total = basePrice * qty;
+                document.getElementById('modalTotalPrice').innerText = `$${total.toFixed(2)}`;
+                document.getElementById('modalOldPrice').innerText = ""; // Hide original price
+            }
+
+            currentItem.price = finalPrice; 
+            currentItem.qty = qty;
         };
 
         window.addToCart = () => {
@@ -885,12 +925,20 @@
         window.processRealPayment = () => {
             if(cart.length === 0) return alert("Cart is empty!");
             
+            // We must use the total cart value to match the links exactly
             let totalCartValue = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             
             const links = { 
+                // Discount Links (Wed & Fri)
+                "38": "https://nowpayments.io/payment/?iid=5082080384",
+                "75": "https://nowpayments.io/payment/?iid=6136420588",
+                "112": "https://nowpayments.io/payment/?iid=5999583634",
+                "150": "https://nowpayments.io/payment/?iid=5646321259",
+                "450": "https://nowpayments.io/payment/?iid=5032992908",
+
+                // Regular Links
                 "50": "https://nowpayments.io/payment/?iid=4312601801", 
                 "100": "https://nowpayments.io/payment/?iid=4912162793",
-                "150": "https://nowpayments.io/payment/?iid=5271487412",
                 "200": "https://nowpayments.io/payment/?iid=6088608599",
                 "300": "https://nowpayments.io/payment/?iid=6128501527",
                 "400": "https://nowpayments.io/payment/?iid=5861277497",
@@ -901,6 +949,7 @@
                 "3000": "https://nowpayments.io/payment/?iid=4861305997"
             };
             
+            // Convert to string to match keys
             let link = links[totalCartValue.toString()]; 
             
             if (link) { 
