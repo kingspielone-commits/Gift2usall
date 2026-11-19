@@ -54,7 +54,7 @@
 
         /* LIVE TICKER */
         .live-ticker { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 10px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; overflow: hidden;}
-        .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
+        .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; flex-shrink:0;}
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
         /* HOW IT WORKS SECTION */
@@ -99,14 +99,30 @@
         .btn-add-cart { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;}
         .btn-add-cart:hover { background: #2563eb; }
 
-        /* MARKETPLACE ADS */
-        .market-card { background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .market-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); }
+        /* P2P MARKETPLACE ADS */
+        .p2p-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap:wrap; gap:10px;}
+        .currency-selector { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 600; outline: none; background: white;}
+        
+        .market-card { background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .market-info { flex: 1; }
+        .merchant-name { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 5px; color: var(--text-main);}
+        .verified-badge { color: var(--primary); font-size: 0.9rem; }
+        .online-status { font-size: 0.7rem; display: flex; align-items: center; gap: 4px; font-weight: 600; }
+        .status-online { color: var(--success); }
+        .status-offline { color: var(--text-muted); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block;}
+        .dot-online { background: var(--success); }
+        .dot-offline { background: var(--text-muted); }
+
         .market-info p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 3px; }
         .market-price { font-size: 1.4rem; font-weight: 800; color: var(--success); text-align: right; }
         .market-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        .btn-sm { padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; }
-        .btn-chat { background: #f3f4f6; color: var(--text-main); border: 1px solid var(--border-color); }
+        
+        /* BUTTON STATES */
+        .btn-sm { padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; width: 140px;}
+        .btn-buy { background: var(--success); color: white; }
+        .btn-buy:hover { background: #059669; }
+        .btn-ineligible { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
 
         /* PROFILE STATS */
         .profile-stats-container { background: white; border-radius: 12px; border: 1px solid var(--border-color); padding: 1.5rem; margin-bottom: 1.5rem; }
@@ -187,7 +203,8 @@
             .plus-btn-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--text-muted); font-size: 0.65rem; white-space: nowrap; }
             .tracker-input-group { flex-direction: column; } 
             .market-card { flex-direction: column; align-items: flex-start; } 
-            .market-price { text-align: left; margin-top: 10px;} 
+            .market-actions { width: 100%; margin-top: 15px; }
+            .btn-sm { width: 100%; }
             .how-it-works { grid-template-columns: 1fr; }
         }
 
@@ -264,9 +281,9 @@
                         <p>Pay securely with USDT, BTC, or LTC.</p>
                     </div>
                     <div class="step-card">
-                        <i class="fas fa-bolt"></i>
-                        <h4>3. Get Code Instantly</h4>
-                        <p>Receive your code or QR code via Live Chat.</p>
+                        <i class="fas fa-envelope-open-text"></i>
+                        <h4>3. Get Code via Email</h4>
+                        <p>Code is sent straight to your email after payment.</p>
                     </div>
                 </div>
 
@@ -293,11 +310,18 @@
                 </div>
 
                 <div id="market-p2p" style="display: none;">
-                    <!-- Users can now view the list without the lock screen -->
                     <div id="p2pAdsList">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div class="p2p-header">
                             <h3 style="font-size: 1.2rem;">Community Ads</h3>
-                            <button class="btn-buy" onclick="tryPostAd()" style="padding: 8px 16px; font-size: 0.9rem; background: var(--primary); color: white; border-radius: 8px; border: none; cursor: pointer;"><i class="fas fa-plus"></i> Post Your Ad</button>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <select id="currencySelector" class="currency-selector" onchange="loadMarketplace()">
+                                    <option value="USD">🇺🇸 USD</option>
+                                    <option value="EUR">🇪🇺 EUR</option>
+                                    <option value="GBP">🇬🇧 GBP</option>
+                                    <option value="NGN">🇳🇬 NGN</option>
+                                </select>
+                                <button class="btn-buy" onclick="tryPostAd()" style="padding: 8px 16px; font-size: 0.9rem; border-radius: 8px; border: none; cursor: pointer;"><i class="fas fa-plus"></i> Post Ad</button>
+                            </div>
                         </div>
                         <div id="marketGrid">
                             <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading community ads...</p>
@@ -307,7 +331,6 @@
             </div>
 
             <div id="view-postad" class="view">
-                <!-- Only the Posting is locked -->
                 <div id="p2pPostLockScreen" class="lock-screen" style="display: none;">
                     <i class="fas fa-lock"></i>
                     <h2>Posting Locked</h2>
@@ -401,9 +424,9 @@
                         <div class="faq-answer">
                             <ol>
                                 <li><strong>Step 1:</strong> Complete the payment via NOWPayments by sending the exact crypto amount.</li>
-                                <li><strong>Step 2:</strong> Copy the Transaction Hash (TXID) from your wallet app.</li>
-                                <li><strong>Step 3:</strong> Open the Live Chat and send us your Order ID, the TXID, and a screenshot.</li>
-                                <li><strong>Step 4:</strong> Once verified, we will send your 16-digit Gift Card Code and QR Code directly to you.</li>
+                                <li><strong>Step 2:</strong> The system will automatically verify your transaction.</li>
+                                <li><strong>Step 3:</strong> Your 16-digit Gift Card Code and QR Code will be sent straight to your <strong>Email Address</strong> within 5 minutes.</li>
+                                <li><strong>Note:</strong> If you don't receive the email, check your Spam folder or message us on Live Chat with your TXID.</li>
                             </ol>
                         </div>
                     </div>
@@ -424,7 +447,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            Delivery is usually instant (within 1-5 minutes) after the blockchain confirms your transaction. During high network traffic, it may take up to 30 minutes.
+                            Delivery is usually instant (within 1-5 minutes) after the blockchain confirms your transaction. The code will be sent to your email address automatically.
                         </div>
                     </div>
 
@@ -529,16 +552,43 @@
         const isDiscountDay = (today === 3 || today === 5);
 
         // FAKE LIVE FEED DATA
-        const recentBuyers = ["John from UK", "Sarah from US", "Ahmed from UAE", "Chloe from Canada", "David from AU", "Maria from Spain"];
-        const recentCards = ["$50 Amazon", "$100 Steam", "$25 Apple", "$200 Visa", "$50 Netflix"];
+        const recentBuyers = ["John (UK)", "Sarah (US)", "Ahmed (UAE)", "Chloe (CA)", "David (AU)", "Maria (ES)", "Emeka (NG)", "Yuki (JP)", "Liam (IE)", "Fatima (SA)", "Lucas (BR)", "Anna (DE)", "Ken (KE)", "Priya (IN)"];
+        const recentCards = ["$50 Amazon", "$100 Steam", "$25 Apple", "$200 Visa", "$50 Netflix", "$100 Google Play", "$20 Spotify", "$300 Xbox", "$50 Walmart", "$150 PlayStation"];
+
+        // SMART STOCK LOGIC
+        let currentStock = Math.floor(Math.random() * 75) + 10; // Random between 10 and 85
 
         function startLiveFeed() {
+            // Ticker update
             setInterval(() => {
                 const buyer = recentBuyers[Math.floor(Math.random() * recentBuyers.length)];
                 const card = recentCards[Math.floor(Math.random() * recentCards.length)];
                 const time = Math.floor(Math.random() * 5) + 1;
-                document.getElementById('tickerText').innerHTML = `🔥 ${buyer} just bought a <strong>${card}</strong> card ${time} min ago!`;
+                document.getElementById('tickerText').innerHTML = `🔥 <strong>${buyer}</strong> just bought a <strong>${card}</strong> card ${time} min ago!`;
             }, 4000); // Changes every 4 seconds
+
+            // Stock update (Decreases by 1, never below 10)
+            setInterval(() => {
+                if (currentStock > 10) {
+                    currentStock -= 1;
+                    document.querySelectorAll('.stock-badge').forEach(badge => {
+                        badge.innerText = `Only ${currentStock} left today!`;
+                    });
+                }
+            }, 15000); // Decreases every 15 seconds (simulated fast)
+
+            // Restock update
+            setInterval(() => {
+                currentStock = Math.floor(Math.random() * 50) + 40; // Restock to 40-90
+                document.querySelectorAll('.stock-badge').forEach(badge => {
+                    badge.innerText = `🔥 Restocked! Only ${currentStock} left today!`;
+                });
+                setTimeout(() => {
+                    document.querySelectorAll('.stock-badge').forEach(badge => {
+                        badge.innerText = `Only ${currentStock} left today!`;
+                    });
+                }, 3000); 
+            }, 45000); 
         }
 
         window.signInWithGoogle = async () => { try { await signInWithPopup(auth, googleProvider); } catch (error) { showError(error.message); } };
@@ -586,7 +636,7 @@
                     }
                 }
                 loadMarketplace();
-                startLiveFeed(); // Start the ticker
+                startLiveFeed(); 
             } else {
                 loginPage.style.display = 'flex'; appContent.style.display = 'none'; document.getElementById('emailInput').value = ''; document.getElementById('passwordInput').value = '';
             }
@@ -602,7 +652,7 @@
                 document.getElementById('p2pPostLockScreen').style.display = 'none';
                 document.getElementById('p2pPostForm').style.display = 'block';
             }
-            switchView('postad', document.querySelectorAll('.nav-link')[3]); // Desktop link
+            switchView('postad', document.querySelectorAll('.nav-link')[3]); 
         };
 
         window.switchView = (viewId, el) => { 
@@ -632,7 +682,7 @@
             } else {
                 document.getElementById('market-official').style.display = 'none';
                 document.getElementById('market-p2p').style.display = 'block';
-                loadMarketplace(); // Load ads when they click P2P tab
+                loadMarketplace(); 
             }
         };
 
@@ -763,7 +813,7 @@
                         <div class="card-image-container"><img src="${item.logo}" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}&background=random&color=fff&size=200&bold=true'"></div>
                         <div class="product-title">${item.name}</div>
                         ${offerHTML}
-                        <div class="stock-badge">Only 100 left today!</div>
+                        <div class="stock-badge">Only ${currentStock} left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
                             <button class="btn-add-cart" onclick="openCheckout('${item.name}', '${item.logo}')"><i class="fas fa-cart-plus"></i> Buy</button>
@@ -779,7 +829,7 @@
                         <div class="card-image-container"><img src="${item.logo}" alt="${item.name}" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}&background=random&color=fff&size=200&bold=true'"></div>
                         <div class="product-title">${item.name}</div>
                         ${offerHTML}
-                        <div class="stock-badge">Only 100 left today!</div>
+                        <div class="stock-badge">Only ${currentStock} left today!</div>
                         <div class="product-footer">
                             <div class="price">From $50</div>
                             <button class="btn-add-cart" onclick="openCheckout('${item.name}', '${item.logo}')"><i class="fas fa-cart-plus"></i> Buy</button>
@@ -829,41 +879,102 @@
             }
         };
 
+        // FAKE MERCHANTS DATA
+        const fakeMerchants = [
+            { name: "CryptoKing", id: "#88421", online: true, verified: true, type: "Sell", card: "Amazon", price: 0.92, vol: 500, qty: 10, country: "UK", payment: "USDT (BEP20)" },
+            { name: "GiftTrader99", id: "#11205", online: false, verified: true, type: "Buy", card: "Steam", price: 0.88, vol: 200, qty: 5, country: "US", payment: "BTC" },
+            { name: "NinaExchange", id: "#55412", online: true, verified: true, type: "Sell", card: "Apple", price: 0.95, vol: 1000, qty: 50, country: "CA", payment: "LTC" },
+            { name: "P2P_Master", id: "#77129", online: true, verified: false, type: "Sell", card: "Visa", price: 0.90, vol: 300, qty: 20, country: "AU", payment: "USDT (TRC20)" },
+            { name: "Satoshi_Seller", id: "#99001", online: false, verified: true, type: "Buy", card: "Netflix", price: 0.85, vol: 150, qty: 5, country: "DE", payment: "BTC" },
+            { name: "TradeQueen", id: "#22344", online: true, verified: true, type: "Sell", card: "Google Play", price: 0.93, vol: 800, qty: 100, country: "Global", payment: "USDT (BEP20)" },
+            { name: "FastDeals", id: "#66788", online: true, verified: false, type: "Buy", card: "Xbox", price: 0.87, vol: 400, qty: 15, country: "US", payment: "PayPal" },
+            { name: "CryptoWhale", id: "#33211", online: false, verified: true, type: "Sell", card: "Walmart", price: 0.91, vol: 600, qty: 30, country: "UK", payment: "LTC" }
+        ];
+
         async function loadMarketplace() {
             const grid = document.getElementById('marketGrid');
-            grid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">Loading...</p>';
-            
+            grid.innerHTML = ''; // Clear current
+
+            // 1. Render Fake Merchants first
+            let html = "";
+            fakeMerchants.forEach(m => {
+                let tagColor = m.type === 'Buy' ? '#d1fae5' : '#fee2e2';
+                let tagText = m.type === 'Buy' ? '#065f46' : '#991b1b';
+                
+                // Check if user is eligible (Volume > 100)
+                let btnHTML = userTradingVolume >= 100 
+                    ? `<button class="btn-sm btn-buy" onclick="openLiveChat()"><i class="fas fa-comment"></i> Buy</button>`
+                    : `<button class="btn-sm btn-ineligible" onclick="alert('You need $100 trading volume to interact with this ad.')"><i class="fas fa-lock"></i> Ineligible</button>`;
+
+                html += `
+                <div class="market-card">
+                    <div class="market-info">
+                        <div class="merchant-name">
+                            ${m.name} 
+                            ${m.verified ? '<i class="fas fa-check-circle verified-badge" title="Verified Merchant"></i>' : ''}
+                        </div>
+                        <div class="online-status ${m.online ? 'status-online' : 'status-offline'}">
+                            <span class="status-dot ${m.online ? 'dot-online' : 'dot-offline'}"></span> 
+                            ${m.online ? 'Online' : 'Offline'} • ID: ${m.id}
+                        </div>
+                        <p style="margin-top:8px;"><strong>${m.type}ing</strong> ${m.card}</p>
+                        <p><i class="fas fa-globe"></i> ${m.country} • <i class="fas fa-credit-card"></i> ${m.payment}</p>
+                    </div>
+                    <div>
+                        <div class="market-price">$${m.price.toFixed(2)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">/ $1</span></div>
+                        <p style="text-align:right; font-size:0.8rem; margin-top:3px;">Limit: $${m.vol} | Qty: ${m.qty}</p>
+                        <div class="market-actions">
+                            ${btnHTML}
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+
+            // 2. Fetch Real Ads from Firebase
             try {
                 const querySnapshot = await getDocs(collection(db, "marketplace"));
-                if(querySnapshot.empty) { grid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No ads posted yet.</p>'; return; }
-                
-                let html = "";
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     let tagColor = data.type === 'Buy' ? '#d1fae5' : '#fee2e2';
                     let tagText = data.type === 'Buy' ? '#065f46' : '#991b1b';
+                    
+                    // Get username from email (hide gmail)
+                    let username = data.sellerEmail.split('@')[0];
+                    let userId = "#" + Math.floor(Math.random() * 90000 + 10000); // Fake ID for real users for privacy
+
+                    let btnHTML = userTradingVolume >= 100 
+                    ? `<button class="btn-sm btn-buy" onclick="openLiveChat()"><i class="fas fa-comment"></i> Buy</button>`
+                    : `<button class="btn-sm btn-ineligible" onclick="alert('You need $100 trading volume to interact with this ad.')"><i class="fas fa-lock"></i> Ineligible</button>`;
+
                     html += `
-                    <div class="market-card">
+                    <div class="market-card" style="border-color: var(--primary);">
                         <div class="market-info">
-                            <h3><span style="font-size:0.7rem;background:${tagColor};color:${tagText};padding:2px 8px;border-radius:4px;margin-right:5px;">${data.type}</span> ${data.cardName}</h3>
-                            <p><i class="fas fa-user"></i> ${data.sellerEmail}</p>
-                            <p><i class="fas fa-globe"></i> ${data.country} • ${data.duration} mins</p>
-                            <p><i class="fas fa-credit-card"></i> ${data.payment}</p>
+                            <div class="merchant-name">
+                                ${username} 
+                                <i class="fas fa-check-circle verified-badge" title="Verified Merchant"></i>
+                            </div>
+                            <div class="online-status status-online">
+                                <span class="status-dot dot-online"></span> Online • ID: ${userId}
+                            </div>
+                            <p style="margin-top:8px;"><strong>${data.type}ing</strong> ${data.cardName}</p>
+                            <p><i class="fas fa-globe"></i> ${data.country} • <i class="fas fa-credit-card"></i> ${data.payment}</p>
                         </div>
                         <div>
                             <div class="market-price">$${data.price.toFixed(2)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">/ $1</span></div>
                             <p style="text-align:right; font-size:0.8rem; margin-top:3px;">Vol: $${data.volume} | Qty: ${data.quantity}</p>
                             <div class="market-actions">
-                                <button class="btn-sm btn-chat" onclick="openLiveChat()"><i class="fas fa-comment"></i> Contact Seller</button>
+                                ${btnHTML}
                             </div>
                         </div>
                     </div>
                     `;
                 });
-                grid.innerHTML = html;
             } catch (e) {
-                grid.innerHTML = '<p style="color: var(--danger); text-align: center;">Error loading ads.</p>';
+                console.log("Error fetching real ads", e);
             }
+
+            grid.innerHTML = html;
         }
 
         window.openLiveChat = () => { if(window.Tawk_API && window.Tawk_API.maximize) Tawk_API.maximize(); else alert("Live Chat is loading..."); };
@@ -911,7 +1022,7 @@
             } else {
                 total = basePrice * qty;
                 document.getElementById('modalTotalPrice').innerText = `$${total.toFixed(2)}`;
-                document.getElementById('modalOldPrice').innerText = ""; // Hide original price
+                document.getElementById('modalOldPrice').innerText = ""; 
             }
 
             currentItem.price = finalPrice; 
