@@ -30,9 +30,13 @@
         .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
         .input-control { width: 100%; padding: 10px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); }
 
-        /* LOGIN PAYMENT LOGOS (No Text) */
-        .login-payment-logos { margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: center; gap: 15px; opacity: 0.6; }
-        .login-payment-logos i { font-size: 1.8rem; color: var(--text-main); }
+        /* LOGIN PAYMENT LOGOS (COLORFUL) */
+        .login-payment-logos { margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: center; gap: 15px; opacity: 0.8; }
+        .login-payment-logos i { font-size: 1.8rem; }
+        .logo-visa { color: #1A1F71; }
+        .logo-mc { color: #EB001B; }
+        .logo-apple { color: #000000; }
+        .logo-google { color: #4285F4; }
 
         /* DASHBOARD & SIDEBAR */
         .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-right: 1px solid var(--border-color); padding: 1.5rem 1rem; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
@@ -187,11 +191,15 @@
         .cart-item-info p { font-size: 0.8rem; color: var(--text-muted); }
         .remove-item { color: var(--danger); cursor: pointer; background: none; border: none; font-size: 1.1rem; }
 
-        /* MODAL COMING SOON LOGOS */
+        /* MODAL COMING SOON LOGOS (COLORFUL) */
         .modal-coming-soon { margin-top: 1rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1rem;}
         .modal-coming-soon p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
-        .modal-coming-soon .payment-logos { display: flex; justify-content: center; gap: 15px; opacity: 0.5; }
-        .modal-coming-soon .payment-logos i { font-size: 1.8rem; color: var(--text-main); }
+        .modal-coming-soon .payment-logos { display: flex; justify-content: center; gap: 15px; opacity: 0.8; }
+        .modal-coming-soon .payment-logos i { font-size: 1.8rem; }
+        .logo-visa { color: #1A1F71; }
+        .logo-mc { color: #EB001B; }
+        .logo-apple { color: #000000; }
+        .logo-google { color: #4285F4; }
 
         /* MOBILE NAV */
         .mobile-nav { display: none; }
@@ -240,12 +248,12 @@
             <button class="login-btn" style="border: none; background: transparent; color: var(--primary);" onclick="signUpWithEmail()">Create an Account</button>
             <p id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none;"></p>
 
-            <!-- LOGIN PAYMENT LOGOS ONLY -->
+            <!-- LOGIN PAYMENT LOGOS (COLORFUL) -->
             <div class="login-payment-logos">
-                <i class="fab fa-cc-visa"></i>
-                <i class="fab fa-cc-mastercard"></i>
-                <i class="fab fa-apple-pay"></i>
-                <i class="fab fa-google-pay"></i>
+                <i class="fab fa-cc-visa logo-visa"></i>
+                <i class="fab fa-cc-mastercard logo-mc"></i>
+                <i class="fab fa-apple-pay logo-apple"></i>
+                <i class="fab fa-google-pay logo-google"></i>
             </div>
         </div>
     </div>
@@ -539,14 +547,14 @@
             </div>
             <button class="btn-checkout" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Add to Cart</button>
 
-            <!-- COMING SOON LOGOS ON MODAL -->
+            <!-- COMING SOON LOGOS ON MODAL (COLORFUL) -->
             <div class="modal-coming-soon">
                 <p>Card, Apple Pay & Google Pay coming soon</p>
                 <div class="payment-logos">
-                    <i class="fab fa-cc-visa"></i>
-                    <i class="fab fa-cc-mastercard"></i>
-                    <i class="fab fa-apple-pay"></i>
-                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-visa logo-visa"></i>
+                    <i class="fab fa-cc-mastercard logo-mc"></i>
+                    <i class="fab fa-apple-pay logo-apple"></i>
+                    <i class="fab fa-google-pay logo-google"></i>
                 </div>
             </div>
         </div>
